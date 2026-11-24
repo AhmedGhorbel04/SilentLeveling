@@ -183,6 +183,7 @@ A rank requires **a minimum level** and, from B upward, **verified legendary ach
 | **S**  | IV (82) · III (89) · II (96) · I (103) | 1 verified **Mythic** + 3 Legendary |
 | **SS** | — (110)                                | 2 verified Mythic + 5 Legendary     |
 
+- A verified **Mythic** achievement also counts toward the Legendary requirement (S = at least 4 verified achievements, of which 1 Mythic; SS = at least 7, of which 2 Mythic).
 - A player at level 45 with no verified achievement stays **C I**. The UI shows "Rank locked — prove yourself in real life" with the missing requirement. XP keeps counting, so the rank jumps as soon as a claim is approved.
 - **SS players** are compared by their titles (count weighted by rarity) instead of XP.
 - The rank is stored on the user (a cached value) and recalculated whenever XP or verified achievements change.
@@ -227,7 +228,7 @@ This works even if the server was asleep, and it never processes the same day tw
 - A day **counts** when all of its daily quests were completed.
 - **Current streak** = consecutive counted days. **Best streak** is kept on the profile.
 - **Streak bonus:** +5% XP for every full 7 days of streak, max +50% (reached at 70 days). Applies to daily, weekly and custom quests.
-- A missed day resets the streak to 0 and creates a **penalty quest**. Completing the penalty quest within 24 h **restores** the streak to its previous value (the missed day itself does not count).
+- A missed day resets the streak to 0 and creates a **penalty quest**. Completing the penalty quest within 24 h **restores** the streak to its previous value (the missed day itself does not count). The penalty quest is a single chance: missing the next day as well loses the streak for good.
 - **Discipline rate** (shown on the profile) = percentage of daily quests completed over the last 30 days.
 
 ### 3.8 Achievements and titles
