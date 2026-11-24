@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    name: Lint, type check and test
+    runs-on: ubuntu-latest
+
+    # A throwaway PostgreSQL for the integration tests
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: silent
+          POSTGRES_PASSWORD: ci_password
+          POSTGRES_DB: silentleveling_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U silent"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://silent:ci_password@localhost:5432/silentleveling_test
+      DATABASE_URL_TEST: postgresql://silent:ci_password@localhost:5432/silentleveling_test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
