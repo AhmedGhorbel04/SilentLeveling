@@ -1,20 +1,39 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from '../../components/ui/Alert';
+import { Button } from '../../components/ui/Button';
+import { Modal } from '../../components/ui/Modal';
 import { Spinner } from '../../components/ui/Spinner';
 import { ApiError } from '../../api/client';
-import type { CompleteQuestResult, Quest } from '../../api/quests';
+import type { CompleteQuestResult, CustomQuestRequest, Quest } from '../../api/quests';
+import type { LanguageCode } from '../../i18n';
+import { LevelUpOverlay } from '../dashboard/LevelUpOverlay';
+import { CustomQuestForm } from './CustomQuestForm';
 import { QuestCard } from './QuestCard';
-import { useCompleteQuest, useRerollQuest, useTodayQuests } from './useQuests';
+import {
+  useCompleteQuest,
+  useCreateCustomQuest,
+  useDeleteCustomQuest,
+  useRerollQuest,
+  useTodayQuests,
+  useUpdateCustomQuest,
+} from './useQuests';
 
-// Today's daily quests, this week's weekly quests and any penalty quest.
-// The full status window (level, XP bar, stats) arrives in Milestone 4.
+// Form state: closed, creating a new quest, or editing an existing one
+type FormState = { mode: 'closed' } | { mode: 'create' } | { mode: 'edit'; quest: Quest };
+
+// Penalty, daily, custom and weekly quests, with completion feedback
 export function TodayQuests() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data, isPending, error } = useTodayQuests();
   const complete = useCompleteQuest();
   const reroll = useRerollQuest();
+  const createCustom = useCreateCustomQuest();
+  const updateCustom = useUpdateCustomQuest();
+  const deleteCustom = useDeleteCustomQuest();
   const [lastResult, setLastResult] = useState<CompleteQuestResult | null>(null);
+  const [levelUp, setLevelUp] = useState<CompleteQuestResult | null>(null);
+  const [form, setForm] = useState<FormState>({ mode: 'closed' });
 
   if (isPending) {
     return (
@@ -26,8 +45,32 @@ export function TodayQuests() {
   }
   if (error || !data) return <Alert>{t('errors.UNKNOWN')}</Alert>;
 
-  const actionError = complete.error ?? reroll.error;
+  const actionError = complete.error ?? reroll.error ?? deleteCustom.error;
   const actionErrorCode = actionError instanceof ApiError ? actionError.code : 'UNKNOWN';
+
+  function onCompleted(result: CompleteQuestResult) {
+    setLastResult(result);
+    if (result.leveledUp || result.rankedUp) setLevelUp(result);
+  }
+
+  function onDelete(quest: Quest) {
+    const title = quest.title[(i18n.resolvedLanguage ?? 'en') as LanguageCode];
+    if (window.confirm(t('customQuests.confirmDelete', { title }))) {
+      deleteCustom.mutate(quest.id);
+    }
+  }
+
+  function saveCustomQuest(values: CustomQuestRequest) {
+    const close = { onSuccess: () => setForm({ mode: 'closed' }) };
+    if (form.mode === 'edit') updateCustom.mutate({ id: form.quest.id, ...values }, close);
+    else createCustom.mutate(values, close);
+  }
+
+  function openForm(next: FormState) {
+    createCustom.reset();
+    updateCustom.reset();
+    setForm(next);
+  }
 
   const renderList = (quests: Quest[]) => (
     <ul className="flex flex-col gap-2">
@@ -35,11 +78,14 @@ export function TodayQuests() {
         <QuestCard
           key={quest.id}
           quest={quest}
+          today={data.date}
           isCompleting={complete.isPending && complete.variables === quest.id}
           isRerolling={reroll.isPending && reroll.variables === quest.id}
           canReroll={data.rerollsLeft > 0}
-          onComplete={() => complete.mutate(quest.id, { onSuccess: setLastResult })}
+          onComplete={() => complete.mutate(quest.id, { onSuccess: onCompleted })}
           onReroll={() => reroll.mutate(quest.id)}
+          onEdit={() => openForm({ mode: 'edit', quest })}
+          onDelete={() => onDelete(quest)}
         />
       ))}
     </ul>
@@ -49,6 +95,34 @@ export function TodayQuests() {
 
   return (
     <div className="flex flex-col gap-6">
+      {levelUp && (
+        <LevelUpOverlay
+          level={levelUp.levelAfter}
+          newRank={levelUp.rankedUp ? levelUp.rankAfter : null}
+          onClose={() => setLevelUp(null)}
+        />
+      )}
+      {form.mode !== 'closed' && (
+        <Modal
+          title={
+            form.mode === 'edit'
+              ? t('customQuests.form.editTitle')
+              : t('customQuests.form.createTitle')
+          }
+          onClose={() => setForm({ mode: 'closed' })}
+        >
+          <CustomQuestForm
+            today={data.date}
+            customXpRemaining={data.customXpRemaining}
+            quest={form.mode === 'edit' ? form.quest : undefined}
+            isSaving={createCustom.isPending || updateCustom.isPending}
+            error={createCustom.error ?? updateCustom.error}
+            onSubmit={saveCustomQuest}
+            onCancel={() => setForm({ mode: 'closed' })}
+          />
+        </Modal>
+      )}
+
       {lastResult && <CompletionBanner result={lastResult} onClose={() => setLastResult(null)} />}
       {actionError && <Alert>{t(`errors.${actionErrorCode}`, t('errors.UNKNOWN'))}</Alert>}
 
@@ -71,6 +145,27 @@ export function TodayQuests() {
           </p>
         </div>
         {renderList(data.daily)}
+      </section>
+
+      <section className="system-panel p-5">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 className="font-display text-xl font-bold text-white">{t('customQuests.title')}</h2>
+            <p className="text-sm text-slate-400">
+              {t('customQuests.xpLeft', { count: data.customXpRemaining })}
+            </p>
+          </div>
+          <Button variant="secondary" onClick={() => openForm({ mode: 'create' })}>
+            + {t('customQuests.new')}
+          </Button>
+        </div>
+        {data.custom.length > 0 ? (
+          renderList(data.custom)
+        ) : (
+          <p className="rounded-lg border border-dashed border-abyss-border px-4 py-6 text-center text-sm text-slate-400">
+            {t('customQuests.empty')}
+          </p>
+        )}
       </section>
 
       {data.weekly.length > 0 && (
@@ -108,6 +203,9 @@ function CompletionBanner({
             </span>
           )}
         </p>
+        {result.xpGained === 0 && result.quest.source === 'CUSTOM' && (
+          <p className="text-sm text-amber-300">{t('customQuests.capReached')}</p>
+        )}
         {result.streakRestored && (
           <p className="text-sm text-slate-300">
             {t('quests.streakRestored', { count: result.streak })}

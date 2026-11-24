@@ -17,6 +17,19 @@ export type SkillLevel = (typeof SKILL_LEVELS)[number];
 export const DIFFICULTIES = ['EASY', 'NORMAL', 'HARD', 'EXTREME'] as const;
 export type Difficulty = (typeof DIFFICULTIES)[number];
 
+// XP by difficulty (SRS §3.2), used to preview a custom quest's reward
+export const DIFFICULTY_BASE_XP: Record<Difficulty, number> = {
+  EASY: 20,
+  NORMAL: 40,
+  HARD: 80,
+  EXTREME: 150,
+};
+
+// Extreme is reserved for system quests
+export const CUSTOM_DIFFICULTIES = ['EASY', 'NORMAL', 'HARD'] as const;
+export type CustomDifficulty = (typeof CUSTOM_DIFFICULTIES)[number];
+export const CUSTOM_QUEST_MAX_DAYS_AHEAD = 30;
+
 export const DAILY_MINUTES_OPTIONS = [15, 30, 60, 120, 240] as const;
 export type DailyMinutes = (typeof DAILY_MINUTES_OPTIONS)[number];
 

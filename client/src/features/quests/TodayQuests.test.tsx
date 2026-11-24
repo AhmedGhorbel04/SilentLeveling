@@ -25,6 +25,7 @@ function quest(overrides: Partial<Quest> = {}): Quest {
     dueAt: '2026-11-25T00:00:00Z',
     completedAt: null,
     title: { en: 'Read 10 pages', fr: 'Lire 10 pages', ar: 'اقرأ 10 صفحات' },
+    description: null,
     rerollable: true,
     ...overrides,
   };
@@ -43,7 +44,9 @@ const today: TodayQuestsData = {
     }),
   ],
   penalty: [],
+  custom: [],
   rerollsLeft: 3,
+  customXpRemaining: 150,
 };
 
 describe('TodayQuests', () => {

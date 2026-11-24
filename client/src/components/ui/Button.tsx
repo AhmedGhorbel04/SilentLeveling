@@ -1,10 +1,11 @@
-import type { ButtonHTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes, Ref } from 'react';
 import { Spinner } from './Spinner';
 import { buttonClasses, type ButtonVariant } from './buttonClasses';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
   isLoading?: boolean;
+  ref?: Ref<HTMLButtonElement>;
 };
 
 export function Button({

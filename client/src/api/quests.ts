@@ -1,6 +1,13 @@
 import { apiRequest } from './client';
 import type { CurrentUser } from './auth';
-import type { AvatarKey, Category, DailyMinutes, Difficulty, SkillLevel } from '../game/constants';
+import type {
+  AvatarKey,
+  Category,
+  CustomDifficulty,
+  DailyMinutes,
+  Difficulty,
+  SkillLevel,
+} from '../game/constants';
 
 export type Quest = {
   id: string;
@@ -16,6 +23,7 @@ export type Quest = {
   dueAt: string;
   completedAt: string | null;
   title: { en: string; fr: string; ar: string };
+  description: string | null;
   rerollable: boolean;
 };
 
@@ -24,7 +32,9 @@ export type TodayQuests = {
   daily: Quest[];
   weekly: Quest[];
   penalty: Quest[];
+  custom: Quest[];
   rerollsLeft: number;
+  customXpRemaining: number;
 };
 
 export type CompleteQuestResult = {
@@ -49,6 +59,14 @@ export type OnboardingRequest = {
   avatarKey: AvatarKey;
 };
 
+export type CustomQuestRequest = {
+  title: string;
+  description: string;
+  category: Category;
+  difficulty: CustomDifficulty;
+  dueDate: string; // YYYY-MM-DD
+};
+
 export const questsApi = {
   today: () => apiRequest<TodayQuests>('/quests/today'),
   complete: (id: string) =>
@@ -57,4 +75,9 @@ export const questsApi = {
     apiRequest<{ quest: Quest; rerollsLeft: number }>(`/quests/${id}/reroll`, { method: 'POST' }),
   onboard: (data: OnboardingRequest) =>
     apiRequest<{ user: CurrentUser }>('/onboarding', { method: 'POST', body: data }),
+  createCustom: (data: CustomQuestRequest) =>
+    apiRequest<{ quest: Quest }>('/quests', { method: 'POST', body: data }),
+  updateCustom: ({ id, ...data }: CustomQuestRequest & { id: string }) =>
+    apiRequest<{ quest: Quest }>(`/quests/${id}`, { method: 'PATCH', body: data }),
+  deleteCustom: (id: string) => apiRequest<void>(`/quests/${id}`, { method: 'DELETE' }),
 };
