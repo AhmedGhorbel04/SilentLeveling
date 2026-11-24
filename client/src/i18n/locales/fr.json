@@ -98,7 +98,8 @@
       "intelligence": "Intelligence",
       "discipline": "Discipline",
       "consistency": "Régularité"
-    }
+    },
+    "claimLink": "Faire valider une réussite réelle"
   },
   "levelUp": {
     "eyebrow": "Notification du système",
@@ -263,13 +264,27 @@
     "TOO_MANY_PENDING_REQUESTS": "Trop de demandes en attente. Attends quelques réponses d'abord.",
     "REQUEST_NOT_FOUND": "Cette demande n'existe plus",
     "FRIEND_NOT_FOUND": "Ce joueur n'est pas dans tes amis",
-    "BIO_TOO_LONG": "160 caractères maximum"
+    "BIO_TOO_LONG": "160 caractères maximum",
+    "DESCRIPTION_TOO_SHORT": "Au moins 20 caractères",
+    "PROOF_URL_INVALID": "Saisis un lien commençant par https://",
+    "LEGENDARY_QUEST_NOT_FOUND": "Cette quête légendaire n'existe pas",
+    "CLAIM_EXISTS": "Tu as déjà réclamé celle-ci",
+    "TOO_MANY_PENDING_CLAIMS": "Tu as déjà 3 demandes en attente",
+    "CLAIM_NOT_FOUND": "Cette demande n'existe pas",
+    "CLAIM_ALREADY_REVIEWED": "Cette demande a déjà été traitée",
+    "XP_INVALID": "L'XP doit être entre 1 et 20000",
+    "TIER_INVALID": "Niveau invalide",
+    "TITLE_NOT_FOUND": "Ce titre n'existe pas",
+    "REASON_TOO_SHORT": "Au moins 5 caractères",
+    "FORBIDDEN": "Tu n'as pas le droit de faire ça"
   },
   "nav": {
     "dashboard": "Tableau de bord",
     "goals": "Objectifs",
     "achievements": "Succès",
-    "friends": "Amis"
+    "friends": "Amis",
+    "legendary": "Légendaire",
+    "admin": "Admin"
   },
   "goals": {
     "eyebrow": "Objectifs à long terme",
@@ -346,7 +361,9 @@
     "rankUp": "Nouveau rang : {{rank}}",
     "penalty": "Journée manquée : termine la quête de pénalité aujourd'hui pour sauver ta série ({{count}})",
     "friendRequest": "{{username}} t'a envoyé une demande d'ami",
-    "friendAccepted": "{{username}} a accepté ta demande d'ami"
+    "friendAccepted": "{{username}} a accepté ta demande d'ami",
+    "claimApproved": "Ta réussite a été vérifiée : +{{xp}} XP",
+    "claimRejected": "Ta demande a été refusée : {{reason}}"
   },
   "achievements": {
     "FIRST_STEP": {
@@ -444,5 +461,44 @@
     "noAchievements": "Aucun succès pour le moment.",
     "bio": "Bio",
     "noBio": "Écris quelques mots sur toi."
+  },
+  "legendary": {
+    "eyebrow": "Vraie vie",
+    "title": "Quêtes légendaires",
+    "subtitle": "Des réussites qui se passent hors de l'appli. Envoie une preuve, un admin la vérifie, et tu débloques les rangs B et plus.",
+    "claimOther": "Faire valider une autre réussite",
+    "claim": "Réclamer",
+    "myClaims": "Mes demandes",
+    "noClaims": "Aucune demande pour le moment.",
+    "reviewNote": "Vérificateur : {{note}}",
+    "formIntro": "Décris ce que tu as accompli et ajoute un lien qui le prouve (certificat, article, post, photo).",
+    "status": {
+      "PENDING": "En attente",
+      "APPROVED": "Vérifiée",
+      "REJECTED": "Refusée"
+    },
+    "form": {
+      "title": "Réussite",
+      "description": "Qu'as-tu accompli ?",
+      "proofUrl": "Lien de preuve",
+      "proofHint": "Doit commencer par https://",
+      "submit": "Envoyer pour vérification"
+    }
+  },
+  "admin": {
+    "eyebrow": "Admin",
+    "title": "Vérification",
+    "claims": "Demandes",
+    "noClaims": "Rien ici.",
+    "tier": "Niveau",
+    "titleToGrant": "Titre à attribuer",
+    "noTitle": "Aucun titre",
+    "newTitle": "Nouveau titre…",
+    "newTitleIn": "Nouveau titre ({{language}})",
+    "approve": "Valider",
+    "rejectReason": "Raison du refus",
+    "reject": "Refuser",
+    "catalog": "Catalogue",
+    "activeToggle": "Active : {{title}}"
   }
 }

@@ -12,6 +12,7 @@ const PAGES = [
   { to: '/goals', label: 'nav.goals' },
   { to: '/achievements', label: 'nav.achievements' },
   { to: '/friends', label: 'nav.friends' },
+  { to: '/legendary', label: 'nav.legendary' },
 ] as const;
 
 // Layout of the logged-in part of the app
@@ -60,7 +61,10 @@ export function AppLayout() {
         {user?.onboarded && (
           // Scrolls sideways instead of overflowing if the tabs are wider than a small phone
           <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-2 sm:px-6" role="list">
-            {PAGES.map((page) => (
+            {[
+              ...PAGES,
+              ...(user.role === 'ADMIN' ? [{ to: '/admin', label: 'nav.admin' } as const] : []),
+            ].map((page) => (
               <NavLink
                 key={page.to}
                 to={page.to}

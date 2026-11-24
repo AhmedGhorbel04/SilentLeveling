@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 import { AuthLayout } from './layouts/AuthLayout';
 import { AppLayout } from './layouts/AppLayout';
-import { GuestRoute, OnboardingRoute, ProtectedRoute } from './routes/guards';
+import { AdminRoute, GuestRoute, OnboardingRoute, ProtectedRoute } from './routes/guards';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './features/auth/LoginPage';
 import { RegisterPage } from './features/auth/RegisterPage';
@@ -11,6 +11,8 @@ import { GoalsPage } from './features/goals/GoalsPage';
 import { AchievementsPage } from './features/achievements/AchievementsPage';
 import { FriendsPage } from './features/friends/FriendsPage';
 import { ProfilePage } from './features/friends/ProfilePage';
+import { LegendaryPage } from './features/claims/LegendaryPage';
+import { AdminPage } from './features/claims/AdminPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 // All pages of the app. Nested routes share their parent's layout or guard.
@@ -48,6 +50,8 @@ export const router = createBrowserRouter([
           { path: '/achievements', element: <AchievementsPage /> },
           { path: '/friends', element: <FriendsPage /> },
           { path: '/u/:username', element: <ProfilePage /> },
+          { path: '/legendary', element: <LegendaryPage /> },
+          { element: <AdminRoute />, children: [{ path: '/admin', element: <AdminPage /> }] },
         ],
       },
     ],

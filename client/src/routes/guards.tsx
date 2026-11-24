@@ -31,6 +31,13 @@ export function OnboardingRoute() {
   return <Outlet />;
 }
 
+// Admin pages. Hides them from players; the API refuses non-admins anyway.
+export function AdminRoute() {
+  const { data: user } = useCurrentUser();
+  if (user?.role !== 'ADMIN') return <Navigate to="/dashboard" replace />;
+  return <Outlet />;
+}
+
 // Only for visitors (login, register). Logged-in players go straight to the dashboard.
 export function GuestRoute() {
   const { t } = useTranslation();

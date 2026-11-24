@@ -5,6 +5,7 @@ import { prisma } from '../../src/lib/prisma.js';
 import { awardXp, type AwardXpInput } from '../../src/modules/progression/progression.service.js';
 import { NO_STAT_GAINS } from '../../src/game/index.js';
 import { seed } from '../../prisma/seed.js';
+import { TITLES } from '../../src/game/catalog.js';
 import { resetDatabase } from '../helpers/database.js';
 import { createTestUser } from '../helpers/users.js';
 
@@ -163,7 +164,7 @@ describe('seed', () => {
     await seed(prisma);
     await seed(prisma);
 
-    expect(await prisma.title.count()).toBe(10);
+    expect(await prisma.title.count()).toBe(TITLES.length);
     expect(await prisma.achievement.count()).toBe(14);
     const streak30 = await prisma.achievement.findUniqueOrThrow({
       where: { code: 'STREAK_30' },

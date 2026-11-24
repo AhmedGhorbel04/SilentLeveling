@@ -98,7 +98,8 @@
       "intelligence": "Intelligence",
       "discipline": "Discipline",
       "consistency": "Consistency"
-    }
+    },
+    "claimLink": "Claim a real-life achievement"
   },
   "levelUp": {
     "eyebrow": "System notice",
@@ -263,13 +264,27 @@
     "TOO_MANY_PENDING_REQUESTS": "Too many requests waiting. Wait for some answers first.",
     "REQUEST_NOT_FOUND": "This request no longer exists",
     "FRIEND_NOT_FOUND": "This player is not in your friends",
-    "BIO_TOO_LONG": "At most 160 characters"
+    "BIO_TOO_LONG": "At most 160 characters",
+    "DESCRIPTION_TOO_SHORT": "At least 20 characters",
+    "PROOF_URL_INVALID": "Enter a link starting with https://",
+    "LEGENDARY_QUEST_NOT_FOUND": "This legendary quest does not exist",
+    "CLAIM_EXISTS": "You already claimed this one",
+    "TOO_MANY_PENDING_CLAIMS": "You already have 3 claims waiting for review",
+    "CLAIM_NOT_FOUND": "This claim does not exist",
+    "CLAIM_ALREADY_REVIEWED": "This claim was already reviewed",
+    "XP_INVALID": "XP must be between 1 and 20000",
+    "TIER_INVALID": "Invalid tier",
+    "TITLE_NOT_FOUND": "This title does not exist",
+    "REASON_TOO_SHORT": "At least 5 characters",
+    "FORBIDDEN": "You are not allowed to do this"
   },
   "nav": {
     "dashboard": "Dashboard",
     "goals": "Goals",
     "achievements": "Achievements",
-    "friends": "Friends"
+    "friends": "Friends",
+    "legendary": "Legendary",
+    "admin": "Admin"
   },
   "goals": {
     "eyebrow": "Long-term goals",
@@ -346,7 +361,9 @@
     "rankUp": "New rank: {{rank}}",
     "penalty": "Missed day: complete the penalty quest today to save your streak ({{count}})",
     "friendRequest": "{{username}} sent you a friend request",
-    "friendAccepted": "{{username}} accepted your friend request"
+    "friendAccepted": "{{username}} accepted your friend request",
+    "claimApproved": "Your achievement was verified: +{{xp}} XP",
+    "claimRejected": "Your claim was rejected: {{reason}}"
   },
   "achievements": {
     "FIRST_STEP": {
@@ -444,5 +461,44 @@
     "noAchievements": "No achievements yet.",
     "bio": "Bio",
     "noBio": "Write a few words about yourself."
+  },
+  "legendary": {
+    "eyebrow": "Real life",
+    "title": "Legendary quests",
+    "subtitle": "Achievements that happen outside the app. Send a proof, an admin checks it, and you unlock ranks B and above.",
+    "claimOther": "Claim another achievement",
+    "claim": "Claim",
+    "myClaims": "My claims",
+    "noClaims": "No claims yet.",
+    "reviewNote": "Reviewer: {{note}}",
+    "formIntro": "Describe what you achieved and add a link that proves it (certificate, article, post, photo).",
+    "status": {
+      "PENDING": "Waiting for review",
+      "APPROVED": "Verified",
+      "REJECTED": "Rejected"
+    },
+    "form": {
+      "title": "Achievement",
+      "description": "What did you achieve?",
+      "proofUrl": "Proof link",
+      "proofHint": "Must start with https://",
+      "submit": "Send for review"
+    }
+  },
+  "admin": {
+    "eyebrow": "Admin",
+    "title": "Review",
+    "claims": "Claims",
+    "noClaims": "Nothing here.",
+    "tier": "Tier",
+    "titleToGrant": "Title to grant",
+    "noTitle": "No title",
+    "newTitle": "New title…",
+    "newTitleIn": "New title ({{language}})",
+    "approve": "Approve",
+    "rejectReason": "Reason for rejecting",
+    "reject": "Reject",
+    "catalog": "Catalog",
+    "activeToggle": "Active: {{title}}"
   }
 }

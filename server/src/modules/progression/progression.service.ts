@@ -22,6 +22,8 @@ export type AwardXpInput = {
   statGains?: StatGains;
   // The quest that gave this XP. Unique in the ledger: a quest can never pay twice.
   questId?: string;
+  // The approved claim that gave this XP (unique too)
+  claimId?: string;
 };
 
 export type AwardXpResult = {
@@ -41,7 +43,7 @@ export type AwardXpResult = {
 // 2. updates the cached total XP, level and rank
 // 3. adds stat points
 export async function awardXp(tx: Tx, input: AwardXpInput): Promise<AwardXpResult> {
-  const { userId, amount, reason, statGains = NO_STAT_GAINS, questId } = input;
+  const { userId, amount, reason, statGains = NO_STAT_GAINS, questId, claimId } = input;
 
   const before = await tx.user.findUniqueOrThrow({
     where: { id: userId },
@@ -53,7 +55,7 @@ export async function awardXp(tx: Tx, input: AwardXpInput): Promise<AwardXpResul
     return buildResult(0, before.totalXp, before, before.level, before.rank);
   }
 
-  await tx.xpTransaction.create({ data: { userId, amount, reason, questId } });
+  await tx.xpTransaction.create({ data: { userId, amount, reason, questId, claimId } });
 
   // Atomic increment in SQL ("total_xp = total_xp + amount"), not read-then-write:
   // two awards at the same moment both count, because PostgreSQL locks the row
@@ -81,13 +83,18 @@ export async function awardXp(tx: Tx, input: AwardXpInput): Promise<AwardXpResul
   return buildResult(amount, totalXp, before, level, rank);
 }
 
-// Approved real-life achievement claims, by tier. Claims are added in Milestone 8;
-// until then nobody has any, so ranks stop at C I as the rules require.
+// Approved real-life achievement claims, by tier: what unlocks ranks B and above
 export async function getVerifiedAchievements(
-  _tx: Tx,
-  _userId: string,
+  tx: Tx,
+  userId: string,
 ): Promise<VerifiedAchievements> {
-  return { legendary: 0, mythic: 0 };
+  const groups = await tx.achievementClaim.groupBy({
+    by: ['tierAwarded'],
+    where: { userId, status: 'APPROVED' },
+    _count: { _all: true },
+  });
+  const count = (tier: string) => groups.find((g) => g.tierAwarded === tier)?._count._all ?? 0;
+  return { legendary: count('LEGENDARY'), mythic: count('MYTHIC') };
 }
 
 function buildResult(
