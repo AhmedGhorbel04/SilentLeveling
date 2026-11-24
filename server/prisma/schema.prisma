@@ -39,8 +39,123 @@ model User {
   avatarKey          String?   @map("avatar_key") @db.VarChar(32)
   bio                String?   @db.VarChar(160)
   onboardedAt        DateTime? @map("onboarded_at")
-  createdAt          DateTime  @default(now()) @map("created_at")
-  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  // Progression. total_xp, level and rank are cached copies (SRS §7.3): they are always
+  // updated in the same transaction as the XP ledger, so they never disagree with it.
+  totalXp             Int     @default(0) @map("total_xp")
+  level               Int     @default(1)
+  rank                String  @default("E4") @db.VarChar(4)
+  currentStreak       Int     @default(0) @map("current_streak")
+  bestStreak          Int     @default(0) @map("best_streak")
+  // Streak the penalty quest can restore; null when there is nothing to restore
+  streakBeforePenalty Int?    @map("streak_before_penalty")
+  activeTitleId       String? @map("active_title_id") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  stats          PlayerStats?
+  xpTransactions XpTransaction[]
+  titles         UserTitle[]
+  achievements   UserAchievement[]
+  activeTitle    Title?            @relation("ActiveTitle", fields: [activeTitleId], references: [id], onDelete: SetNull)
 
   @@map("users")
+}
+
+// One row per player (1:1 with users)
+model PlayerStats {
+  userId       String @id @map("user_id") @db.Uuid
+  strength     Int    @default(0)
+  intelligence Int    @default(0)
+  discipline   Int    @default(0)
+  consistency  Int    @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("player_stats")
+}
+
+enum XpReason {
+  QUEST
+  CLAIM
+  ADMIN_ADJUSTMENT
+}
+
+// The XP ledger: every XP gain ever, with its reason. A player's total XP is the sum
+// of their rows. Links to the quest or claim that gave the XP are added with those
+// tables (milestones 3 and 8), each with a unique constraint against double rewards.
+model XpTransaction {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  amount    Int
+  reason    XpReason
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // For "XP earned this week" and the XP history chart
+  @@index([userId, createdAt])
+  @@map("xp_transactions")
+}
+
+enum TitleRarity {
+  COMMON
+  RARE
+  EPIC
+  LEGENDARY
+  MYTHIC
+}
+
+model Title {
+  id        String      @id @default(uuid()) @db.Uuid
+  // Stable identifier used in code and seed data, e.g. "iron_will"
+  key       String      @unique @db.VarChar(64)
+  // Translations: { "en": "Iron Will", "fr": "Volonté de fer", "ar": "إرادة حديدية" }
+  name      Json
+  rarity    TitleRarity
+  createdAt DateTime    @default(now()) @map("created_at")
+
+  earnedBy     UserTitle[]
+  achievements Achievement[]
+  activeFor    User[]        @relation("ActiveTitle")
+
+  @@map("titles")
+}
+
+model UserTitle {
+  userId   String   @map("user_id") @db.Uuid
+  titleId  String   @map("title_id") @db.Uuid
+  earnedAt DateTime @default(now()) @map("earned_at")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title Title @relation(fields: [titleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, titleId])
+  @@map("user_titles")
+}
+
+// Achievement definitions. Unlock conditions live in code; names and descriptions
+// live in the frontend translation files. This table exists so unlocks can reference
+// it and so an achievement can grant a title.
+model Achievement {
+  code    String  @id @db.VarChar(32)
+  titleId String? @map("title_id") @db.Uuid
+
+  title      Title?            @relation(fields: [titleId], references: [id], onDelete: SetNull)
+  unlockedBy UserAchievement[]
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  userId          String   @map("user_id") @db.Uuid
+  achievementCode String   @map("achievement_code") @db.VarChar(32)
+  unlockedAt      DateTime @default(now()) @map("unlocked_at")
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementCode], references: [code], onDelete: Cascade)
+
+  @@id([userId, achievementCode])
+  @@map("user_achievements")
 }

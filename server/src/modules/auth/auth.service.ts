@@ -54,6 +54,7 @@ export async function register(input: RegisterInput): Promise<CurrentUser> {
         passwordHash: await hashPassword(input.password),
         language: input.language,
         timezone: input.timezone,
+        stats: { create: {} }, // every player starts with all stats at 0
       },
     });
     return toCurrentUser(user);

@@ -4,7 +4,7 @@
 
 SilentLeveling is a full-stack web application that turns real-life goals and habits into an RPG progression system. Players complete daily, weekly and long-term quests, earn XP, grow their stats and climb from rank **E IV** to **SS**. The highest ranks can only be reached by proving real-life achievements.
 
-> 🚧 **Work in progress.** Milestones 0–1 done (project setup, authentication, base UI in English, French and Arabic). See the [roadmap](docs/SRS.md#10-development-roadmap).
+> 🚧 **Work in progress.** Milestones 0–2 done (project setup, authentication, base UI in English, French and Arabic, game core: XP, levels, ranks, stats and streaks). See the [roadmap](docs/SRS.md#10-development-roadmap).
 
 ## Tech stack
 
@@ -34,8 +34,10 @@ npm install
 # 2. Create your local environment file
 cp server/.env.example server/.env
 
-# 3. Start PostgreSQL in Docker
+# 3. Start PostgreSQL in Docker, create the tables and add the reference data
 npm run db:up
+npm run db:migrate -w server
+npm run db:seed -w server
 
 # 4. Start the backend (http://localhost:4000) and frontend (http://localhost:5173)
 npm run dev
