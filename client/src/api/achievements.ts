@@ -17,7 +17,8 @@ export type Achievement = {
 
 export type UnlockedAchievement = { code: string; title: Title | null };
 
-export type NotificationType = 'ACHIEVEMENT_UNLOCKED' | 'RANK_UP' | 'PENALTY_QUEST';
+export type NotificationType =
+  'ACHIEVEMENT_UNLOCKED' | 'RANK_UP' | 'PENALTY_QUEST' | 'FRIEND_REQUEST' | 'FRIEND_ACCEPTED';
 
 export type AppNotification = {
   id: string;

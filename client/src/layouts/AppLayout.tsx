@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from 'react-router';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Logo } from '../components/ui/Logo';
 import { Button } from '../components/ui/Button';
@@ -11,6 +11,7 @@ const PAGES = [
   { to: '/dashboard', label: 'nav.dashboard' },
   { to: '/goals', label: 'nav.goals' },
   { to: '/achievements', label: 'nav.achievements' },
+  { to: '/friends', label: 'nav.friends' },
 ] as const;
 
 // Layout of the logged-in part of the app
@@ -31,10 +32,15 @@ export function AppLayout() {
         >
           <Logo to="/dashboard" compactOnMobile />
           <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-            <span className="hidden items-center gap-2 text-sm font-medium text-slate-300 sm:inline-flex">
-              {user?.avatarKey && <Avatar avatarKey={user.avatarKey} size={28} />}
-              {user?.username}
-            </span>
+            {user && (
+              <Link
+                to={`/u/${user.username}`}
+                className="hidden items-center gap-2 text-sm font-medium text-slate-300 hover:text-white sm:inline-flex"
+              >
+                {user.avatarKey && <Avatar avatarKey={user.avatarKey} size={28} />}
+                {user.username}
+              </Link>
+            )}
             {user?.onboarded && <NotificationBell />}
             <LanguageSwitcher />
             <Button
@@ -52,14 +58,15 @@ export function AppLayout() {
 
         {/* Page tabs on their own row, so they fit on phones too. Hidden during onboarding. */}
         {user?.onboarded && (
-          <div className="mx-auto flex max-w-6xl gap-1 px-4 sm:px-6" role="list">
+          // Scrolls sideways instead of overflowing if the tabs are wider than a small phone
+          <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-2 sm:px-6" role="list">
             {PAGES.map((page) => (
               <NavLink
                 key={page.to}
                 to={page.to}
                 role="listitem"
                 className={({ isActive }) =>
-                  `border-b-2 px-4 py-2.5 text-sm font-semibold transition ${
+                  `shrink-0 border-b-2 px-3 py-2.5 text-sm font-semibold whitespace-nowrap transition sm:px-4 ${
                     isActive
                       ? 'border-arcane-500 text-white'
                       : 'border-transparent text-slate-400 hover:text-slate-200'
