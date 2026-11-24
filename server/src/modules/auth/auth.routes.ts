@@ -15,6 +15,7 @@ export function createAuthRouter(authLimiter: RequestHandler) {
   router.post('/login', authLimiter, validateBody(loginSchema), authController.login);
   router.post('/logout', authController.logout);
   router.get('/me', requireAuth, authController.me);
+  router.get('/session', authController.session);
 
   return router;
 }

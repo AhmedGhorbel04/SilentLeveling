@@ -33,7 +33,7 @@ friendRouter.get('/requests', async (req, res) => {
   res.json(await friendService.listRequests(req.userId!));
 });
 
-const sendRequestSchema = z.object({
+export const sendRequestSchema = z.object({
   username: z.string({ error: 'REQUIRED' }).trim().min(1, 'REQUIRED').max(20, 'USER_NOT_FOUND'),
 });
 
@@ -72,7 +72,7 @@ userRouter.get('/:username', async (req, res) => {
 export const profileRouter = Router();
 profileRouter.use(requireAuth);
 
-const bioSchema = z.object({
+export const bioSchema = z.object({
   bio: z
     .string()
     .trim()

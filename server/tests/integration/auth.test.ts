@@ -201,6 +201,33 @@ describe('GET /api/auth/me and POST /api/auth/logout', () => {
   });
 });
 
+describe('GET /api/auth/session', () => {
+  it('answers 200 with user null for a visitor', async () => {
+    const res = await request(app).get('/api/auth/session');
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ user: null });
+  });
+
+  it('returns the logged-in player', async () => {
+    const agent = request.agent(app);
+    await agent.post('/api/auth/register').send(validPlayer);
+
+    const res = await agent.get('/api/auth/session');
+    expect(res.body.user.username).toBe('Shadow_Player');
+  });
+
+  it('clears the cookie of a deleted account', async () => {
+    const cookie = getCookie(await register());
+    await prisma.user.deleteMany();
+
+    const res = await request(app).get('/api/auth/session').set('Cookie', cookie.split(';')[0]!);
+
+    expect(res.body).toEqual({ user: null });
+    expect(String(res.headers['set-cookie'])).toContain('sl_token=;');
+  });
+});
+
 describe('rate limiting', () => {
   it('blocks login attempts after the limit', async () => {
     const limitedApp = createApp({ authRateLimitMax: 3 });

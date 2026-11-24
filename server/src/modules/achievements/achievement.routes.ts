@@ -21,7 +21,7 @@ titleRouter.get('/titles', async (req, res) => {
   res.json(await achievementService.listEarnedTitles(req.userId!));
 });
 
-const activeTitleSchema = z.object({
+export const activeTitleSchema = z.object({
   titleId: z.uuid('TITLE_NOT_EARNED').nullable(), // null = show no title
 });
 
