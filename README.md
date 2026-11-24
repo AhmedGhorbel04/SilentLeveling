@@ -4,7 +4,7 @@
 
 SilentLeveling is a full-stack web application that turns real-life goals and habits into an RPG progression system. Players complete daily, weekly and long-term quests, earn XP, grow their stats and climb from rank **E IV** to **SS**. The highest ranks can only be reached by proving real-life achievements.
 
-> 🚧 **Work in progress.** **MVP complete** (milestones 0–4): accounts, onboarding, rule-based daily and weekly quests, custom quests, XP, levels, ranks, stats, streaks with penalty quests, and the status window, in English, French and Arabic. **Milestone 5:** long-term goals with milestones, templates and linked quests. **Milestone 6:** achievements, titles and in-app notifications. **Milestone 7:** friends, profiles and a ranking among friends. **Milestone 8:** legendary quests, real-life achievement claims and admin review.
+> 🚧 **Work in progress.** **MVP complete** (milestones 0–4): accounts, onboarding, rule-based daily and weekly quests, custom quests, XP, levels, ranks, stats, streaks with penalty quests, and the status window, in English, French and Arabic. **Milestone 5:** long-term goals with milestones, templates and linked quests. **Milestone 6:** achievements, titles and in-app notifications. **Milestone 7:** friends, profiles and a ranking among friends. **Milestone 8:** legendary quests, real-life achievement claims and admin review. **Milestone 9:** XP history chart, activity calendar, API docs, accessibility pass (Lighthouse accessibility 100).
 
 To make a player an admin: `npm run make-admin -w server -- <username>`. See the [roadmap](docs/SRS.md#10-development-roadmap).
 
@@ -45,7 +45,7 @@ npm run db:seed -w server
 npm run dev
 ```
 
-Open http://localhost:5173. The card should show **API: online**.
+Open http://localhost:5173. The card should show **API: online**. The interactive API documentation is at http://localhost:4000/api/docs.
 
 ## Scripts
 

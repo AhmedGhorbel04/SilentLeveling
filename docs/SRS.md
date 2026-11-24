@@ -414,7 +414,7 @@ Priority: **M** = must have for v1, **S** = should have for v1, **C** = could ha
 | Styling          | **Tailwind CSS**                                                 | Fast to build a custom dark UI; logical properties (`ms-`, `pe-`) make RTL work automatically.                                                                         |
 | Animations       | **CSS animations** (Tailwind keyframes)                          | Enough for fades, the XP bar fill and the level-up overlay, with no extra library; disabled by the "reduce motion" setting. (Motion was planned; not needed so far.)   |
 | i18n             | **react-i18next**                                                | The common React translation library; handles plurals and language switching.                                                                                          |
-| Charts           | **Recharts**                                                     | Simple React chart components for XP history.                                                                                                                          |
+| Charts           | **Plain HTML/CSS bars**                                          | One bar chart only: no library needed, lighter bundle, data also given as a table to screen readers.                                                                   |
 | Backend          | **Node.js 22 + Express + TypeScript**                            | Same language as the frontend, minimal framework, easy to understand every layer.                                                                                      |
 | Validation       | **Zod**                                                          | One schema validates a request and produces its TypeScript type.                                                                                                       |
 | Database         | **PostgreSQL 17**                                                | Relational data with clear relationships (users, friends, quests), transactions and constraints.                                                                       |
@@ -683,12 +683,13 @@ Status codes used: `200`, `201`, `204`, `400` validation, `401` not logged in, `
 
 ### Auth
 
-| Method | Path             | Description                                                  |
-| ------ | ---------------- | ------------------------------------------------------------ |
-| POST   | `/auth/register` | Create account, set cookie.                                  |
-| POST   | `/auth/login`    | Log in, set cookie.                                          |
-| POST   | `/auth/logout`   | Clear cookie. 🔒                                             |
-| GET    | `/auth/me`       | Current player (id, username, role, language, onboarded). 🔒 |
+| Method | Path             | Description                                                                                                        |
+| ------ | ---------------- | ------------------------------------------------------------------------------------------------------------------ |
+| POST   | `/auth/register` | Create account, set cookie.                                                                                        |
+| POST   | `/auth/login`    | Log in, set cookie.                                                                                                |
+| POST   | `/auth/logout`   | Clear cookie. 🔒                                                                                                   |
+| GET    | `/auth/me`       | Current player (id, username, role, language, onboarded). 🔒                                                       |
+| GET    | `/auth/session`  | Same as `/auth/me`, but answers 200 with `user: null` for a visitor (used by the frontend, no 401 in the console). |
 
 ### Current player
 
@@ -700,7 +701,7 @@ Status codes used: `200`, `201`, `204`, `400` validation, `401` not logged in, `
 | PATCH  | `/me/password`                            | Change password. 🔒                                                                                       |
 | DELETE | `/me`                                     | Delete account. 🔒                                                                                        |
 | GET    | `/me/focus-areas` · PUT `/me/focus-areas` | Read / replace focus areas. 🔒                                                                            |
-| GET    | `/me/xp-history?days=30`                  | XP per day. 🔒                                                                                            |
+| GET    | `/me/xp-history?days=30`                  | XP per local day, 7 to 90 days, days without XP included. 🔒                                              |
 | GET    | `/me/calendar?month=2026-11`              | Daily logs for a month. 🔒                                                                                |
 
 ### Quests
@@ -708,7 +709,7 @@ Status codes used: `200`, `201`, `204`, `400` validation, `401` not logged in, `
 | Method | Path                    | Description                                                                                                                                                         |
 | ------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | GET    | `/quests/today`         | Today's daily, weekly, penalty and custom quests, rerolls left and custom XP left today (runs the rollover first). 🔒                                               |
-| GET    | `/quests?type=&status=` | Quest history (planned with the XP history chart, Milestone 9). 🔒                                                                                                  |
+| GET    | `/quests?type=&status=` | Not built: the XP history and the calendar cover this need.                                                                                                         |
 | POST   | `/quests`               | Create custom quest (Easy–Hard, due within 30 days, max 20 active). The reward is shown by the form from the difficulty; no separate preview endpoint is needed. 🔒 |
 | PATCH  | `/quests/:id`           | Edit active custom quest. 🔒                                                                                                                                        |
 | DELETE | `/quests/:id`           | Delete active custom quest. 🔒                                                                                                                                      |
@@ -779,10 +780,10 @@ Achievements are checked after every quest completion and during the daily rollo
 
 ### Other
 
-| Method | Path      | Description               |
-| ------ | --------- | ------------------------- |
-| GET    | `/health` | Health check for hosting. |
-| GET    | `/docs`   | Swagger UI.               |
+| Method | Path      | Description                                         |
+| ------ | --------- | --------------------------------------------------- |
+| GET    | `/health` | Health check for hosting.                           |
+| GET    | `/docs`   | Swagger UI (`/docs/openapi.json` for the raw spec). |
 
 ---
 
