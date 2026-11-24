@@ -66,6 +66,132 @@ export const TITLES: readonly TitleDefinition[] = [
     rarity: 'LEGENDARY',
     name: { en: 'Proven', fr: 'Accompli', ar: 'صاحب الإنجاز' },
   },
+  // Titles of legendary quests
+  {
+    key: 'marathoner',
+    rarity: 'LEGENDARY',
+    name: { en: 'Marathoner', fr: 'Marathonien', ar: 'عدّاء الماراثون' },
+  },
+  {
+    key: 'professional',
+    rarity: 'LEGENDARY',
+    name: { en: 'Professional', fr: 'Professionnel', ar: 'المحترف' },
+  },
+  {
+    key: 'polyglot',
+    rarity: 'LEGENDARY',
+    name: { en: 'Polyglot', fr: 'Polyglotte', ar: 'متعدد اللغات' },
+  },
+  { key: 'creator', rarity: 'LEGENDARY', name: { en: 'Creator', fr: 'Créateur', ar: 'المبدع' } },
+  { key: 'scholar', rarity: 'LEGENDARY', name: { en: 'Scholar', fr: 'Érudit', ar: 'العلّامة' } },
+  { key: 'graduate', rarity: 'LEGENDARY', name: { en: 'Graduate', fr: 'Diplômé', ar: 'الخرّيج' } },
+  { key: 'founder', rarity: 'MYTHIC', name: { en: 'Founder', fr: 'Fondateur', ar: 'المؤسّس' } },
+  {
+    key: 'iron_titan',
+    rarity: 'MYTHIC',
+    name: { en: 'Iron Titan', fr: 'Titan de fer', ar: 'العملاق الحديدي' },
+  },
+];
+
+export type LegendaryQuestDefinition = {
+  key: string;
+  category: 'FITNESS' | 'STUDIES' | 'LANGUAGES' | 'READING' | 'CAREER' | 'HEALTH';
+  tier: 'LEGENDARY' | 'MYTHIC';
+  xpReward: number;
+  titleKey: string;
+  title: { en: string; fr: string; ar: string };
+};
+
+// Real-life achievements players can claim; an admin verifies the proof (SRS §3.4)
+export const LEGENDARY_QUESTS: readonly LegendaryQuestDefinition[] = [
+  {
+    key: 'marathon',
+    category: 'FITNESS',
+    tier: 'LEGENDARY',
+    xpReward: 3000,
+    titleKey: 'marathoner',
+    title: { en: 'Run a marathon', fr: 'Courir un marathon', ar: 'الجري في ماراثون' },
+  },
+  {
+    key: 'first_job',
+    category: 'CAREER',
+    tier: 'LEGENDARY',
+    xpReward: 3000,
+    titleKey: 'professional',
+    title: {
+      en: 'Get your first job or internship in your field',
+      fr: 'Décrocher ton premier emploi ou stage dans ton domaine',
+      ar: 'الحصول على أول وظيفة أو تدريب في مجالك',
+    },
+  },
+  {
+    key: 'language_c1',
+    category: 'LANGUAGES',
+    tier: 'LEGENDARY',
+    xpReward: 3000,
+    titleKey: 'polyglot',
+    title: {
+      en: 'Get a C1 language certificate',
+      fr: 'Obtenir un certificat de langue niveau C1',
+      ar: 'الحصول على شهادة لغة بمستوى C1',
+    },
+  },
+  {
+    key: 'published_app',
+    category: 'STUDIES',
+    tier: 'LEGENDARY',
+    xpReward: 3000,
+    titleKey: 'creator',
+    title: {
+      en: 'Publish an app or website used by 100 people',
+      fr: 'Publier une application ou un site utilisé par 100 personnes',
+      ar: 'نشر تطبيق أو موقع يستخدمه 100 شخص',
+    },
+  },
+  {
+    key: 'books_50',
+    category: 'READING',
+    tier: 'LEGENDARY',
+    xpReward: 2500,
+    titleKey: 'scholar',
+    title: { en: 'Read 50 books', fr: 'Lire 50 livres', ar: 'قراءة 50 كتابًا' },
+  },
+  {
+    key: 'degree',
+    category: 'STUDIES',
+    tier: 'LEGENDARY',
+    xpReward: 4000,
+    titleKey: 'graduate',
+    title: {
+      en: 'Graduate from university',
+      fr: 'Obtenir ton diplôme universitaire',
+      ar: 'التخرّج من الجامعة',
+    },
+  },
+  {
+    key: 'startup',
+    category: 'CAREER',
+    tier: 'MYTHIC',
+    xpReward: 8000,
+    titleKey: 'founder',
+    title: {
+      en: 'Found a company with paying customers',
+      fr: 'Fonder une entreprise avec des clients payants',
+      ar: 'تأسيس شركة لديها عملاء يدفعون',
+    },
+  },
+  {
+    key: 'ironman',
+    category: 'FITNESS',
+    tier: 'MYTHIC',
+    xpReward: 8000,
+    titleKey: 'iron_titan',
+    title: {
+      en: 'Finish an Ironman triathlon',
+      fr: 'Terminer un triathlon Ironman',
+      ar: 'إنهاء سباق آيرون مان الثلاثي',
+    },
+  },
 ];
 
 export const ACHIEVEMENTS: readonly AchievementDefinition[] = [

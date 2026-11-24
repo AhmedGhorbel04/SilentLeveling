@@ -16,6 +16,7 @@
     "db:deploy": "prisma migrate deploy",
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
+    "make-admin": "tsx scripts/make-admin.ts",
     "postinstall": "prisma generate"
   },
   "devDependencies": {

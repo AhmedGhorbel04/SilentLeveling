@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { pathToFileURL } from 'node:url';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../src/generated/prisma/client.js';
-import { ACHIEVEMENTS, TITLES } from '../src/game/catalog.js';
+import { ACHIEVEMENTS, LEGENDARY_QUESTS, TITLES } from '../src/game/catalog.js';
 import { QUEST_TEMPLATES } from './data/questTemplates.js';
 
 // Writes the reference data every environment needs (titles, achievements).
@@ -38,6 +38,16 @@ export async function seed(prisma: PrismaClient): Promise<void> {
       where: { key },
       create: { key, ...template },
       update: template,
+    });
+  }
+
+  for (const { key, titleKey, ...quest } of LEGENDARY_QUESTS) {
+    const titleId = titleIds.get(titleKey);
+    if (!titleId) throw new Error(`Unknown title "${titleKey}" for legendary quest ${key}`);
+    await prisma.legendaryQuest.upsert({
+      where: { key },
+      create: { key, titleId, ...quest },
+      update: { titleId, ...quest },
     });
   }
 }

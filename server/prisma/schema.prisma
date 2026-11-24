@@ -66,14 +66,16 @@ model User {
   xpTransactions   XpTransaction[]
   titles           UserTitle[]
   achievements     UserAchievement[]
-  activeTitle      Title?            @relation("ActiveTitle", fields: [activeTitleId], references: [id], onDelete: SetNull)
+  activeTitle      Title?             @relation("ActiveTitle", fields: [activeTitleId], references: [id], onDelete: SetNull)
   focusAreas       FocusArea[]
   quests           Quest[]
   dailyLogs        DailyLog[]
   goals            Goal[]
   notifications    Notification[]
-  sentRequests     Friendship[]      @relation("FriendshipRequester")
-  receivedRequests Friendship[]      @relation("FriendshipAddressee")
+  sentRequests     Friendship[]       @relation("FriendshipRequester")
+  receivedRequests Friendship[]       @relation("FriendshipAddressee")
+  claims           AchievementClaim[] @relation("ClaimPlayer")
+  reviewedClaims   AchievementClaim[] @relation("ClaimReviewer")
 
   @@map("users")
 }
@@ -241,13 +243,71 @@ model Milestone {
   @@map("milestones")
 }
 
-// More types are added with claims (Milestone 8)
 enum NotificationType {
   ACHIEVEMENT_UNLOCKED
   RANK_UP
   PENALTY_QUEST
   FRIEND_REQUEST
   FRIEND_ACCEPTED
+  CLAIM_APPROVED
+  CLAIM_REJECTED
+}
+
+enum AchievementTier {
+  LEGENDARY
+  MYTHIC
+}
+
+enum ClaimStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// Real-life achievements players can claim (SRS §4.7)
+model LegendaryQuest {
+  id       String          @id @default(uuid()) @db.Uuid
+  key      String          @unique @db.VarChar(64)
+  title    Json
+  category Category
+  tier     AchievementTier
+  xpReward Int             @map("xp_reward")
+  titleId  String?         @map("title_id") @db.Uuid
+  active   Boolean         @default(true)
+
+  rewardTitle Title?             @relation(fields: [titleId], references: [id], onDelete: SetNull)
+  claims      AchievementClaim[]
+
+  @@map("legendary_quests")
+}
+
+// A player's request to have a real-life achievement verified by an admin
+model AchievementClaim {
+  id               String           @id @default(uuid()) @db.Uuid
+  userId           String           @map("user_id") @db.Uuid
+  // null for a free-form claim (an extraordinary achievement not in the catalog)
+  legendaryQuestId String?          @map("legendary_quest_id") @db.Uuid
+  title            String?          @db.VarChar(120)
+  description      String           @db.VarChar(2000)
+  proofUrl         String           @map("proof_url") @db.VarChar(500)
+  status           ClaimStatus      @default(PENDING)
+  tierAwarded      AchievementTier? @map("tier_awarded")
+  xpAwarded        Int?             @map("xp_awarded")
+  titleAwardedId   String?          @map("title_awarded_id") @db.Uuid
+  reviewerId       String?          @map("reviewer_id") @db.Uuid
+  reviewNote       String?          @map("review_note") @db.VarChar(500)
+  createdAt        DateTime         @default(now()) @map("created_at")
+  reviewedAt       DateTime?        @map("reviewed_at")
+
+  user           User            @relation("ClaimPlayer", fields: [userId], references: [id], onDelete: Cascade)
+  reviewer       User?           @relation("ClaimReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
+  legendaryQuest LegendaryQuest? @relation(fields: [legendaryQuestId], references: [id], onDelete: SetNull)
+  titleAwarded   Title?          @relation("ClaimTitle", fields: [titleAwardedId], references: [id], onDelete: SetNull)
+  xpTransaction  XpTransaction?
+
+  @@index([status, createdAt])
+  @@index([userId, status])
+  @@map("achievement_claims")
 }
 
 enum FriendshipStatus {
@@ -333,10 +393,13 @@ model XpTransaction {
   reason    XpReason
   // Unique: a quest can never reward XP twice, even if a bug or a double click tries
   questId   String?  @unique @map("quest_id") @db.Uuid
+  // Unique too: an approved claim pays once
+  claimId   String?  @unique @map("claim_id") @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
 
-  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  quest Quest? @relation(fields: [questId], references: [id], onDelete: SetNull)
+  user  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quest Quest?            @relation(fields: [questId], references: [id], onDelete: SetNull)
+  claim AchievementClaim? @relation(fields: [claimId], references: [id], onDelete: SetNull)
 
   // For "XP earned this week" and the XP history chart
   @@index([userId, createdAt])
@@ -362,7 +425,9 @@ model Title {
 
   earnedBy     UserTitle[]
   achievements Achievement[]
-  activeFor    User[]        @relation("ActiveTitle")
+  activeFor    User[]             @relation("ActiveTitle")
+  legendary    LegendaryQuest[]
+  claims       AchievementClaim[] @relation("ClaimTitle")
 
   @@map("titles")
 }
