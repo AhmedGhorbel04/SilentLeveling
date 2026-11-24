@@ -20,6 +20,8 @@ export type AwardXpInput = {
   amount: number;
   reason: XpReason;
   statGains?: StatGains;
+  // The quest that gave this XP. Unique in the ledger: a quest can never pay twice.
+  questId?: string;
 };
 
 export type AwardXpResult = {
@@ -39,7 +41,7 @@ export type AwardXpResult = {
 // 2. updates the cached total XP, level and rank
 // 3. adds stat points
 export async function awardXp(tx: Tx, input: AwardXpInput): Promise<AwardXpResult> {
-  const { userId, amount, reason, statGains = NO_STAT_GAINS } = input;
+  const { userId, amount, reason, statGains = NO_STAT_GAINS, questId } = input;
 
   const before = await tx.user.findUniqueOrThrow({
     where: { id: userId },
@@ -51,7 +53,7 @@ export async function awardXp(tx: Tx, input: AwardXpInput): Promise<AwardXpResul
     return buildResult(0, before.totalXp, before, before.level, before.rank);
   }
 
-  await tx.xpTransaction.create({ data: { userId, amount, reason } });
+  await tx.xpTransaction.create({ data: { userId, amount, reason, questId } });
 
   // Atomic increment in SQL ("total_xp = total_xp + amount"), not read-then-write:
   // two awards at the same moment both count, because PostgreSQL locks the row
