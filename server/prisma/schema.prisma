@@ -1,0 +1,12 @@
+// Database schema. Models are added milestone by milestone (users in M1).
+// After changing this file, run `npm run db:migrate -w server`.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
