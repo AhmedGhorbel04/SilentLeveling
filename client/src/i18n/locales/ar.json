@@ -98,7 +98,8 @@
       "intelligence": "الذكاء",
       "discipline": "الانضباط",
       "consistency": "المثابرة"
-    }
+    },
+    "claimLink": "وثّق إنجازًا حقيقيًا"
   },
   "levelUp": {
     "eyebrow": "إشعار من النظام",
@@ -263,13 +264,27 @@
     "TOO_MANY_PENDING_REQUESTS": "طلبات كثيرة قيد الانتظار. انتظر بعض الردود أولًا.",
     "REQUEST_NOT_FOUND": "هذا الطلب لم يعد موجودًا",
     "FRIEND_NOT_FOUND": "هذا اللاعب ليس من أصدقائك",
-    "BIO_TOO_LONG": "160 حرفًا كحد أقصى"
+    "BIO_TOO_LONG": "160 حرفًا كحد أقصى",
+    "DESCRIPTION_TOO_SHORT": "20 حرفًا على الأقل",
+    "PROOF_URL_INVALID": "أدخل رابطًا يبدأ بـ https://",
+    "LEGENDARY_QUEST_NOT_FOUND": "هذه المهمة الأسطورية غير موجودة",
+    "CLAIM_EXISTS": "لقد طلبت توثيق هذه بالفعل",
+    "TOO_MANY_PENDING_CLAIMS": "لديك بالفعل 3 طلبات قيد المراجعة",
+    "CLAIM_NOT_FOUND": "هذا الطلب غير موجود",
+    "CLAIM_ALREADY_REVIEWED": "تمت مراجعة هذا الطلب بالفعل",
+    "XP_INVALID": "يجب أن تكون الخبرة بين 1 و20000",
+    "TIER_INVALID": "فئة غير صالحة",
+    "TITLE_NOT_FOUND": "هذا اللقب غير موجود",
+    "REASON_TOO_SHORT": "5 أحرف على الأقل",
+    "FORBIDDEN": "غير مسموح لك بذلك"
   },
   "nav": {
     "dashboard": "لوحة التحكم",
     "goals": "الأهداف",
     "achievements": "الإنجازات",
-    "friends": "الأصدقاء"
+    "friends": "الأصدقاء",
+    "legendary": "الأسطورية",
+    "admin": "الإدارة"
   },
   "goals": {
     "eyebrow": "أهداف طويلة المدى",
@@ -346,7 +361,9 @@
     "rankUp": "رتبة جديدة: {{rank}}",
     "penalty": "فاتك يوم: أكمل مهمة العقوبة اليوم لإنقاذ سلسلتك ({{count}})",
     "friendRequest": "أرسل لك {{username}} طلب صداقة",
-    "friendAccepted": "قبل {{username}} طلب صداقتك"
+    "friendAccepted": "قبل {{username}} طلب صداقتك",
+    "claimApproved": "تم توثيق إنجازك: +{{xp}} نقطة خبرة",
+    "claimRejected": "رُفض طلبك: {{reason}}"
   },
   "achievements": {
     "FIRST_STEP": {
@@ -444,5 +461,44 @@
     "noAchievements": "لا إنجازات بعد.",
     "bio": "نبذة",
     "noBio": "اكتب بضع كلمات عن نفسك."
+  },
+  "legendary": {
+    "eyebrow": "الحياة الحقيقية",
+    "title": "المهام الأسطورية",
+    "subtitle": "إنجازات تحدث خارج التطبيق. أرسل دليلًا، يتحقق منه مشرف، فتفتح الرتب B وما فوقها.",
+    "claimOther": "توثيق إنجاز آخر",
+    "claim": "طلب التوثيق",
+    "myClaims": "طلباتي",
+    "noClaims": "لا طلبات بعد.",
+    "reviewNote": "المراجع: {{note}}",
+    "formIntro": "صف ما أنجزته وأضف رابطًا يثبته (شهادة، مقال، منشور، صورة).",
+    "status": {
+      "PENDING": "قيد المراجعة",
+      "APPROVED": "موثّق",
+      "REJECTED": "مرفوض"
+    },
+    "form": {
+      "title": "الإنجاز",
+      "description": "ماذا أنجزت؟",
+      "proofUrl": "رابط الدليل",
+      "proofHint": "يجب أن يبدأ بـ https://",
+      "submit": "إرسال للمراجعة"
+    }
+  },
+  "admin": {
+    "eyebrow": "الإدارة",
+    "title": "المراجعة",
+    "claims": "الطلبات",
+    "noClaims": "لا شيء هنا.",
+    "tier": "الفئة",
+    "titleToGrant": "اللقب الممنوح",
+    "noTitle": "بلا لقب",
+    "newTitle": "لقب جديد…",
+    "newTitleIn": "لقب جديد ({{language}})",
+    "approve": "قبول",
+    "rejectReason": "سبب الرفض",
+    "reject": "رفض",
+    "catalog": "الكتالوج",
+    "activeToggle": "مفعّلة: {{title}}"
   }
 }

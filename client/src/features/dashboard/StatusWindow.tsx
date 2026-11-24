@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
 import { Avatar } from '../../components/Avatar';
 import { TitleBadge } from '../achievements/TitleBadge';
 import { Spinner } from '../../components/ui/Spinner';
@@ -149,6 +150,12 @@ function RankHint({ data }: { data: Dashboard }) {
           🔒 {t('status.rankLocked', { rank: data.nextRank.label })}
         </p>
         <p className="text-slate-300">{t('status.rankLockedText')}</p>
+        <Link
+          to="/legendary"
+          className="font-semibold text-amber-300 underline hover:text-amber-200"
+        >
+          {t('status.claimLink')}
+        </Link>
         {data.rankLockedBy.legendary > 0 && (
           <p className="text-slate-400">
             {t('status.legendaryNeeded', { count: data.rankLockedBy.legendary })}

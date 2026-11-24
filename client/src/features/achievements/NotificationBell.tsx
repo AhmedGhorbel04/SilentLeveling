@@ -25,6 +25,10 @@ function useNotificationText() {
         return t('notifications.friendRequest', { username: notification.data.username });
       case 'FRIEND_ACCEPTED':
         return t('notifications.friendAccepted', { username: notification.data.username });
+      case 'CLAIM_APPROVED':
+        return t('notifications.claimApproved', { xp: notification.data.xp });
+      case 'CLAIM_REJECTED':
+        return t('notifications.claimRejected', { reason: notification.data.reason });
     }
   };
 }
@@ -35,6 +39,8 @@ const ICONS: Record<AppNotification['type'], string> = {
   PENALTY_QUEST: '⚠️',
   FRIEND_REQUEST: '👋',
   FRIEND_ACCEPTED: '🤝',
+  CLAIM_APPROVED: '🏆',
+  CLAIM_REJECTED: '✖️',
 };
 
 // Bell in the header with the unread count; opens the latest notifications (FR-70, FR-71)
