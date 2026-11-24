@@ -51,6 +51,14 @@ model User {
   streakBeforePenalty Int?    @map("streak_before_penalty")
   activeTitleId       String? @map("active_title_id") @db.Uuid
 
+  // Quest engine
+  dailyMinutes     Int       @default(60) @map("daily_minutes")
+  // Last local day (in the player's time zone) whose quests were generated.
+  // The daily rollover processes every day after it (SRS §3.6).
+  lastRolloverDate DateTime? @map("last_rollover_date") @db.Date
+  rerollsUsed      Int       @default(0) @map("rerolls_used")
+  rerollsDate      DateTime? @map("rerolls_date") @db.Date
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -59,8 +67,142 @@ model User {
   titles         UserTitle[]
   achievements   UserAchievement[]
   activeTitle    Title?            @relation("ActiveTitle", fields: [activeTitleId], references: [id], onDelete: SetNull)
+  focusAreas     FocusArea[]
+  quests         Quest[]
+  dailyLogs      DailyLog[]
 
   @@map("users")
+}
+
+enum Category {
+  FITNESS
+  STUDIES
+  LANGUAGES
+  READING
+  CAREER
+  HEALTH
+}
+
+enum SkillLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum Difficulty {
+  EASY
+  NORMAL
+  HARD
+  EXTREME
+}
+
+// A goal area chosen during onboarding, with the player's level in it
+model FocusArea {
+  id             String     @id @default(uuid()) @db.Uuid
+  userId         String     @map("user_id") @db.Uuid
+  category       Category
+  level          SkillLevel
+  // Quests completed at the current level; resets when the level goes up
+  completedCount Int        @default(0) @map("completed_count")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category])
+  @@map("focus_areas")
+}
+
+enum TemplateType {
+  DAILY
+  WEEKLY
+  PENALTY
+  ONBOARDING
+}
+
+// Library of quests the engine picks from
+model QuestTemplate {
+  id         String       @id @default(uuid()) @db.Uuid
+  // Stable identifier used by the seed, e.g. "fitness.beginner.1"
+  key        String       @unique @db.VarChar(64)
+  category   Category
+  level      SkillLevel
+  type       TemplateType
+  // Translations: { "en": "...", "fr": "...", "ar": "..." }
+  title      Json
+  // Estimated duration, used only to fill the player's daily time (never for XP)
+  minutes    Int
+  difficulty Difficulty
+  active     Boolean      @default(true)
+
+  quests Quest[]
+
+  @@index([type, category, level])
+  @@map("quest_templates")
+}
+
+enum QuestSource {
+  SYSTEM
+  CUSTOM
+  PENALTY
+}
+
+enum QuestType {
+  DAILY
+  WEEKLY
+  ONE_TIME
+}
+
+enum QuestStatus {
+  ACTIVE
+  COMPLETED
+  FAILED
+  REPLACED // rerolled
+}
+
+model Quest {
+  id          String      @id @default(uuid()) @db.Uuid
+  userId      String      @map("user_id") @db.Uuid
+  templateId  String?     @map("template_id") @db.Uuid
+  source      QuestSource
+  type        QuestType
+  // Only for custom quests; system quests take their title from the template
+  title       String?     @db.VarChar(120)
+  description String?     @db.VarChar(1000)
+  category    Category
+  difficulty  Difficulty
+  minutes     Int?
+  // Base XP, calculated when the quest is created (SRS §3.2)
+  xpReward    Int         @map("xp_reward")
+  status      QuestStatus @default(ACTIVE)
+  // Local day (daily quests) or Monday of the week (weekly quests) it belongs to
+  questDate   DateTime    @map("quest_date") @db.Date
+  dueAt       DateTime    @map("due_at")
+  completedAt DateTime?   @map("completed_at")
+  // XP actually given at completion (streak bonus included)
+  xpAwarded   Int?        @map("xp_awarded")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template      QuestTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  xpTransaction XpTransaction?
+
+  @@index([userId, questDate])
+  @@index([userId, status])
+  @@map("quests")
+}
+
+// One row per finished day: used for the streak, the discipline rate and the calendar
+model DailyLog {
+  userId          String   @map("user_id") @db.Uuid
+  date            DateTime @db.Date
+  questsTotal     Int      @map("quests_total")
+  questsCompleted Int      @map("quests_completed")
+  allCompleted    Boolean  @map("all_completed")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, date])
+  @@map("daily_logs")
 }
 
 // One row per player (1:1 with users)
@@ -83,16 +225,18 @@ enum XpReason {
 }
 
 // The XP ledger: every XP gain ever, with its reason. A player's total XP is the sum
-// of their rows. Links to the quest or claim that gave the XP are added with those
-// tables (milestones 3 and 8), each with a unique constraint against double rewards.
+// of their rows. The link to a claim is added with claims (Milestone 8).
 model XpTransaction {
   id        String   @id @default(uuid()) @db.Uuid
   userId    String   @map("user_id") @db.Uuid
   amount    Int
   reason    XpReason
+  // Unique: a quest can never reward XP twice, even if a bug or a double click tries
+  questId   String?  @unique @map("quest_id") @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quest Quest? @relation(fields: [questId], references: [id], onDelete: SetNull)
 
   // For "XP earned this week" and the XP history chart
   @@index([userId, createdAt])
