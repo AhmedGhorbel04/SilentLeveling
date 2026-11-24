@@ -14,9 +14,10 @@ import {
   toDbDate,
   type LocalDate,
 } from '../../utils/time.js';
-import { toQuestDto, type QuestDto } from './quest.mapper.js';
+import { questInclude, toQuestDto, type QuestDto } from './quest.mapper.js';
 import { QUEST_TRANSACTION_OPTIONS, runRollover } from './rollover.service.js';
 import type { CreateCustomQuestInput, UpdateCustomQuestInput } from './customQuest.schemas.js';
+import { assertLinkableMilestone } from '../goals/goal.service.js';
 
 type Tx = Prisma.TransactionClient;
 
@@ -69,6 +70,7 @@ export function createCustomQuest(
     if (active >= MAX_ACTIVE_CUSTOM_QUESTS) {
       throw new AppError(409, 'TOO_MANY_CUSTOM_QUESTS', 'Too many active custom quests');
     }
+    if (input.milestoneId) await assertLinkableMilestone(tx, userId, input.milestoneId);
 
     const quest = await tx.quest.create({
       data: {
@@ -82,8 +84,9 @@ export function createCustomQuest(
         xpReward: calculateQuestXp(input.difficulty, 'ONE_TIME'),
         questDate: toDbDate(today),
         dueAt: endOfLocalDay(dueDate, user.timezone),
+        milestoneId: input.milestoneId ?? null,
       },
-      include: { template: true },
+      include: questInclude,
     });
     return toQuestDto(quest);
   }, QUEST_TRANSACTION_OPTIONS);
@@ -112,6 +115,7 @@ export function updateCustomQuest(
     const user = await tx.user.findUniqueOrThrow({ where: { id: userId } });
 
     if (input.dueDate) checkDueDate(input.dueDate, localDate(user.timezone, now));
+    if (input.milestoneId) await assertLinkableMilestone(tx, userId, input.milestoneId);
 
     const quest = await tx.quest.update({
       where: { id: questId },
@@ -123,8 +127,9 @@ export function updateCustomQuest(
         // The reward always follows the difficulty, so it is recalculated with it
         xpReward: input.difficulty ? calculateQuestXp(input.difficulty, 'ONE_TIME') : undefined,
         dueAt: input.dueDate ? endOfLocalDay(input.dueDate, user.timezone) : undefined,
+        milestoneId: input.milestoneId,
       },
-      include: { template: true },
+      include: questInclude,
     });
     return toQuestDto(quest);
   }, QUEST_TRANSACTION_OPTIONS);

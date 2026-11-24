@@ -25,12 +25,16 @@ const difficulty = z.enum(CUSTOM_QUEST_DIFFICULTIES, { error: 'DIFFICULTY_INVALI
 // checked by the service, which knows the player's time zone
 const dueDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'DUE_DATE_INVALID');
 
+// Optional link to a milestone of one of the player's active goals; null removes it
+const milestoneId = z.uuid('MILESTONE_NOT_FOUND').nullable();
+
 export const createCustomQuestSchema = z.object({
   title,
   description: description.optional(),
   category,
   difficulty,
   dueDate: dueDate.optional(), // defaults to today
+  milestoneId: milestoneId.optional(),
 });
 
 export const updateCustomQuestSchema = z
@@ -40,6 +44,7 @@ export const updateCustomQuestSchema = z
     category: category.optional(),
     difficulty: difficulty.optional(),
     dueDate: dueDate.optional(),
+    milestoneId: milestoneId.optional(),
   })
   .refine((data) => Object.values(data).some((value) => value !== undefined), 'NOTHING_TO_UPDATE');
 
