@@ -1,0 +1,26 @@
+# Local development database.
+# Start with `npm run db:up`, stop with `npm run db:down`.
+# Port 5433 on your machine avoids conflicts with any PostgreSQL already installed on 5432.
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: silentleveling-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: silent
+      POSTGRES_PASSWORD: silent_dev_password
+      POSTGRES_DB: silentleveling
+    ports:
+      - '5433:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      # Creates the separate test database on first start
+      - ./server/prisma/init-test-db.sql:/docker-entrypoint-initdb.d/init-test-db.sql:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U silent -d silentleveling']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  db-data:
