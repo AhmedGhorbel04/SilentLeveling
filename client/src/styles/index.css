@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens (SRS §9). Tailwind turns each `--color-*` into utilities,
+ * e.g. `bg-void`, `text-arcane-400`, `border-abyss-border`.
+ */
+@theme {
+  --color-void: #05060f;
+  --color-abyss: #0b1026;
+  --color-abyss-border: #1c2547;
+
+  --color-arcane-400: #a78bfa;
+  --color-arcane-500: #8b5cf6;
+  --color-arcane-600: #7c3aed;
+  --color-azure-400: #60a5fa;
+  --color-azure-500: #3b82f6;
+
+  --color-rarity-common: #9ca3af;
+  --color-rarity-rare: #3b82f6;
+  --color-rarity-epic: #a855f7;
+  --color-rarity-legendary: #f59e0b;
+  --color-rarity-mythic: #e11d48;
+
+  --shadow-glow: 0 0 24px -4px rgb(124 58 237 / 0.55);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply min-h-screen bg-void text-slate-200 antialiased;
+  }
+}
+
+/* Respect the OS "reduce motion" setting (NFR-12) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
