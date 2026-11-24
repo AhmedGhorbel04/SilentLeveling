@@ -2,6 +2,7 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import swaggerUi from 'swagger-ui-express';
 import { env, isProduction } from './config/env.js';
 import { createAuthLimiter } from './middleware/rateLimit.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
@@ -15,6 +16,7 @@ import { goalRouter, milestoneRouter } from './modules/goals/goal.routes.js';
 import { achievementRouter, titleRouter } from './modules/achievements/achievement.routes.js';
 import { notificationRouter } from './modules/notifications/notification.routes.js';
 import { friendRouter, profileRouter, userRouter } from './modules/friends/friend.routes.js';
+import { buildOpenApiDocument } from './docs/openapi.js';
 import { adminRouter, claimRouter, legendaryRouter } from './modules/claims/claim.routes.js';
 
 type AppOptions = {
@@ -37,6 +39,25 @@ export function createApp(options: AppOptions = {}) {
   app.use(cookieParser()); // makes req.cookies available
 
   const authLimiter = createAuthLimiter(options.authRateLimitMax ?? env.AUTH_RATE_LIMIT_MAX);
+
+  // Interactive API documentation (NFR-15). Swagger UI needs inline scripts and
+  // styles, so this page alone gets a relaxed Content Security Policy.
+  const openApi = buildOpenApiDocument();
+  app.get('/api/docs/openapi.json', (_req, res) => {
+    res.json(openApi);
+  });
+  app.use(
+    '/api/docs',
+    helmet.contentSecurityPolicy({
+      directives: {
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:'],
+      },
+    }),
+    swaggerUi.serve,
+    swaggerUi.setup(openApi, { customSiteTitle: 'SilentLeveling API' }),
+  );
 
   app.use('/api/health', healthRouter);
   app.use('/api/auth', createAuthRouter(authLimiter));

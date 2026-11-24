@@ -9,6 +9,7 @@ import { useCurrentUser, useLogout } from '../features/auth/useAuth';
 
 const PAGES = [
   { to: '/dashboard', label: 'nav.dashboard' },
+  { to: '/progress', label: 'nav.progress' },
   { to: '/goals', label: 'nav.goals' },
   { to: '/achievements', label: 'nav.achievements' },
   { to: '/friends', label: 'nav.friends' },
@@ -60,27 +61,27 @@ export function AppLayout() {
         {/* Page tabs on their own row, so they fit on phones too. Hidden during onboarding. */}
         {user?.onboarded && (
           // Scrolls sideways instead of overflowing if the tabs are wider than a small phone
-          <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-2 sm:px-6" role="list">
+          <ul className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-2 sm:px-6">
             {[
               ...PAGES,
               ...(user.role === 'ADMIN' ? [{ to: '/admin', label: 'nav.admin' } as const] : []),
             ].map((page) => (
-              <NavLink
-                key={page.to}
-                to={page.to}
-                role="listitem"
-                className={({ isActive }) =>
-                  `shrink-0 border-b-2 px-3 py-2.5 text-sm font-semibold whitespace-nowrap transition sm:px-4 ${
-                    isActive
-                      ? 'border-arcane-500 text-white'
-                      : 'border-transparent text-slate-400 hover:text-slate-200'
-                  }`
-                }
-              >
-                {t(page.label)}
-              </NavLink>
+              <li key={page.to} className="shrink-0">
+                <NavLink
+                  to={page.to}
+                  className={({ isActive }) =>
+                    `block border-b-2 px-3 py-2.5 text-sm font-semibold whitespace-nowrap transition sm:px-4 ${
+                      isActive
+                        ? 'border-arcane-500 text-white'
+                        : 'border-transparent text-slate-400 hover:text-slate-200'
+                    }`
+                  }
+                >
+                  {t(page.label)}
+                </NavLink>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </header>
 

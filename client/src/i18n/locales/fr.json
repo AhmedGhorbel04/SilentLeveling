@@ -284,7 +284,8 @@
     "achievements": "Succès",
     "friends": "Amis",
     "legendary": "Légendaire",
-    "admin": "Admin"
+    "admin": "Admin",
+    "progress": "Progression"
   },
   "goals": {
     "eyebrow": "Objectifs à long terme",
@@ -500,5 +501,34 @@
     "reject": "Refuser",
     "catalog": "Catalogue",
     "activeToggle": "Active : {{title}}"
+  },
+  "progress": {
+    "title": "Progression",
+    "subtitle": "Ton XP au fil du temps et les jours réussis.",
+    "xpTitle": "Historique d’XP",
+    "range": "Période",
+    "days_one": "{{count}} jour",
+    "days_other": "{{count}} jours",
+    "totalXp": "XP totale",
+    "average": "Par jour",
+    "activeDays": "Jours actifs",
+    "date": "Date",
+    "calendarTitle": "Calendrier",
+    "previousMonth": "Mois précédent",
+    "nextMonth": "Mois suivant",
+    "perfectDays_one": "{{count}} jour parfait ce mois-ci",
+    "perfectDays_other": "{{count}} jours parfaits ce mois-ci",
+    "state": {
+      "perfect": "toutes les quêtes du jour faites ({{done}}/{{total}})",
+      "partial": "{{done}} quêtes du jour sur {{total}} faites",
+      "missed": "aucune quête du jour faite (0/{{total}})",
+      "none": "aucune donnée",
+      "future": "pas encore"
+    },
+    "legend": {
+      "perfect": "Toutes les quêtes faites",
+      "partial": "Une partie faite",
+      "missed": "Manqué"
+    }
   }
 }

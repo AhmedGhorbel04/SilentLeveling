@@ -284,7 +284,8 @@
     "achievements": "Achievements",
     "friends": "Friends",
     "legendary": "Legendary",
-    "admin": "Admin"
+    "admin": "Admin",
+    "progress": "Progress"
   },
   "goals": {
     "eyebrow": "Long-term goals",
@@ -500,5 +501,34 @@
     "reject": "Reject",
     "catalog": "Catalog",
     "activeToggle": "Active: {{title}}"
+  },
+  "progress": {
+    "title": "Progress",
+    "subtitle": "Your XP over time and the days you cleared.",
+    "xpTitle": "XP history",
+    "range": "Period",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "totalXp": "Total XP",
+    "average": "Per day",
+    "activeDays": "Active days",
+    "date": "Date",
+    "calendarTitle": "Calendar",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "perfectDays_one": "{{count}} perfect day this month",
+    "perfectDays_other": "{{count}} perfect days this month",
+    "state": {
+      "perfect": "all daily quests done ({{done}}/{{total}})",
+      "partial": "{{done}} of {{total}} daily quests done",
+      "missed": "no daily quest done (0/{{total}})",
+      "none": "no data",
+      "future": "not yet"
+    },
+    "legend": {
+      "perfect": "All quests done",
+      "partial": "Some quests done",
+      "missed": "Missed"
+    }
   }
 }

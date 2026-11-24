@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Avatar } from '../../components/Avatar';
+import { StatBar } from '../../components/StatBar';
 import { TitleBadge } from '../achievements/TitleBadge';
 import { Spinner } from '../../components/ui/Spinner';
 import { Alert } from '../../components/ui/Alert';
@@ -179,21 +180,4 @@ function RankHint({ data }: { data: Dashboard }) {
 // Stat bars are relative to the highest stat (at least 10), so they grow visibly early on
 function maxStat(data: Dashboard): number {
   return Math.max(10, ...Object.values(data.stats));
-}
-
-function StatBar({ name, value, max }: { name: string; value: number; max: number }) {
-  return (
-    <div>
-      <div className="flex justify-between text-sm">
-        <dt className="text-slate-400">{name}</dt>
-        <dd className="font-display font-semibold text-white">{value}</dd>
-      </div>
-      <div className="mt-1 h-1.5 rounded-full bg-void" aria-hidden="true">
-        <div
-          className="h-full rounded-full bg-arcane-500/80 transition-[width] duration-700"
-          style={{ width: `${(value / max) * 100}%` }}
-        />
-      </div>
-    </div>
-  );
 }

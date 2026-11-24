@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Alert } from '../../components/ui/Alert';
 import { Avatar } from '../../components/Avatar';
+import { StatBar } from '../../components/StatBar';
 import { Button } from '../../components/ui/Button';
 import { Spinner } from '../../components/ui/Spinner';
 import { ApiError } from '../../api/client';
@@ -186,18 +187,12 @@ function ProfileDetails({ profile }: { profile: FullProfile }) {
         </h2>
         <dl className="grid gap-x-6 gap-y-4 sm:grid-cols-2">
           {STATS.map((stat) => (
-            <div key={stat}>
-              <div className="flex justify-between text-sm">
-                <dt className="text-slate-400">{t(`status.stats.${stat}`)}</dt>
-                <dd className="font-display font-semibold text-white">{profile.stats[stat]}</dd>
-              </div>
-              <div className="mt-1 h-1.5 rounded-full bg-void" aria-hidden="true">
-                <div
-                  className="h-full rounded-full bg-arcane-500/80"
-                  style={{ width: `${(profile.stats[stat] / maxStat) * 100}%` }}
-                />
-              </div>
-            </div>
+            <StatBar
+              key={stat}
+              name={t(`status.stats.${stat}`)}
+              value={profile.stats[stat]}
+              max={maxStat}
+            />
           ))}
         </dl>
       </section>

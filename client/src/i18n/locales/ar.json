@@ -284,7 +284,8 @@
     "achievements": "الإنجازات",
     "friends": "الأصدقاء",
     "legendary": "الأسطورية",
-    "admin": "الإدارة"
+    "admin": "الإدارة",
+    "progress": "التقدّم"
   },
   "goals": {
     "eyebrow": "أهداف طويلة المدى",
@@ -500,5 +501,42 @@
     "reject": "رفض",
     "catalog": "الكتالوج",
     "activeToggle": "مفعّلة: {{title}}"
+  },
+  "progress": {
+    "title": "التقدّم",
+    "subtitle": "نقاط خبرتك عبر الزمن والأيام التي أنجزتها.",
+    "xpTitle": "سجل نقاط الخبرة",
+    "range": "الفترة",
+    "days_zero": "{{count}} يوم",
+    "days_one": "يوم واحد",
+    "days_two": "يومان",
+    "days_few": "{{count}} أيام",
+    "days_many": "{{count}} يومًا",
+    "days_other": "{{count}} يوم",
+    "totalXp": "مجموع الخبرة",
+    "average": "في اليوم",
+    "activeDays": "أيام النشاط",
+    "date": "التاريخ",
+    "calendarTitle": "التقويم",
+    "previousMonth": "الشهر السابق",
+    "nextMonth": "الشهر التالي",
+    "perfectDays_zero": "لا أيام مثالية هذا الشهر",
+    "perfectDays_one": "يوم مثالي واحد هذا الشهر",
+    "perfectDays_two": "يومان مثاليان هذا الشهر",
+    "perfectDays_few": "{{count}} أيام مثالية هذا الشهر",
+    "perfectDays_many": "{{count}} يومًا مثاليًا هذا الشهر",
+    "perfectDays_other": "{{count}} يوم مثالي هذا الشهر",
+    "state": {
+      "perfect": "كل مهام اليوم منجزة ({{done}}/{{total}})",
+      "partial": "{{done}} من {{total}} مهام اليوم منجزة",
+      "missed": "لم تُنجز أي مهمة يومية (0/{{total}})",
+      "none": "لا توجد بيانات",
+      "future": "لم يأتِ بعد"
+    },
+    "legend": {
+      "perfect": "كل المهام منجزة",
+      "partial": "بعض المهام منجزة",
+      "missed": "فائت"
+    }
   }
 }

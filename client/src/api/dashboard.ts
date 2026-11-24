@@ -19,6 +19,16 @@ export type Dashboard = {
   customXp: { earnedToday: number; dailyCap: number };
 };
 
+export type XpDay = { date: string; xp: number };
+export type CalendarDay = {
+  date: string;
+  questsTotal: number;
+  questsCompleted: number;
+  allCompleted: boolean;
+};
+
 export const dashboardApi = {
   get: () => apiRequest<Dashboard>('/me/dashboard'),
+  xpHistory: (days: number) => apiRequest<{ days: XpDay[] }>(`/me/xp-history?days=${days}`),
+  calendar: (month: string) => apiRequest<{ days: CalendarDay[] }>(`/me/calendar?month=${month}`),
 };
