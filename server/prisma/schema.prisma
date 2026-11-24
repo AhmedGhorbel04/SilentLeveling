@@ -62,16 +62,18 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  stats          PlayerStats?
-  xpTransactions XpTransaction[]
-  titles         UserTitle[]
-  achievements   UserAchievement[]
-  activeTitle    Title?            @relation("ActiveTitle", fields: [activeTitleId], references: [id], onDelete: SetNull)
-  focusAreas     FocusArea[]
-  quests         Quest[]
-  dailyLogs      DailyLog[]
-  goals          Goal[]
-  notifications  Notification[]
+  stats            PlayerStats?
+  xpTransactions   XpTransaction[]
+  titles           UserTitle[]
+  achievements     UserAchievement[]
+  activeTitle      Title?            @relation("ActiveTitle", fields: [activeTitleId], references: [id], onDelete: SetNull)
+  focusAreas       FocusArea[]
+  quests           Quest[]
+  dailyLogs        DailyLog[]
+  goals            Goal[]
+  notifications    Notification[]
+  sentRequests     Friendship[]      @relation("FriendshipRequester")
+  receivedRequests Friendship[]      @relation("FriendshipAddressee")
 
   @@map("users")
 }
@@ -239,11 +241,37 @@ model Milestone {
   @@map("milestones")
 }
 
-// More types are added with friends (Milestone 7) and claims (Milestone 8)
+// More types are added with claims (Milestone 8)
 enum NotificationType {
   ACHIEVEMENT_UNLOCKED
   RANK_UP
   PENALTY_QUEST
+  FRIEND_REQUEST
+  FRIEND_ACCEPTED
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+}
+
+// A friend request, then a friendship once accepted (SRS §4.6). Declining or removing
+// a friend deletes the row. Only one row can exist per pair of players, whatever the
+// direction: enforced by a unique index on (LEAST, GREATEST) added in the migration.
+model Friendship {
+  id          String           @id @default(uuid()) @db.Uuid
+  requesterId String           @map("requester_id") @db.Uuid
+  addresseeId String           @map("addressee_id") @db.Uuid
+  status      FriendshipStatus @default(PENDING)
+  createdAt   DateTime         @default(now()) @map("created_at")
+  respondedAt DateTime?        @map("responded_at")
+
+  requester User @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee User @relation("FriendshipAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+  @@index([addresseeId, status])
+  @@index([requesterId, status])
+  @@map("friendships")
 }
 
 // In-app notifications (SRS §4.8). The text is built by the frontend from the type

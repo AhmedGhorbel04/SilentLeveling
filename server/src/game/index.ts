@@ -8,3 +8,4 @@ export * from './stats.js';
 export * from './streak.js';
 export * from './questGenerator.js';
 export * from './achievements.js';
+export * from './ranking.js';

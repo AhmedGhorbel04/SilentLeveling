@@ -255,12 +255,21 @@
     "COMPLETED_INVALID": "قيمة غير صالحة",
     "POSITION_INVALID": "موضع غير صالح",
     "TITLE_NOT_EARNED": "لم تحصل على هذا اللقب بعد",
-    "NOTIFICATION_NOT_FOUND": "هذا الإشعار غير موجود"
+    "NOTIFICATION_NOT_FOUND": "هذا الإشعار غير موجود",
+    "USER_NOT_FOUND": "لا يوجد لاعب بهذا الاسم",
+    "CANNOT_ADD_SELF": "لا يمكنك إضافة نفسك",
+    "ALREADY_FRIENDS": "أنتما صديقان بالفعل",
+    "REQUEST_ALREADY_SENT": "يوجد طلب قيد الانتظار بالفعل",
+    "TOO_MANY_PENDING_REQUESTS": "طلبات كثيرة قيد الانتظار. انتظر بعض الردود أولًا.",
+    "REQUEST_NOT_FOUND": "هذا الطلب لم يعد موجودًا",
+    "FRIEND_NOT_FOUND": "هذا اللاعب ليس من أصدقائك",
+    "BIO_TOO_LONG": "160 حرفًا كحد أقصى"
   },
   "nav": {
     "dashboard": "لوحة التحكم",
     "goals": "الأهداف",
-    "achievements": "الإنجازات"
+    "achievements": "الإنجازات",
+    "friends": "الأصدقاء"
   },
   "goals": {
     "eyebrow": "أهداف طويلة المدى",
@@ -335,7 +344,9 @@
     "unread": "غير مقروء",
     "achievement": "إنجاز جديد: {{name}}",
     "rankUp": "رتبة جديدة: {{rank}}",
-    "penalty": "فاتك يوم: أكمل مهمة العقوبة اليوم لإنقاذ سلسلتك ({{count}})"
+    "penalty": "فاتك يوم: أكمل مهمة العقوبة اليوم لإنقاذ سلسلتك ({{count}})",
+    "friendRequest": "أرسل لك {{username}} طلب صداقة",
+    "friendAccepted": "قبل {{username}} طلب صداقتك"
   },
   "achievements": {
     "FIRST_STEP": {
@@ -394,5 +405,44 @@
       "name": "إنجاز في الحياة الحقيقية",
       "description": "احصل على توثيق إنجاز حقيقي"
     }
+  },
+  "friends": {
+    "eyebrow": "الحلفاء",
+    "title": "الأصدقاء",
+    "subtitle": "قارن تقدّمك مع من يدفعونك إلى الأمام.",
+    "rankingTitle": "الترتيب",
+    "period": {
+      "weekly": "هذا الأسبوع",
+      "all": "منذ البداية"
+    },
+    "rankingAlone": "أضف أصدقاء لتتنافس معهم.",
+    "addTitle": "إضافة صديق",
+    "usernamePlaceholder": "اسم المستخدم بالضبط",
+    "send": "إرسال",
+    "requestSent": "تم إرسال الطلب.",
+    "nowFriends": "أصبحتما صديقين!",
+    "incomingTitle": "الطلبات الواردة: {{count}}",
+    "outgoingTitle": "الطلبات المرسلة",
+    "accept": "قبول",
+    "decline": "رفض",
+    "cancel": "إلغاء",
+    "listTitle": "أصدقائي ({{count}})",
+    "empty": "لا أصدقاء بعد. أرسل طلبًا باسم المستخدم بالضبط.",
+    "remove": "إزالة",
+    "confirmRemove": "هل تريد إزالة {{username}} من أصدقائك؟"
+  },
+  "profile": {
+    "privateText": "الأصدقاء فقط يمكنهم رؤية الملف الكامل.",
+    "addFriend": "إضافة صديق",
+    "cancelRequest": "إلغاء الطلب",
+    "memberSince": "عضو منذ {{date}}",
+    "friendsCount": "الأصدقاء: {{count}}",
+    "level": "المستوى",
+    "streak": "السلسلة",
+    "statsTitle": "الإحصائيات",
+    "achievementsTitle": "الإنجازات ({{count}})",
+    "noAchievements": "لا إنجازات بعد.",
+    "bio": "نبذة",
+    "noBio": "اكتب بضع كلمات عن نفسك."
   }
 }

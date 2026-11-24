@@ -255,12 +255,21 @@
     "COMPLETED_INVALID": "Valeur invalide",
     "POSITION_INVALID": "Position invalide",
     "TITLE_NOT_EARNED": "Tu n'as pas encore gagné ce titre",
-    "NOTIFICATION_NOT_FOUND": "Cette notification n'existe pas"
+    "NOTIFICATION_NOT_FOUND": "Cette notification n'existe pas",
+    "USER_NOT_FOUND": "Aucun joueur avec ce nom d'utilisateur",
+    "CANNOT_ADD_SELF": "Tu ne peux pas t’ajouter toi-même",
+    "ALREADY_FRIENDS": "Vous êtes déjà amis",
+    "REQUEST_ALREADY_SENT": "Une demande est déjà en attente",
+    "TOO_MANY_PENDING_REQUESTS": "Trop de demandes en attente. Attends quelques réponses d'abord.",
+    "REQUEST_NOT_FOUND": "Cette demande n'existe plus",
+    "FRIEND_NOT_FOUND": "Ce joueur n'est pas dans tes amis",
+    "BIO_TOO_LONG": "160 caractères maximum"
   },
   "nav": {
     "dashboard": "Tableau de bord",
     "goals": "Objectifs",
-    "achievements": "Succès"
+    "achievements": "Succès",
+    "friends": "Amis"
   },
   "goals": {
     "eyebrow": "Objectifs à long terme",
@@ -335,7 +344,9 @@
     "unread": "Non lue",
     "achievement": "Succès débloqué : {{name}}",
     "rankUp": "Nouveau rang : {{rank}}",
-    "penalty": "Journée manquée : termine la quête de pénalité aujourd'hui pour sauver ta série ({{count}})"
+    "penalty": "Journée manquée : termine la quête de pénalité aujourd'hui pour sauver ta série ({{count}})",
+    "friendRequest": "{{username}} t'a envoyé une demande d'ami",
+    "friendAccepted": "{{username}} a accepté ta demande d'ami"
   },
   "achievements": {
     "FIRST_STEP": {
@@ -394,5 +405,44 @@
       "name": "Prouvé dans la vraie vie",
       "description": "Fais vérifier une réussite réelle"
     }
+  },
+  "friends": {
+    "eyebrow": "Alliés",
+    "title": "Amis",
+    "subtitle": "Compare ta progression avec ceux qui te poussent à avancer.",
+    "rankingTitle": "Classement",
+    "period": {
+      "weekly": "Cette semaine",
+      "all": "Depuis le début"
+    },
+    "rankingAlone": "Ajoute des amis pour te mesurer à eux.",
+    "addTitle": "Ajouter un ami",
+    "usernamePlaceholder": "Nom d'utilisateur exact",
+    "send": "Envoyer",
+    "requestSent": "Demande envoyée.",
+    "nowFriends": "Vous êtes maintenant amis !",
+    "incomingTitle": "Demandes reçues : {{count}}",
+    "outgoingTitle": "Demandes envoyées",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "cancel": "Annuler",
+    "listTitle": "Mes amis ({{count}})",
+    "empty": "Pas encore d'amis. Envoie une demande avec son nom d'utilisateur exact.",
+    "remove": "Retirer",
+    "confirmRemove": "Retirer {{username}} de tes amis ?"
+  },
+  "profile": {
+    "privateText": "Seuls les amis peuvent voir le profil complet.",
+    "addFriend": "Ajouter en ami",
+    "cancelRequest": "Annuler la demande",
+    "memberSince": "Membre depuis {{date}}",
+    "friendsCount": "Amis : {{count}}",
+    "level": "Niveau",
+    "streak": "Série",
+    "statsTitle": "Statistiques",
+    "achievementsTitle": "Succès ({{count}})",
+    "noAchievements": "Aucun succès pour le moment.",
+    "bio": "Bio",
+    "noBio": "Écris quelques mots sur toi."
   }
 }

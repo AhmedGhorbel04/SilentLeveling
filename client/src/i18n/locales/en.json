@@ -255,12 +255,21 @@
     "COMPLETED_INVALID": "Invalid value",
     "POSITION_INVALID": "Invalid position",
     "TITLE_NOT_EARNED": "You have not earned this title",
-    "NOTIFICATION_NOT_FOUND": "This notification does not exist"
+    "NOTIFICATION_NOT_FOUND": "This notification does not exist",
+    "USER_NOT_FOUND": "No player with this username",
+    "CANNOT_ADD_SELF": "You cannot add yourself",
+    "ALREADY_FRIENDS": "You are already friends",
+    "REQUEST_ALREADY_SENT": "A request is already waiting",
+    "TOO_MANY_PENDING_REQUESTS": "Too many requests waiting. Wait for some answers first.",
+    "REQUEST_NOT_FOUND": "This request no longer exists",
+    "FRIEND_NOT_FOUND": "This player is not in your friends",
+    "BIO_TOO_LONG": "At most 160 characters"
   },
   "nav": {
     "dashboard": "Dashboard",
     "goals": "Goals",
-    "achievements": "Achievements"
+    "achievements": "Achievements",
+    "friends": "Friends"
   },
   "goals": {
     "eyebrow": "Long-term goals",
@@ -335,7 +344,9 @@
     "unread": "Unread",
     "achievement": "Achievement unlocked: {{name}}",
     "rankUp": "New rank: {{rank}}",
-    "penalty": "Missed day: complete the penalty quest today to save your streak ({{count}})"
+    "penalty": "Missed day: complete the penalty quest today to save your streak ({{count}})",
+    "friendRequest": "{{username}} sent you a friend request",
+    "friendAccepted": "{{username}} accepted your friend request"
   },
   "achievements": {
     "FIRST_STEP": {
@@ -394,5 +405,44 @@
       "name": "Proven in real life",
       "description": "Get a real-life achievement verified"
     }
+  },
+  "friends": {
+    "eyebrow": "Allies",
+    "title": "Friends",
+    "subtitle": "Compare your progress with the people who push you forward.",
+    "rankingTitle": "Ranking",
+    "period": {
+      "weekly": "This week",
+      "all": "All time"
+    },
+    "rankingAlone": "Add friends to compete with them.",
+    "addTitle": "Add a friend",
+    "usernamePlaceholder": "Exact username",
+    "send": "Send",
+    "requestSent": "Request sent.",
+    "nowFriends": "You are now friends!",
+    "incomingTitle": "Requests received: {{count}}",
+    "outgoingTitle": "Requests sent",
+    "accept": "Accept",
+    "decline": "Decline",
+    "cancel": "Cancel",
+    "listTitle": "My friends ({{count}})",
+    "empty": "No friends yet. Send a request with their exact username.",
+    "remove": "Remove",
+    "confirmRemove": "Remove {{username}} from your friends?"
+  },
+  "profile": {
+    "privateText": "Only friends can see the full profile.",
+    "addFriend": "Add friend",
+    "cancelRequest": "Cancel request",
+    "memberSince": "Member since {{date}}",
+    "friendsCount": "Friends: {{count}}",
+    "level": "Level",
+    "streak": "Streak",
+    "statsTitle": "Stats",
+    "achievementsTitle": "Achievements ({{count}})",
+    "noAchievements": "No achievements yet.",
+    "bio": "Bio",
+    "noBio": "Write a few words about yourself."
   }
 }

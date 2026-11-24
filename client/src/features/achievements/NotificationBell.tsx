@@ -21,6 +21,10 @@ function useNotificationText() {
         return t('notifications.rankUp', { rank: rankLabel(notification.data.rank ?? '') });
       case 'PENALTY_QUEST':
         return t('notifications.penalty', { count: notification.data.streak });
+      case 'FRIEND_REQUEST':
+        return t('notifications.friendRequest', { username: notification.data.username });
+      case 'FRIEND_ACCEPTED':
+        return t('notifications.friendAccepted', { username: notification.data.username });
     }
   };
 }
@@ -29,6 +33,8 @@ const ICONS: Record<AppNotification['type'], string> = {
   ACHIEVEMENT_UNLOCKED: '🏆',
   RANK_UP: '⬆️',
   PENALTY_QUEST: '⚠️',
+  FRIEND_REQUEST: '👋',
+  FRIEND_ACCEPTED: '🤝',
 };
 
 // Bell in the header with the unread count; opens the latest notifications (FR-70, FR-71)
