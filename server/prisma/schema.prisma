@@ -1,5 +1,8 @@
-// Database schema. Models are added milestone by milestone (users in M1).
+// Database schema. Models are added milestone by milestone.
 // After changing this file, run `npm run db:migrate -w server`.
+//
+// Naming: models and fields are camelCase in TypeScript, and mapped to
+// snake_case tables and columns in PostgreSQL (the SQL convention).
 
 generator client {
   provider     = "prisma-client"
@@ -9,4 +12,35 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+enum Role {
+  PLAYER
+  ADMIN
+}
+
+enum Language {
+  en
+  fr
+  ar
+}
+
+model User {
+  id                 String    @id @default(uuid()) @db.Uuid
+  // Username as the player typed it ("Shadow_Monarch"), shown in the UI
+  username           String    @db.VarChar(20)
+  // Lowercase copy used for uniqueness, so "Ahmed" and "ahmed" cannot both exist
+  usernameNormalized String    @unique @map("username_normalized") @db.VarChar(20)
+  email              String    @unique @db.VarChar(255)
+  passwordHash       String    @map("password_hash")
+  role               Role      @default(PLAYER)
+  language           Language  @default(en)
+  timezone           String    @default("UTC") @db.VarChar(64)
+  avatarKey          String?   @map("avatar_key") @db.VarChar(32)
+  bio                String?   @db.VarChar(160)
+  onboardedAt        DateTime? @map("onboarded_at")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  @@map("users")
 }

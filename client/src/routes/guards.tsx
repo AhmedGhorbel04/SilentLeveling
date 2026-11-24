@@ -1,0 +1,29 @@
+import { Navigate, Outlet, useLocation } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { FullPageSpinner } from '../components/ui/Spinner';
+import { useCurrentUser } from '../features/auth/useAuth';
+
+// Only for logged-in players. Others are sent to /login, remembering where they wanted to go.
+// Note: this only improves the experience. The real protection is on the backend,
+// which checks the login cookie on every protected request.
+export function ProtectedRoute() {
+  const { t } = useTranslation();
+  const location = useLocation();
+  const { data: user, isPending } = useCurrentUser();
+
+  if (isPending) return <FullPageSpinner label={t('common.loading')} />;
+  if (!user) return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+
+  return <Outlet />;
+}
+
+// Only for visitors (login, register). Logged-in players go straight to the dashboard.
+export function GuestRoute() {
+  const { t } = useTranslation();
+  const { data: user, isPending } = useCurrentUser();
+
+  if (isPending) return <FullPageSpinner label={t('common.loading')} />;
+  if (user) return <Navigate to="/dashboard" replace />;
+
+  return <Outlet />;
+}

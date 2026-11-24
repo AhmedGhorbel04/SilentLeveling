@@ -1,0 +1,109 @@
+{
+  "common": {
+    "appName": "SilentLeveling",
+    "loading": "Chargement…",
+    "login": "Se connecter",
+    "register": "Créer un compte",
+    "logout": "Se déconnecter",
+    "language": "Langue",
+    "backHome": "Retour à l'accueil",
+    "mainNavigation": "Navigation principale"
+  },
+  "landing": {
+    "eyebrow": "Notification du système",
+    "title": "Ta vraie vie. Au niveau supérieur.",
+    "subtitle": "Transforme tes objectifs en quêtes. Gagne de l'XP, développe tes statistiques et grimpe du rang E au rang SS — les rangs les plus élevés ne se débloquent qu'avec de vraies réussites.",
+    "ctaStart": "Commencer l'aventure",
+    "ctaLogin": "J'ai déjà un compte",
+    "preview": {
+      "title": "Fenêtre de statut",
+      "player": "Joueur",
+      "level": "Niveau",
+      "rank": "Rang",
+      "xp": "XP",
+      "streak": "Série de {{count}} jours",
+      "dailyQuests": "Quêtes du jour",
+      "quest1": "Résoudre 2 problèmes d'algorithmique",
+      "quest2": "Entraînement de 30 minutes",
+      "quest3": "Lire 20 pages",
+      "stats": {
+        "strength": "Force",
+        "intelligence": "Intelligence",
+        "discipline": "Discipline",
+        "consistency": "Régularité"
+      }
+    },
+    "features": {
+      "quests": {
+        "title": "Des quêtes adaptées à ta vie",
+        "text": "Des quêtes quotidiennes et hebdomadaires générées selon tes objectifs et le temps dont tu disposes vraiment."
+      },
+      "ranks": {
+        "title": "Des rangs qui se méritent",
+        "text": "De E IV à SS. Atteindre le rang B et au-delà exige la preuve de vraies réussites."
+      },
+      "friends": {
+        "title": "Progresse avec tes amis",
+        "text": "Compare rangs, séries et titres avec ceux qui te poussent à avancer."
+      }
+    }
+  },
+  "auth": {
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe",
+    "login": {
+      "title": "Bon retour, joueur",
+      "subtitle": "Connecte-toi pour continuer ta progression.",
+      "identifier": "E-mail ou nom d'utilisateur",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "noAccount": "Nouveau ici ?",
+      "registerLink": "Créer un compte"
+    },
+    "register": {
+      "title": "Commence ton éveil",
+      "subtitle": "Crée ton compte de joueur.",
+      "username": "Nom d'utilisateur",
+      "usernameHint": "3 à 20 caractères : lettres, chiffres et _",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "passwordHint": "Au moins 8 caractères, avec une lettre et un chiffre",
+      "confirmPassword": "Confirmer le mot de passe",
+      "submit": "Créer un compte",
+      "hasAccount": "Déjà joueur ?",
+      "loginLink": "Se connecter"
+    }
+  },
+  "dashboard": {
+    "welcome": "Bienvenue, {{username}}",
+    "subtitle": "Ton compte est prêt.",
+    "comingSoon": "Ta fenêtre de statut, tes quêtes et tes statistiques arrivent dans les prochaines mises à jour du système."
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "text": "Cette zone du système n'existe pas."
+  },
+  "errors": {
+    "REQUIRED": "Ce champ est obligatoire",
+    "USERNAME_TOO_SHORT": "Au moins 3 caractères",
+    "USERNAME_TOO_LONG": "20 caractères maximum",
+    "USERNAME_INVALID_CHARS": "Uniquement des lettres, des chiffres et _",
+    "EMAIL_INVALID": "Saisis une adresse e-mail valide",
+    "EMAIL_TOO_LONG": "Cet e-mail est trop long",
+    "PASSWORD_TOO_SHORT": "Au moins 8 caractères",
+    "PASSWORD_TOO_LONG": "Ce mot de passe est trop long",
+    "PASSWORD_NEEDS_LETTER": "Doit contenir au moins une lettre",
+    "PASSWORD_NEEDS_DIGIT": "Doit contenir au moins un chiffre",
+    "PASSWORDS_DONT_MATCH": "Les mots de passe ne correspondent pas",
+    "TIMEZONE_INVALID": "Fuseau horaire invalide",
+    "LANGUAGE_INVALID": "Langue invalide",
+    "INVALID_CREDENTIALS": "E-mail/nom d'utilisateur ou mot de passe incorrect",
+    "EMAIL_TAKEN": "Cet e-mail est déjà utilisé",
+    "USERNAME_TAKEN": "Ce nom d'utilisateur est déjà pris",
+    "ACCOUNT_EXISTS": "Ce nom d'utilisateur ou cet e-mail est déjà pris",
+    "TOO_MANY_REQUESTS": "Trop de tentatives. Réessaie dans quelques minutes.",
+    "UNAUTHENTICATED": "Reconnecte-toi, s'il te plaît",
+    "NETWORK_ERROR": "Impossible de joindre le serveur. Vérifie ta connexion.",
+    "UNKNOWN": "Une erreur est survenue. Réessaie."
+  }
+}

@@ -1,20 +1,36 @@
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
-import { env } from './config/env.js';
-import { healthRouter } from './modules/health/health.routes.js';
+import cookieParser from 'cookie-parser';
+import { env, isProduction } from './config/env.js';
+import { createAuthLimiter } from './middleware/rateLimit.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
+import { healthRouter } from './modules/health/health.routes.js';
+import { createAuthRouter } from './modules/auth/auth.routes.js';
+
+type AppOptions = {
+  // Tests lower this to check the limiter without making hundreds of requests
+  authRateLimitMax?: number;
+};
 
 // Builds the Express app without starting it, so tests can import it directly.
-export function createApp() {
+export function createApp(options: AppOptions = {}) {
   const app = express();
 
   app.disable('x-powered-by');
+  // In production the app runs behind the hosting provider's proxy: trust it so
+  // req.ip is the real client IP (needed for rate limiting).
+  if (isProduction) app.set('trust proxy', 1);
+
   app.use(helmet()); // security-related HTTP headers
   app.use(cors({ origin: env.CLIENT_ORIGIN, credentials: true })); // only our frontend
   app.use(express.json({ limit: '100kb' })); // parse JSON bodies, reject huge ones
+  app.use(cookieParser()); // makes req.cookies available
+
+  const authLimiter = createAuthLimiter(options.authRateLimitMax ?? env.AUTH_RATE_LIMIT_MAX);
 
   app.use('/api/health', healthRouter);
+  app.use('/api/auth', createAuthRouter(authLimiter));
 
   app.use(notFound);
   app.use(errorHandler);
