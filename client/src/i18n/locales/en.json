@@ -1,0 +1,109 @@
+{
+  "common": {
+    "appName": "SilentLeveling",
+    "loading": "Loading…",
+    "login": "Log in",
+    "register": "Create account",
+    "logout": "Log out",
+    "language": "Language",
+    "backHome": "Back to home",
+    "mainNavigation": "Main navigation"
+  },
+  "landing": {
+    "eyebrow": "System notice",
+    "title": "Your real life. Leveled up.",
+    "subtitle": "Turn your goals into quests. Earn XP, grow your stats and climb from rank E to SS — the highest ranks are only unlocked by real-life achievements.",
+    "ctaStart": "Start your journey",
+    "ctaLogin": "I already have an account",
+    "preview": {
+      "title": "Status window",
+      "player": "Player",
+      "level": "Level",
+      "rank": "Rank",
+      "xp": "XP",
+      "streak": "{{count}}-day streak",
+      "dailyQuests": "Daily quests",
+      "quest1": "Solve 2 algorithm problems",
+      "quest2": "30-minute workout",
+      "quest3": "Read 20 pages",
+      "stats": {
+        "strength": "Strength",
+        "intelligence": "Intelligence",
+        "discipline": "Discipline",
+        "consistency": "Consistency"
+      }
+    },
+    "features": {
+      "quests": {
+        "title": "Quests that fit your life",
+        "text": "Daily and weekly quests generated from your goals and the time you really have."
+      },
+      "ranks": {
+        "title": "Ranks you have to earn",
+        "text": "From E IV to SS. Reaching rank B and above requires proof of real achievements."
+      },
+      "friends": {
+        "title": "Rise with your friends",
+        "text": "Compare ranks, streaks and titles with the people who push you forward."
+      }
+    }
+  },
+  "auth": {
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "login": {
+      "title": "Welcome back, player",
+      "subtitle": "Log in to continue your progression.",
+      "identifier": "Email or username",
+      "password": "Password",
+      "submit": "Log in",
+      "noAccount": "New here?",
+      "registerLink": "Create an account"
+    },
+    "register": {
+      "title": "Begin your awakening",
+      "subtitle": "Create your player account.",
+      "username": "Username",
+      "usernameHint": "3–20 characters: letters, numbers and _",
+      "email": "Email",
+      "password": "Password",
+      "passwordHint": "At least 8 characters, with a letter and a number",
+      "confirmPassword": "Confirm password",
+      "submit": "Create account",
+      "hasAccount": "Already a player?",
+      "loginLink": "Log in"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome, {{username}}",
+    "subtitle": "Your account is ready.",
+    "comingSoon": "Your status window, quests and stats arrive in the next updates of the system."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "This area of the system does not exist."
+  },
+  "errors": {
+    "REQUIRED": "This field is required",
+    "USERNAME_TOO_SHORT": "At least 3 characters",
+    "USERNAME_TOO_LONG": "At most 20 characters",
+    "USERNAME_INVALID_CHARS": "Only letters, numbers and _",
+    "EMAIL_INVALID": "Enter a valid email address",
+    "EMAIL_TOO_LONG": "This email is too long",
+    "PASSWORD_TOO_SHORT": "At least 8 characters",
+    "PASSWORD_TOO_LONG": "This password is too long",
+    "PASSWORD_NEEDS_LETTER": "Must contain at least one letter",
+    "PASSWORD_NEEDS_DIGIT": "Must contain at least one number",
+    "PASSWORDS_DONT_MATCH": "Passwords do not match",
+    "TIMEZONE_INVALID": "Invalid time zone",
+    "LANGUAGE_INVALID": "Invalid language",
+    "INVALID_CREDENTIALS": "Wrong email/username or password",
+    "EMAIL_TAKEN": "This email is already registered",
+    "USERNAME_TAKEN": "This username is already taken",
+    "ACCOUNT_EXISTS": "This username or email is already taken",
+    "TOO_MANY_REQUESTS": "Too many attempts. Please wait a few minutes.",
+    "UNAUTHENTICATED": "Please log in again",
+    "NETWORK_ERROR": "Cannot reach the server. Check your connection.",
+    "UNKNOWN": "Something went wrong. Please try again."
+  }
+}

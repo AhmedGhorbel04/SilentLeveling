@@ -1,14 +1,23 @@
 @import 'tailwindcss';
 
 /*
- * Design tokens (SRS §9). Tailwind turns each `--color-*` into utilities,
- * e.g. `bg-void`, `text-arcane-400`, `border-abyss-border`.
+ * Design tokens (SRS §9). Tailwind turns each variable into utilities,
+ * e.g. `bg-void`, `text-arcane-400`, `font-display`, `shadow-glow`.
+ *
+ * RTL rule for the whole project: always use logical utilities
+ * (ms-/me-, ps-/pe-, start-/end-, text-start) instead of left/right,
+ * so the Arabic layout mirrors itself automatically.
  */
 @theme {
+  --font-sans: 'Inter Variable', 'Noto Sans Arabic Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Rajdhani', 'Noto Sans Arabic Variable', ui-sans-serif, sans-serif;
+
   --color-void: #05060f;
   --color-abyss: #0b1026;
+  --color-abyss-light: #111833;
   --color-abyss-border: #1c2547;
 
+  --color-arcane-300: #c4b5fd;
   --color-arcane-400: #a78bfa;
   --color-arcane-500: #8b5cf6;
   --color-arcane-600: #7c3aed;
@@ -22,6 +31,20 @@
   --color-rarity-mythic: #e11d48;
 
   --shadow-glow: 0 0 24px -4px rgb(124 58 237 / 0.55);
+  --shadow-glow-sm: 0 0 12px -2px rgb(124 58 237 / 0.6);
+
+  --animate-fade-up: fade-up 0.5s ease-out both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
 @layer base {
@@ -30,7 +53,41 @@
   }
 
   body {
-    @apply min-h-screen bg-void text-slate-200 antialiased;
+    @apply min-h-screen bg-void font-sans text-slate-200 antialiased;
+    background-image:
+      radial-gradient(circle at 10% -10%, rgb(124 58 237 / 0.16), transparent 45%),
+      radial-gradient(circle at 90% 110%, rgb(59 130 246 / 0.12), transparent 45%);
+    background-attachment: fixed;
+  }
+
+  /* Arabic text reads better with the Arabic font first */
+  :lang(ar) body {
+    font-family: 'Noto Sans Arabic Variable', 'Inter Variable', ui-sans-serif, sans-serif;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-arcane-400;
+  }
+}
+
+@layer components {
+  /* The "system window" panel used across the app, with glowing corner brackets */
+  .system-panel {
+    @apply relative rounded-lg border border-abyss-border bg-abyss/80 backdrop-blur-sm;
+  }
+
+  .system-panel::before,
+  .system-panel::after {
+    content: '';
+    @apply pointer-events-none absolute size-4 border-arcane-500;
+  }
+
+  .system-panel::before {
+    @apply -start-px -top-px rounded-ss-lg border-s-2 border-t-2;
+  }
+
+  .system-panel::after {
+    @apply -end-px -bottom-px rounded-ee-lg border-e-2 border-b-2;
   }
 }
 
