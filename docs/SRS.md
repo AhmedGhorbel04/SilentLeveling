@@ -717,13 +717,14 @@ Status codes used: `200`, `201`, `204`, `400` validation, `401` not logged in, `
 
 ### Goals
 
-| Method               | Path                        | Description                                      |
-| -------------------- | --------------------------- | ------------------------------------------------ |
-| GET                  | `/goals` · POST `/goals`    | List / create goals. 🔒                          |
-| GET · PATCH · DELETE | `/goals/:id`                | Read (with milestones) / update / delete. 🔒     |
-| POST                 | `/goals/:id/milestones`     | Add milestone. 🔒                                |
-| PATCH · DELETE       | `/milestones/:id`           | Update (title, position, completed) / delete. 🔒 |
-| GET                  | `/goal-templates?category=` | Suggested goal breakdowns. 🔒                    |
+| Method         | Path                     | Description                                                                                                                                           |
+| -------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GET            | `/goals` · POST `/goals` | List goals (with milestones and progress, active first) / create a goal, optionally with its milestones (max 10 active goals, 20 milestones each). 🔒 |
+| PATCH · DELETE | `/goals/:id`             | Update (fields, or status: complete / abandon / reopen) / delete with its milestones; linked quests are kept. 🔒                                      |
+| POST           | `/goals/:id/milestones`  | Add milestone at the end. 🔒                                                                                                                          |
+| PATCH · DELETE | `/milestones/:id`        | Update (title, position, completed) / delete. 🔒                                                                                                      |
+
+Goal templates (FR-33) are not served by the API: they only pre-fill the goal form, so they live in the frontend (`client/src/features/goals/goalTemplates.ts`). Completing a goal gives no XP, so goals cannot be used to farm XP; the XP comes from the quests completed along the way.
 
 ### Progression
 

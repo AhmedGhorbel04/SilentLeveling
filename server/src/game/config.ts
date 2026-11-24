@@ -104,6 +104,11 @@ export const QUESTS_TO_LEVEL_UP_SKILL: Record<SkillLevel, number | null> = {
   ADVANCED: null, // highest level
 };
 
+// ---- Goals (SRS §4.4) ----
+
+export const MAX_ACTIVE_GOALS = 10;
+export const MAX_MILESTONES_PER_GOAL = 20;
+
 // The rollover never processes more days than this (a player back after months away)
 export const ROLLOVER_MAX_DAYS = 60;
 

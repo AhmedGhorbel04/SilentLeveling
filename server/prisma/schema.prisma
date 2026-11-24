@@ -70,6 +70,7 @@ model User {
   focusAreas     FocusArea[]
   quests         Quest[]
   dailyLogs      DailyLog[]
+  goals          Goal[]
 
   @@map("users")
 }
@@ -162,6 +163,8 @@ model Quest {
   id          String      @id @default(uuid()) @db.Uuid
   userId      String      @map("user_id") @db.Uuid
   templateId  String?     @map("template_id") @db.Uuid
+  // Custom quests can be linked to a milestone of one of the player's goals
+  milestoneId String?     @map("milestone_id") @db.Uuid
   source      QuestSource
   type        QuestType
   // Only for custom quests; system quests take their title from the template
@@ -184,11 +187,55 @@ model Quest {
 
   user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   template      QuestTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  // Deleting a milestone keeps its quests, just without the link
+  milestone     Milestone?     @relation(fields: [milestoneId], references: [id], onDelete: SetNull)
   xpTransaction XpTransaction?
 
   @@index([userId, questDate])
   @@index([userId, status])
   @@map("quests")
+}
+
+enum GoalStatus {
+  ACTIVE
+  COMPLETED
+  ABANDONED
+}
+
+// A long-term goal ("Get a Java internship"), broken into milestones (SRS §4.4)
+model Goal {
+  id          String     @id @default(uuid()) @db.Uuid
+  userId      String     @map("user_id") @db.Uuid
+  title       String     @db.VarChar(120)
+  description String?    @db.VarChar(1000)
+  category    Category
+  targetDate  DateTime?  @map("target_date") @db.Date
+  status      GoalStatus @default(ACTIVE)
+  completedAt DateTime?  @map("completed_at")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  milestones Milestone[]
+
+  @@index([userId, status])
+  @@map("goals")
+}
+
+model Milestone {
+  id          String    @id @default(uuid()) @db.Uuid
+  goalId      String    @map("goal_id") @db.Uuid
+  title       String    @db.VarChar(120)
+  // Order inside the goal: 0, 1, 2...
+  position    Int
+  completedAt DateTime? @map("completed_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  goal   Goal    @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  quests Quest[]
+
+  @@index([goalId, position])
+  @@map("milestones")
 }
 
 // One row per finished day: used for the streak, the discipline rate and the calendar

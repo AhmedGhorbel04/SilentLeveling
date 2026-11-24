@@ -22,7 +22,7 @@ import {
 } from '../../utils/time.js';
 import { awardXp, type AwardXpResult } from '../progression/progression.service.js';
 import { QUEST_TRANSACTION_OPTIONS, runRollover } from './rollover.service.js';
-import { toQuestDto, type QuestDto } from './quest.mapper.js';
+import { questInclude, toQuestDto, type QuestDto } from './quest.mapper.js';
 import { customXpEarnedToday } from './customQuest.service.js';
 
 // Every operation first runs the rollover, inside the same transaction, so it always
@@ -62,7 +62,7 @@ export function getTodayQuests(userId: string, now = new Date()): Promise<TodayQ
           },
         ],
       },
-      include: { template: true },
+      include: questInclude,
       orderBy: { createdAt: 'asc' },
     });
     const dtos = quests.map(toQuestDto);
@@ -133,7 +133,7 @@ export function completeQuest(
     const completed = await tx.quest.update({
       where: { id: questId },
       data: { xpAwarded: xp },
-      include: { template: true },
+      include: questInclude,
     });
 
     // Skill level in the quest's category (20 quests → intermediate, 40 → advanced)
@@ -193,7 +193,7 @@ export function rerollQuest(
 
     const quest = await tx.quest.findFirst({
       where: { id: questId, userId },
-      include: { template: true },
+      include: questInclude,
     });
     if (!quest) throw new AppError(404, 'QUEST_NOT_FOUND', 'Quest not found');
     if (!toQuestDto(quest).rerollable || !quest.template) {
@@ -253,7 +253,7 @@ export function rerollQuest(
         questDate: quest.questDate,
         dueAt: quest.dueAt,
       },
-      include: { template: true },
+      include: questInclude,
     });
     const { rerollsUsed } = await tx.user.update({
       where: { id: userId },

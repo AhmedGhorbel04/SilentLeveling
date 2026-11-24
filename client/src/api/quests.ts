@@ -24,6 +24,7 @@ export type Quest = {
   completedAt: string | null;
   title: { en: string; fr: string; ar: string };
   description: string | null;
+  milestone: { id: string; title: string; goalTitle: string } | null;
   rerollable: boolean;
 };
 
@@ -65,6 +66,7 @@ export type CustomQuestRequest = {
   category: Category;
   difficulty: CustomDifficulty;
   dueDate: string; // YYYY-MM-DD
+  milestoneId: string | null;
 };
 
 export const questsApi = {

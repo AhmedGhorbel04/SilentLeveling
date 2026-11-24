@@ -130,7 +130,9 @@
       "capNote": "Your own quests share a daily limit of 150 XP. Left today: {{left}} XP.",
       "cancel": "Cancel",
       "create": "Create quest",
-      "save": "Save"
+      "save": "Save",
+      "milestone": "Linked milestone (optional)",
+      "noMilestone": "Not linked to a goal"
     }
   },
   "categories": {
@@ -243,6 +245,64 @@
     "DUE_DATE_OUT_OF_RANGE": "Choose a date between today and 30 days from now",
     "TOO_MANY_CUSTOM_QUESTS": "You already have 20 active quests. Finish or delete some first.",
     "NOTHING_TO_UPDATE": "Nothing to save",
-    "UNKNOWN": "Something went wrong. Please try again."
+    "UNKNOWN": "Something went wrong. Please try again.",
+    "GOAL_NOT_FOUND": "This goal does not exist",
+    "MILESTONE_NOT_FOUND": "This milestone does not exist",
+    "TOO_MANY_GOALS": "You already have 10 active goals. Complete or abandon one first.",
+    "TOO_MANY_MILESTONES": "A goal can have at most 20 milestones",
+    "TARGET_DATE_INVALID": "Invalid date",
+    "STATUS_INVALID": "Invalid status",
+    "COMPLETED_INVALID": "Invalid value",
+    "POSITION_INVALID": "Invalid position"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "goals": "Goals"
+  },
+  "goals": {
+    "eyebrow": "Long-term goals",
+    "title": "Goals",
+    "subtitle": "Break your big goals into milestones and follow your progress.",
+    "new": "New goal",
+    "emptyTitle": "No goals yet",
+    "emptyText": "Start from a template or create your own goal.",
+    "activeCount": "Active goals: {{count}} / 10",
+    "target": "Target: {{date}}",
+    "status": {
+      "ACTIVE": "Active",
+      "COMPLETED": "Completed",
+      "ABANDONED": "Abandoned"
+    },
+    "progress": "{{done}} / {{total}} milestones",
+    "progressLabel": "Progress of {{title}}",
+    "linkedQuests": "Linked quests: {{count}}",
+    "moveUp": "Move up: {{title}}",
+    "moveDown": "Move down: {{title}}",
+    "deleteMilestone": "Delete milestone: {{title}}",
+    "newMilestone": "New milestone",
+    "add": "Add",
+    "complete": "Mark as completed",
+    "edit": "Edit",
+    "abandon": "Abandon",
+    "reopen": "Reopen",
+    "delete": "Delete",
+    "confirmDelete": "Delete the goal \"{{title}}\" and its milestones?",
+    "form": {
+      "createTitle": "New goal",
+      "editTitle": "Edit goal",
+      "template": "Start from a template",
+      "noTemplate": "No template, start from scratch",
+      "title": "Title",
+      "description": "Description (optional)",
+      "category": "Category",
+      "targetDate": "Target date (optional)",
+      "milestones": "Milestones",
+      "milestoneNumber": "Milestone {{number}}",
+      "removeMilestone": "Remove milestone {{number}}",
+      "addMilestone": "Add a milestone",
+      "cancel": "Cancel",
+      "create": "Create goal",
+      "save": "Save"
+    }
   }
 }
