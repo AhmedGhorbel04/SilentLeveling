@@ -41,6 +41,11 @@ export const PENALTY_QUEST_XP = 25;
 // Custom quests cannot be Extreme, and give at most this much XP per day in total
 export const CUSTOM_QUEST_MAX_DIFFICULTY: Difficulty = 'HARD';
 export const CUSTOM_QUEST_DAILY_XP_CAP = 150;
+export const CUSTOM_QUEST_DIFFICULTIES = ['EASY', 'NORMAL', 'HARD'] as const;
+// A custom quest can be due at most this many days ahead
+export const CUSTOM_QUEST_MAX_DAYS_AHEAD = 30;
+// Prevents filling the database with thousands of quests
+export const MAX_ACTIVE_CUSTOM_QUESTS = 20;
 
 // ---- Streak (SRS §3.7) ----
 

@@ -10,6 +10,7 @@ import { createAuthRouter } from './modules/auth/auth.routes.js';
 import { ranksRouter } from './modules/progression/ranks.routes.js';
 import { onboardingRouter } from './modules/onboarding/onboarding.routes.js';
 import { questRouter } from './modules/quests/quest.routes.js';
+import { dashboardRouter } from './modules/dashboard/dashboard.routes.js';
 
 type AppOptions = {
   // Tests lower this to check the limiter without making hundreds of requests
@@ -37,6 +38,7 @@ export function createApp(options: AppOptions = {}) {
   app.use('/api/ranks', ranksRouter);
   app.use('/api/onboarding', onboardingRouter);
   app.use('/api/quests', questRouter);
+  app.use('/api/me', dashboardRouter);
 
   app.use(notFound);
   app.use(errorHandler);
