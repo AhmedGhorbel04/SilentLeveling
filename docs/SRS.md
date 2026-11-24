@@ -740,15 +740,17 @@ Achievements are checked after every quest completion and during the daily rollo
 
 ### Friends and profiles
 
-| Method | Path                                        | Description                                               |
-| ------ | ------------------------------------------- | --------------------------------------------------------- |
-| GET    | `/friends`                                  | Friend list. 🔒                                           |
-| GET    | `/friends/requests`                         | Incoming and outgoing requests. 🔒                        |
-| POST   | `/friends/requests`                         | Send request `{ username }`. 🔒                           |
-| POST   | `/friends/requests/:id/accept` · `/decline` | Respond. 🔒                                               |
-| DELETE | `/friends/:userId`                          | Remove friend. 🔒                                         |
-| GET    | `/friends/ranking?period=weekly\|all`       | Ranking of me + friends. 🔒                               |
-| GET    | `/users/:username`                          | Full profile if friend (or self), mini card otherwise. 🔒 |
+| Method | Path                                  | Description                                               |
+| ------ | ------------------------------------- | --------------------------------------------------------- |
+| GET    | `/friends`                            | Friend list. 🔒                                           |
+| GET    | `/friends/requests`                   | Incoming and outgoing requests. 🔒                        |
+| POST   | `/friends/requests`                   | Send request `{ username }`. 🔒                           |
+| POST   | `/friends/requests/:id/accept`        | Accept a request sent to me. 🔒                           |
+| DELETE | `/friends/requests/:id`               | Decline (received) or cancel (sent) a request. 🔒         |
+| DELETE | `/friends/:username`                  | Remove friend. 🔒                                         |
+| PATCH  | `/me/profile`                         | Edit my bio (max 160 characters). 🔒                      |
+| GET    | `/friends/ranking?period=weekly\|all` | Ranking of me + friends. 🔒                               |
+| GET    | `/users/:username`                    | Full profile if friend (or self), mini card otherwise. 🔒 |
 
 ### Legendary quests and claims
 
