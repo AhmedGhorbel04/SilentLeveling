@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { authApi, type CurrentUser } from '../../api/auth';
-import { ApiError } from '../../api/client';
 
 // The logged-in player is stored in TanStack Query's cache under this key.
 // Every component that calls useCurrentUser() shares the same data and request.
@@ -11,15 +10,7 @@ export const currentUserKey = ['currentUser'] as const;
 export function useCurrentUser() {
   return useQuery<CurrentUser | null>({
     queryKey: currentUserKey,
-    queryFn: async () => {
-      try {
-        const { user } = await authApi.me();
-        return user;
-      } catch (error) {
-        if (error instanceof ApiError && error.status === 401) return null;
-        throw error;
-      }
-    },
+    queryFn: async () => (await authApi.session()).user,
     staleTime: 5 * 60 * 1000,
     retry: false,
   });

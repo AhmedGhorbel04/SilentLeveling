@@ -3,19 +3,11 @@ import { AuthLayout } from './layouts/AuthLayout';
 import { AppLayout } from './layouts/AppLayout';
 import { AdminRoute, GuestRoute, OnboardingRoute, ProtectedRoute } from './routes/guards';
 import { LandingPage } from './pages/LandingPage';
-import { LoginPage } from './features/auth/LoginPage';
-import { RegisterPage } from './features/auth/RegisterPage';
-import { OnboardingPage } from './features/onboarding/OnboardingPage';
-import { DashboardPage } from './pages/DashboardPage';
-import { GoalsPage } from './features/goals/GoalsPage';
-import { AchievementsPage } from './features/achievements/AchievementsPage';
-import { FriendsPage } from './features/friends/FriendsPage';
-import { ProfilePage } from './features/friends/ProfilePage';
-import { LegendaryPage } from './features/claims/LegendaryPage';
-import { AdminPage } from './features/claims/AdminPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 // All pages of the app. Nested routes share their parent's layout or guard.
+// Pages behind the login are loaded on demand (`lazy`), so the landing and auth
+// pages download only the code they need.
 export const router = createBrowserRouter([
   { path: '/', element: <LandingPage /> },
   {
@@ -24,8 +16,16 @@ export const router = createBrowserRouter([
       {
         element: <AuthLayout />,
         children: [
-          { path: '/login', element: <LoginPage /> },
-          { path: '/register', element: <RegisterPage /> },
+          {
+            path: '/login',
+            lazy: () =>
+              import('./features/auth/LoginPage').then((m) => ({ Component: m.LoginPage })),
+          },
+          {
+            path: '/register',
+            lazy: () =>
+              import('./features/auth/RegisterPage').then((m) => ({ Component: m.RegisterPage })),
+          },
         ],
       },
     ],
@@ -35,7 +35,15 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <AppLayout />,
-        children: [{ path: '/onboarding', element: <OnboardingPage /> }],
+        children: [
+          {
+            path: '/onboarding',
+            lazy: () =>
+              import('./features/onboarding/OnboardingPage').then((m) => ({
+                Component: m.OnboardingPage,
+              })),
+          },
+        ],
       },
     ],
   },
@@ -45,13 +53,57 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          { path: '/dashboard', element: <DashboardPage /> },
-          { path: '/goals', element: <GoalsPage /> },
-          { path: '/achievements', element: <AchievementsPage /> },
-          { path: '/friends', element: <FriendsPage /> },
-          { path: '/u/:username', element: <ProfilePage /> },
-          { path: '/legendary', element: <LegendaryPage /> },
-          { element: <AdminRoute />, children: [{ path: '/admin', element: <AdminPage /> }] },
+          {
+            path: '/dashboard',
+            lazy: () =>
+              import('./pages/DashboardPage').then((m) => ({ Component: m.DashboardPage })),
+          },
+          {
+            path: '/progress',
+            lazy: () =>
+              import('./features/progress/ProgressPage').then((m) => ({
+                Component: m.ProgressPage,
+              })),
+          },
+          {
+            path: '/goals',
+            lazy: () =>
+              import('./features/goals/GoalsPage').then((m) => ({ Component: m.GoalsPage })),
+          },
+          {
+            path: '/achievements',
+            lazy: () =>
+              import('./features/achievements/AchievementsPage').then((m) => ({
+                Component: m.AchievementsPage,
+              })),
+          },
+          {
+            path: '/friends',
+            lazy: () =>
+              import('./features/friends/FriendsPage').then((m) => ({ Component: m.FriendsPage })),
+          },
+          {
+            path: '/u/:username',
+            lazy: () =>
+              import('./features/friends/ProfilePage').then((m) => ({ Component: m.ProfilePage })),
+          },
+          {
+            path: '/legendary',
+            lazy: () =>
+              import('./features/claims/LegendaryPage').then((m) => ({
+                Component: m.LegendaryPage,
+              })),
+          },
+          {
+            element: <AdminRoute />,
+            children: [
+              {
+                path: '/admin',
+                lazy: () =>
+                  import('./features/claims/AdminPage').then((m) => ({ Component: m.AdminPage })),
+              },
+            ],
+          },
         ],
       },
     ],

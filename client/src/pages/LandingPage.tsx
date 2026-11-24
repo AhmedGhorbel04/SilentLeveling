@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { StatBar } from '../components/StatBar';
 import { Logo } from '../components/ui/Logo';
 import { buttonClasses } from '../components/ui/buttonClasses';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
@@ -132,18 +133,13 @@ function StatusWindowPreview() {
 
       <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3">
         {stats.map((stat) => (
-          <div key={stat.key}>
-            <div className="flex justify-between text-xs">
-              <dt className="text-slate-400">{t(`landing.preview.stats.${stat.key}`)}</dt>
-              <dd className="font-semibold text-slate-200">{stat.value}</dd>
-            </div>
-            <div className="mt-1 h-1 rounded-full bg-void">
-              <div
-                className="h-full rounded-full bg-arcane-500/80"
-                style={{ width: `${stat.value}%` }}
-              />
-            </div>
-          </div>
+          <StatBar
+            key={stat.key}
+            name={t(`landing.preview.stats.${stat.key}`)}
+            value={stat.value}
+            max={100}
+            small
+          />
         ))}
       </dl>
 

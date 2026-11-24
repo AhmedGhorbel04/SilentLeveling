@@ -23,9 +23,15 @@ describe('i18n', () => {
   });
 
   it('has exactly the same keys in all three languages', () => {
-    const englishKeys = keysOf(en).sort();
+    // Plural forms differ by language (Arabic has six: zero, one, two, few, many, other),
+    // so "days_one" and "days_few" both count as the key "days"
+    const baseKeys = (object: object) =>
+      [
+        ...new Set(keysOf(object).map((key) => key.replace(/_(zero|one|two|few|many|other)$/, ''))),
+      ].sort();
+    const englishKeys = baseKeys(en);
 
-    expect(keysOf(fr).sort()).toEqual(englishKeys);
-    expect(keysOf(ar).sort()).toEqual(englishKeys);
+    expect(baseKeys(fr)).toEqual(englishKeys);
+    expect(baseKeys(ar)).toEqual(englishKeys);
   });
 });

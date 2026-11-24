@@ -12,6 +12,12 @@ export default defineConfig({
       '/api': 'http://localhost:4000',
     },
   },
+  // `npm run preview` (production build) talks to the local API the same way
+  preview: {
+    proxy: {
+      '/api': 'http://localhost:4000',
+    },
+  },
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],

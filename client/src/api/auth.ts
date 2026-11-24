@@ -35,5 +35,5 @@ export const authApi = {
   login: (data: LoginRequest) =>
     apiRequest<UserResponse>('/auth/login', { method: 'POST', body: data }),
   logout: () => apiRequest<void>('/auth/logout', { method: 'POST' }),
-  me: () => apiRequest<UserResponse>('/auth/me'),
+  session: () => apiRequest<{ user: CurrentUser | null }>('/auth/session'),
 };
