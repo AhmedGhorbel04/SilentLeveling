@@ -36,7 +36,9 @@ async function buildSnapshot(tx: Tx, userId: string): Promise<PlayerSnapshot> {
     questsCompleted,
     questsCompletedBefore8am: Number(early[0]?.count ?? 0),
     penaltyQuestsCompleted,
-    friends: 0, // friends arrive in Milestone 7
+    friends: await tx.friendship.count({
+      where: { status: 'ACCEPTED', OR: [{ requesterId: userId }, { addresseeId: userId }] },
+    }),
     verifiedAchievements: verified.legendary + verified.mythic,
   };
 }
