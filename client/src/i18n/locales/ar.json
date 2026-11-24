@@ -253,11 +253,14 @@
     "TARGET_DATE_INVALID": "تاريخ غير صالح",
     "STATUS_INVALID": "حالة غير صالحة",
     "COMPLETED_INVALID": "قيمة غير صالحة",
-    "POSITION_INVALID": "موضع غير صالح"
+    "POSITION_INVALID": "موضع غير صالح",
+    "TITLE_NOT_EARNED": "لم تحصل على هذا اللقب بعد",
+    "NOTIFICATION_NOT_FOUND": "هذا الإشعار غير موجود"
   },
   "nav": {
     "dashboard": "لوحة التحكم",
-    "goals": "الأهداف"
+    "goals": "الأهداف",
+    "achievements": "الإنجازات"
   },
   "goals": {
     "eyebrow": "أهداف طويلة المدى",
@@ -303,6 +306,93 @@
       "cancel": "إلغاء",
       "create": "إنشاء الهدف",
       "save": "حفظ"
+    }
+  },
+  "rarity": {
+    "COMMON": "شائع",
+    "RARE": "نادر",
+    "EPIC": "ملحمي",
+    "LEGENDARY": "أسطوري",
+    "MYTHIC": "خرافي"
+  },
+  "achievementsPage": {
+    "eyebrow": "قاعة الإنجازات",
+    "title": "الإنجازات",
+    "unlocked": "{{count}} / {{total}} مفتوحة",
+    "titlesHeading": "الألقاب",
+    "titlesText": "اختر اللقب الذي يظهر بجانب اسمك.",
+    "noTitles": "افتح الإنجازات لتحصل على ألقاب.",
+    "noTitle": "بلا لقب",
+    "grantsTitle": "اللقب: {{title}} ({{rarity}})",
+    "unlockedOn": "فُتح في {{date}}",
+    "locked": "مقفل"
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "open": "الإشعارات، غير المقروءة: {{count}}",
+    "markAllRead": "تحديد الكل كمقروء",
+    "empty": "لا توجد إشعارات بعد.",
+    "unread": "غير مقروء",
+    "achievement": "إنجاز جديد: {{name}}",
+    "rankUp": "رتبة جديدة: {{rank}}",
+    "penalty": "فاتك يوم: أكمل مهمة العقوبة اليوم لإنقاذ سلسلتك ({{count}})"
+  },
+  "achievements": {
+    "FIRST_STEP": {
+      "name": "الخطوة الأولى",
+      "description": "أكمل مهمتك الأولى"
+    },
+    "AWAKENED": {
+      "name": "الصحوة",
+      "description": "ابلغ المستوى 5"
+    },
+    "STREAK_7": {
+      "name": "أسبوع من الثبات",
+      "description": "حقّق سلسلة من 7 أيام"
+    },
+    "STREAK_30": {
+      "name": "ثلاثون يومًا",
+      "description": "حقّق سلسلة من 30 يومًا"
+    },
+    "STREAK_100": {
+      "name": "مئة يوم",
+      "description": "حقّق سلسلة من 100 يوم"
+    },
+    "QUESTS_100": {
+      "name": "مئة مهمة",
+      "description": "أكمل 100 مهمة من مهام النظام"
+    },
+    "EARLY_RISER": {
+      "name": "محارب الفجر",
+      "description": "أكمل 20 مهمة قبل الساعة 8:00"
+    },
+    "REDEMPTION": {
+      "name": "الخلاص",
+      "description": "أكمل مهمة عقوبة"
+    },
+    "ALLY": {
+      "name": "الحليف الأول",
+      "description": "أضف صديقك الأول"
+    },
+    "RANK_C": {
+      "name": "الرتبة C",
+      "description": "ابلغ الرتبة C"
+    },
+    "RANK_B": {
+      "name": "الرتبة B",
+      "description": "ابلغ الرتبة B"
+    },
+    "RANK_A": {
+      "name": "الرتبة A",
+      "description": "ابلغ الرتبة A"
+    },
+    "RANK_S": {
+      "name": "الرتبة S",
+      "description": "ابلغ الرتبة S"
+    },
+    "FIRST_LEGENDARY": {
+      "name": "إنجاز في الحياة الحقيقية",
+      "description": "احصل على توثيق إنجاز حقيقي"
     }
   }
 }

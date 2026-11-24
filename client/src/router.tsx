@@ -8,6 +8,7 @@ import { RegisterPage } from './features/auth/RegisterPage';
 import { OnboardingPage } from './features/onboarding/OnboardingPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { GoalsPage } from './features/goals/GoalsPage';
+import { AchievementsPage } from './features/achievements/AchievementsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 // All pages of the app. Nested routes share their parent's layout or guard.
@@ -42,6 +43,7 @@ export const router = createBrowserRouter([
         children: [
           { path: '/dashboard', element: <DashboardPage /> },
           { path: '/goals', element: <GoalsPage /> },
+          { path: '/achievements', element: <AchievementsPage /> },
         ],
       },
     ],

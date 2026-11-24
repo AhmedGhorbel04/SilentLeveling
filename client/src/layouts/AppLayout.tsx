@@ -4,11 +4,13 @@ import { Logo } from '../components/ui/Logo';
 import { Button } from '../components/ui/Button';
 import { Avatar } from '../components/Avatar';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
+import { NotificationBell } from '../features/achievements/NotificationBell';
 import { useCurrentUser, useLogout } from '../features/auth/useAuth';
 
 const PAGES = [
   { to: '/dashboard', label: 'nav.dashboard' },
   { to: '/goals', label: 'nav.goals' },
+  { to: '/achievements', label: 'nav.achievements' },
 ] as const;
 
 // Layout of the logged-in part of the app
@@ -20,7 +22,9 @@ export function AppLayout() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b border-abyss-border bg-void/70 backdrop-blur">
+      {/* relative z-20: the header (and the notification panel opening from it) stays above
+          the page content, whose blurred and animated panels create their own layers */}
+      <header className="relative z-20 border-b border-abyss-border bg-void/70 backdrop-blur">
         <nav
           aria-label={t('common.mainNavigation')}
           className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6"
@@ -31,6 +35,7 @@ export function AppLayout() {
               {user?.avatarKey && <Avatar avatarKey={user.avatarKey} size={28} />}
               {user?.username}
             </span>
+            {user?.onboarded && <NotificationBell />}
             <LanguageSwitcher />
             <Button
               variant="ghost"

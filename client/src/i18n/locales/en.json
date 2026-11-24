@@ -253,11 +253,14 @@
     "TARGET_DATE_INVALID": "Invalid date",
     "STATUS_INVALID": "Invalid status",
     "COMPLETED_INVALID": "Invalid value",
-    "POSITION_INVALID": "Invalid position"
+    "POSITION_INVALID": "Invalid position",
+    "TITLE_NOT_EARNED": "You have not earned this title",
+    "NOTIFICATION_NOT_FOUND": "This notification does not exist"
   },
   "nav": {
     "dashboard": "Dashboard",
-    "goals": "Goals"
+    "goals": "Goals",
+    "achievements": "Achievements"
   },
   "goals": {
     "eyebrow": "Long-term goals",
@@ -303,6 +306,93 @@
       "cancel": "Cancel",
       "create": "Create goal",
       "save": "Save"
+    }
+  },
+  "rarity": {
+    "COMMON": "Common",
+    "RARE": "Rare",
+    "EPIC": "Epic",
+    "LEGENDARY": "Legendary",
+    "MYTHIC": "Mythic"
+  },
+  "achievementsPage": {
+    "eyebrow": "Hall of records",
+    "title": "Achievements",
+    "unlocked": "{{count}} / {{total}} unlocked",
+    "titlesHeading": "Titles",
+    "titlesText": "Choose the title shown next to your name.",
+    "noTitles": "Unlock achievements to earn titles.",
+    "noTitle": "No title",
+    "grantsTitle": "Title: {{title}} ({{rarity}})",
+    "unlockedOn": "Unlocked on {{date}}",
+    "locked": "Locked"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "open": "Notifications, unread: {{count}}",
+    "markAllRead": "Mark all as read",
+    "empty": "No notifications yet.",
+    "unread": "Unread",
+    "achievement": "Achievement unlocked: {{name}}",
+    "rankUp": "New rank: {{rank}}",
+    "penalty": "Missed day: complete the penalty quest today to save your streak ({{count}})"
+  },
+  "achievements": {
+    "FIRST_STEP": {
+      "name": "First step",
+      "description": "Complete your first quest"
+    },
+    "AWAKENED": {
+      "name": "Awakening",
+      "description": "Reach level 5"
+    },
+    "STREAK_7": {
+      "name": "One week strong",
+      "description": "Reach a 7-day streak"
+    },
+    "STREAK_30": {
+      "name": "Thirty days",
+      "description": "Reach a 30-day streak"
+    },
+    "STREAK_100": {
+      "name": "Hundred days",
+      "description": "Reach a 100-day streak"
+    },
+    "QUESTS_100": {
+      "name": "Hundred quests",
+      "description": "Complete 100 system quests"
+    },
+    "EARLY_RISER": {
+      "name": "Dawn warrior",
+      "description": "Complete 20 quests before 8:00"
+    },
+    "REDEMPTION": {
+      "name": "Redemption",
+      "description": "Complete a penalty quest"
+    },
+    "ALLY": {
+      "name": "First ally",
+      "description": "Add your first friend"
+    },
+    "RANK_C": {
+      "name": "Rank C",
+      "description": "Reach rank C"
+    },
+    "RANK_B": {
+      "name": "Rank B",
+      "description": "Reach rank B"
+    },
+    "RANK_A": {
+      "name": "Rank A",
+      "description": "Reach rank A"
+    },
+    "RANK_S": {
+      "name": "Rank S",
+      "description": "Reach rank S"
+    },
+    "FIRST_LEGENDARY": {
+      "name": "Proven in real life",
+      "description": "Get a real-life achievement verified"
     }
   }
 }

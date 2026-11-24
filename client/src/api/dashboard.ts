@@ -1,4 +1,5 @@
 import { apiRequest } from './client';
+import type { Title } from './achievements';
 
 type RankInfo = { code: string; label: string };
 
@@ -6,6 +7,7 @@ type RankInfo = { code: string; label: string };
 export type Dashboard = {
   username: string;
   avatarKey: string | null;
+  activeTitle: Title | null;
   totalXp: number;
   progress: { level: number; xpIntoLevel: number; xpForNextLevel: number; percent: number };
   rank: RankInfo;

@@ -9,6 +9,7 @@ import {
 } from '../../game/index.js';
 import { addDays, localDate, toDbDate } from '../../utils/time.js';
 import { getVerifiedAchievements } from '../progression/progression.service.js';
+import type { TitleDto } from '../achievements/achievement.service.js';
 import { customXpEarnedToday } from '../quests/customQuest.service.js';
 import { QUEST_TRANSACTION_OPTIONS, runRollover } from '../quests/rollover.service.js';
 
@@ -18,6 +19,7 @@ type RankInfo = { code: string; label: string };
 export type Dashboard = {
   username: string;
   avatarKey: string | null;
+  activeTitle: TitleDto | null;
   totalXp: number;
   progress: LevelProgress;
   rank: RankInfo;
@@ -38,7 +40,7 @@ export function getDashboard(userId: string, now = new Date()): Promise<Dashboar
 
     const user = await tx.user.findUniqueOrThrow({
       where: { id: userId },
-      include: { stats: true },
+      include: { stats: true, activeTitle: true },
     });
     const today = localDate(user.timezone, now);
 
@@ -50,6 +52,14 @@ export function getDashboard(userId: string, now = new Date()): Promise<Dashboar
     return {
       username: user.username,
       avatarKey: user.avatarKey,
+      activeTitle: user.activeTitle
+        ? {
+            id: user.activeTitle.id,
+            key: user.activeTitle.key,
+            name: user.activeTitle.name as TitleDto['name'],
+            rarity: user.activeTitle.rarity,
+          }
+        : null,
       totalXp: user.totalXp,
       progress: levelProgress(user.totalXp),
       rank: { code: status.current.code, label: status.current.label },

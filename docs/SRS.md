@@ -728,11 +728,15 @@ Goal templates (FR-33) are not served by the API: they only pre-fill the goal fo
 
 ### Progression
 
-| Method | Path            | Description                               |
-| ------ | --------------- | ----------------------------------------- |
-| GET    | `/achievements` | All achievements with unlocked status. 🔒 |
-| GET    | `/me/titles`    | Earned titles. 🔒                         |
-| GET    | `/ranks`        | Rank table and requirements.              |
+| Method | Path               | Description                                                                                                           |
+| ------ | ------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| GET    | `/achievements`    | All achievements with unlocked status. 🔒                                                                             |
+| GET    | `/me/titles`       | Earned titles and the active one. 🔒                                                                                  |
+| PUT    | `/me/active-title` | Choose the title shown next to the username (`{ titleId }`, or `null` for none); only an earned title is accepted. 🔒 |
+| GET    | `/me/dashboard`    | Status window data: level, XP bar, rank and lock reason, stats, streak, discipline rate, active title. 🔒             |
+| GET    | `/ranks`           | Rank table and requirements.                                                                                          |
+
+Achievements are checked after every quest completion and during the daily rollover, in the same transaction, and can never be unlocked twice. Custom quests do not count toward "100 quests" or "Early Riser", since they can be created without limit. Notifications store a type and data only; the frontend builds the text, so it always follows the selected language.
 
 ### Friends and profiles
 
