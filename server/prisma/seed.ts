@@ -3,6 +3,7 @@ import { pathToFileURL } from 'node:url';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../src/generated/prisma/client.js';
 import { ACHIEVEMENTS, TITLES } from '../src/game/catalog.js';
+import { QUEST_TEMPLATES } from './data/questTemplates.js';
 
 // Writes the reference data every environment needs (titles, achievements).
 // Uses upserts, so running it again updates the rows instead of duplicating them.
@@ -31,6 +32,14 @@ export async function seed(prisma: PrismaClient): Promise<void> {
       update: { titleId },
     });
   }
+
+  for (const { key, ...template } of QUEST_TEMPLATES) {
+    await prisma.questTemplate.upsert({
+      where: { key },
+      create: { key, ...template },
+      update: template,
+    });
+  }
 }
 
 // Only runs when executed as a script, not when imported by a test
@@ -40,7 +49,10 @@ if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
   });
   seed(prisma)
     .then(() =>
-      console.log(`Seeded ${TITLES.length} titles and ${ACHIEVEMENTS.length} achievements`),
+      console.log(
+        `Seeded ${TITLES.length} titles, ${ACHIEVEMENTS.length} achievements and ` +
+          `${QUEST_TEMPLATES.length} quest templates`,
+      ),
     )
     .finally(() => prisma.$disconnect());
 }

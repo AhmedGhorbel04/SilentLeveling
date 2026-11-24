@@ -76,4 +76,40 @@ export const DISCIPLINE_RATE_WINDOW_DAYS = 30;
 
 // ---- Quest engine (SRS §3.6) ----
 
+export const SKILL_LEVELS = ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'] as const;
+export type SkillLevel = (typeof SKILL_LEVELS)[number];
+
+export const DAILY_MINUTES_OPTIONS = [15, 30, 60, 120, 240] as const;
+export const MAX_FOCUS_AREAS = 3;
+
+// Daily quests fill the player's daily time, give or take this many minutes
+export const DAILY_TIME_TOLERANCE_MINUTES = 10;
+export const MIN_DAILY_QUESTS = 1;
+export const MAX_DAILY_QUESTS = 6;
+// A template is not picked again for this many days, when enough others exist
+export const TEMPLATE_COOLDOWN_DAYS = 3;
+export const MAX_WEEKLY_QUESTS = 3;
+
 export const REROLLS_PER_DAY = 3;
+
+// Completed quests needed in a category to move up a skill level
+export const QUESTS_TO_LEVEL_UP_SKILL: Record<SkillLevel, number | null> = {
+  BEGINNER: 20,
+  INTERMEDIATE: 40,
+  ADVANCED: null, // highest level
+};
+
+// The rollover never processes more days than this (a player back after months away)
+export const ROLLOVER_MAX_DAYS = 60;
+
+// Preset avatars (original designs drawn by the frontend)
+export const AVATAR_KEYS = [
+  'sigil-1',
+  'sigil-2',
+  'sigil-3',
+  'sigil-4',
+  'sigil-5',
+  'sigil-6',
+  'sigil-7',
+  'sigil-8',
+] as const;

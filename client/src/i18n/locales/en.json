@@ -7,6 +7,7 @@
     "logout": "Log out",
     "language": "Language",
     "backHome": "Back to home",
+    "close": "Close",
     "mainNavigation": "Main navigation"
   },
   "landing": {
@@ -75,9 +76,70 @@
     }
   },
   "dashboard": {
-    "welcome": "Welcome, {{username}}",
-    "subtitle": "Your account is ready.",
-    "comingSoon": "Your status window, quests and stats arrive in the next updates of the system."
+    "welcome": "Welcome, {{username}}"
+  },
+  "categories": {
+    "FITNESS": "Fitness",
+    "STUDIES": "Programming & studies",
+    "LANGUAGES": "Languages",
+    "READING": "Reading",
+    "CAREER": "Career & projects",
+    "HEALTH": "Health & habits"
+  },
+  "levels": {
+    "BEGINNER": "Beginner",
+    "INTERMEDIATE": "Intermediate",
+    "ADVANCED": "Advanced"
+  },
+  "difficulty": {
+    "EASY": "Easy",
+    "NORMAL": "Normal",
+    "HARD": "Hard",
+    "EXTREME": "Extreme"
+  },
+  "onboarding": {
+    "eyebrow": "System initialization",
+    "progress": "Step {{step}} of {{total}}",
+    "back": "Back",
+    "next": "Continue",
+    "finish": "Start my journey",
+    "goals": {
+      "title": "Choose your goals",
+      "subtitle": "Pick 1 to 3 areas. The first one you pick is your main goal."
+    },
+    "levels": {
+      "title": "Your current level",
+      "subtitle": "Be honest: your quests get harder as you progress."
+    },
+    "time": {
+      "title": "Time per day",
+      "subtitle": "More time means more quests, and more XP every day.",
+      "option15": "15 min",
+      "option30": "30 min",
+      "option60": "1 h",
+      "option120": "2 h",
+      "option240": "4 h"
+    },
+    "avatar": {
+      "title": "Choose your sigil",
+      "subtitle": "Your emblem, shown on your profile.",
+      "option": "Sigil {{number}}"
+    }
+  },
+  "quests": {
+    "dailyTitle": "Daily quests",
+    "weeklyTitle": "Weekly quests",
+    "penaltyTitle": "Penalty quest",
+    "penaltyText": "You missed yesterday. Complete this quest today to restore your streak.",
+    "progress": "{{done}}/{{total}} completed",
+    "rerollsLeft": "Rerolls left: {{count}}",
+    "minutes": "{{count}} min",
+    "failed": "Failed",
+    "complete": "Complete: {{title}}",
+    "reroll": "Replace this quest: {{title}}",
+    "levelUp": "Level up! Level {{level}}",
+    "streakRestored": "Streak restored 🔥 {{count}}",
+    "skillLevelUp": "{{category}}: you are now {{level}}"
   },
   "notFound": {
     "title": "Page not found",
@@ -104,6 +166,20 @@
     "TOO_MANY_REQUESTS": "Too many attempts. Please wait a few minutes.",
     "UNAUTHENTICATED": "Please log in again",
     "NETWORK_ERROR": "Cannot reach the server. Check your connection.",
+    "ONBOARDING_REQUIRED": "Finish setting up your account first",
+    "ALREADY_ONBOARDED": "Your account is already set up",
+    "FOCUS_AREAS_REQUIRED": "Choose at least one goal",
+    "FOCUS_AREAS_TOO_MANY": "Choose at most 3 goals",
+    "FOCUS_AREAS_DUPLICATE": "Each goal can be chosen only once",
+    "CATEGORY_INVALID": "Unknown goal",
+    "LEVEL_INVALID": "Unknown level",
+    "DAILY_MINUTES_INVALID": "Choose one of the proposed durations",
+    "AVATAR_INVALID": "Choose one of the proposed sigils",
+    "QUEST_NOT_FOUND": "This quest does not exist",
+    "QUEST_NOT_ACTIVE": "This quest is finished or expired. Refresh the page.",
+    "QUEST_NOT_REROLLABLE": "This quest cannot be replaced",
+    "NO_REROLLS_LEFT": "No rerolls left today",
+    "NO_REROLL_AVAILABLE": "No other quest is available for this goal today",
     "UNKNOWN": "Something went wrong. Please try again."
   }
 }

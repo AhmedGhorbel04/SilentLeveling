@@ -6,3 +6,4 @@ export * from './levels.js';
 export * from './ranks.js';
 export * from './stats.js';
 export * from './streak.js';
+export * from './questGenerator.js';

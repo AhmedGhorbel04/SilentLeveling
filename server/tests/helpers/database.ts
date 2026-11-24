@@ -1,14 +1,17 @@
 import { prisma } from '../../src/lib/prisma.js';
 
-// Empties every table (except Prisma's migration history) so each test starts
-// from a clean state and tests cannot affect each other.
+// Reference data written once by the seed (in globalSetup) and never changed by tests
+const REFERENCE_TABLES = ['_prisma_migrations', 'titles', 'achievements', 'quest_templates'];
+
+// Empties every table holding player data so each test starts from a clean state
+// and tests cannot affect each other.
 export async function resetDatabase(): Promise<void> {
   const tables = await prisma.$queryRaw<{ tablename: string }[]>`
-    SELECT tablename FROM pg_tables
-    WHERE schemaname = 'public' AND tablename <> '_prisma_migrations'
+    SELECT tablename FROM pg_tables WHERE schemaname = 'public'
   `;
-  if (tables.length === 0) return;
+  const toEmpty = tables.map((t) => t.tablename).filter((t) => !REFERENCE_TABLES.includes(t));
+  if (toEmpty.length === 0) return;
 
-  const list = tables.map((t) => `"public"."${t.tablename}"`).join(', ');
+  const list = toEmpty.map((t) => `"public"."${t}"`).join(', ');
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${list} RESTART IDENTITY CASCADE`);
 }
