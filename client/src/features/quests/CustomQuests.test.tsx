@@ -25,6 +25,7 @@ const customQuest: Quest = {
   completedAt: null,
   title: { en: 'Send my CV', fr: 'Send my CV', ar: 'Send my CV' },
   description: 'To three companies',
+  milestone: null,
   rerollable: false,
 };
 
@@ -84,6 +85,7 @@ describe('custom quests', () => {
       category: 'STUDIES',
       difficulty: 'HARD',
       dueDate: '2026-11-24',
+      milestoneId: null,
     });
     expect(body).not.toHaveProperty('xpReward');
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument(); // closed after saving
@@ -97,6 +99,48 @@ describe('custom quests', () => {
     await userEvent.click(await screen.findByRole('button', { name: '+ New quest' }));
 
     expect(screen.getByLabelText('Title')).toHaveFocus();
+  });
+
+  it('can link the quest to an unfinished milestone of an active goal', async () => {
+    const goals = [
+      {
+        id: 'g1',
+        title: 'Get a Java internship',
+        status: 'ACTIVE',
+        milestones: [
+          { id: 'm1', title: 'Update my CV', completed: true },
+          { id: 'm2', title: 'Build a project', completed: false },
+        ],
+      },
+      {
+        id: 'g2',
+        title: 'Old goal',
+        status: 'COMPLETED',
+        milestones: [{ id: 'm9', title: 'Done step', completed: false }],
+      },
+    ];
+    const fetchMock = mockApi(todayWith(), {
+      'GET /api/goals': () => jsonResponse(200, { goals }),
+      'POST /api/quests': () => jsonResponse(201, { quest: customQuest }),
+    });
+    renderWithProviders(<TodayQuests />);
+
+    await userEvent.click(await screen.findByRole('button', { name: '+ New quest' }));
+    const dialog = screen.getByRole('dialog');
+    const picker = await within(dialog).findByLabelText('Linked milestone (optional)');
+    // Only "Build a project": the other one is done, and the old goal is not active
+    expect(
+      within(picker)
+        .getAllByRole('option')
+        .map((o) => o.textContent),
+    ).toEqual(['Not linked to a goal', 'Build a project']);
+
+    await userEvent.type(within(dialog).getByLabelText('Title'), 'Set up the repository');
+    await userEvent.selectOptions(picker, 'm2');
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Create quest' }));
+
+    const call = fetchMock.mock.calls.find(([, init]) => init?.method === 'POST')!;
+    expect(JSON.parse(call[1]!.body as string).milestoneId).toBe('m2');
   });
 
   it('validates the title in the browser', async () => {

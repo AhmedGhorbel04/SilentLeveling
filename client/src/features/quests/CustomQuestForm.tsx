@@ -8,6 +8,7 @@ import { TextField } from '../../components/ui/TextField';
 import { ApiError } from '../../api/client';
 import type { CustomQuestRequest, Quest } from '../../api/quests';
 import { addDays, dueDateOf } from './questDates';
+import { useGoals } from '../goals/useGoals';
 import {
   CATEGORIES,
   CATEGORY_ICONS,
@@ -24,6 +25,7 @@ const customQuestFormSchema = z.object({
   category: z.enum(CATEGORIES),
   difficulty: z.enum(CUSTOM_DIFFICULTIES),
   dueDate: z.string().min(1, 'REQUIRED'),
+  milestoneId: z.string(), // '' = not linked
 });
 
 type FormValues = z.infer<typeof customQuestFormSchema>;
@@ -48,6 +50,7 @@ export function CustomQuestForm({
   onCancel,
 }: CustomQuestFormProps) {
   const { t } = useTranslation();
+  const { data: goals = [] } = useGoals();
   const {
     register,
     handleSubmit,
@@ -62,8 +65,23 @@ export function CustomQuestForm({
       category: quest?.category ?? 'STUDIES',
       difficulty: (quest?.difficulty as CustomDifficulty | undefined) ?? 'NORMAL',
       dueDate: quest ? dueDateOf(quest) : today,
+      milestoneId: quest?.milestone?.id ?? '',
     },
   });
+
+  // Milestones a quest can be linked to: unfinished ones of active goals
+  // (plus the current link when editing, even if that milestone is done)
+  const linkableGoals = goals
+    .filter((goal) => goal.status === 'ACTIVE')
+    .map((goal) => ({
+      ...goal,
+      milestones: goal.milestones.filter((m) => !m.completed || m.id === quest?.milestone?.id),
+    }))
+    .filter((goal) => goal.milestones.length > 0);
+
+  function submit({ milestoneId, ...values }: FormValues) {
+    onSubmit({ ...values, milestoneId: milestoneId || null });
+  }
 
   const difficulty = useWatch({ control, name: 'difficulty' });
   const reward = DIFFICULTY_BASE_XP[difficulty];
@@ -74,7 +92,7 @@ export function CustomQuestForm({
     'w-full rounded-md border border-abyss-border bg-void/60 px-3 py-2.5 text-slate-100 focus:border-arcane-500 focus:ring-2 focus:ring-arcane-500/30 focus:outline-none';
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit(submit)} noValidate className="flex flex-col gap-4">
       {serverError && <Alert>{t(`errors.${serverError}`, t('errors.UNKNOWN'))}</Alert>}
 
       <TextField
@@ -120,6 +138,26 @@ export function CustomQuestForm({
           {...register('dueDate')}
         />
       </div>
+
+      {linkableGoals.length > 0 && (
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="custom-milestone" className="text-sm font-medium text-slate-300">
+            {t('customQuests.form.milestone')}
+          </label>
+          <select id="custom-milestone" className={fieldClasses} {...register('milestoneId')}>
+            <option value="">{t('customQuests.form.noMilestone')}</option>
+            {linkableGoals.map((goal) => (
+              <optgroup key={goal.id} label={goal.title}>
+                {goal.milestones.map((milestone) => (
+                  <option key={milestone.id} value={milestone.id}>
+                    {milestone.title}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </div>
+      )}
 
       <fieldset>
         <legend className="mb-1.5 text-sm font-medium text-slate-300">

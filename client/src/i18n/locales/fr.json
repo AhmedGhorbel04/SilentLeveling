@@ -130,7 +130,9 @@
       "capNote": "Tes quêtes personnelles partagent une limite de 150 XP par jour. Restant aujourd'hui : {{left}} XP.",
       "cancel": "Annuler",
       "create": "Créer la quête",
-      "save": "Enregistrer"
+      "save": "Enregistrer",
+      "milestone": "Étape liée (facultative)",
+      "noMilestone": "Non liée à un objectif"
     }
   },
   "categories": {
@@ -243,6 +245,64 @@
     "DUE_DATE_OUT_OF_RANGE": "Choisis une date entre aujourd'hui et dans 30 jours",
     "TOO_MANY_CUSTOM_QUESTS": "Tu as déjà 20 quêtes actives. Termines-en ou supprimes-en d'abord.",
     "NOTHING_TO_UPDATE": "Rien à enregistrer",
-    "UNKNOWN": "Une erreur est survenue. Réessaie."
+    "UNKNOWN": "Une erreur est survenue. Réessaie.",
+    "GOAL_NOT_FOUND": "Cet objectif n'existe pas",
+    "MILESTONE_NOT_FOUND": "Cette étape n'existe pas",
+    "TOO_MANY_GOALS": "Tu as déjà 10 objectifs actifs. Termines-en ou abandonnes-en un d'abord.",
+    "TOO_MANY_MILESTONES": "Un objectif peut avoir au maximum 20 étapes",
+    "TARGET_DATE_INVALID": "Date invalide",
+    "STATUS_INVALID": "Statut invalide",
+    "COMPLETED_INVALID": "Valeur invalide",
+    "POSITION_INVALID": "Position invalide"
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "goals": "Objectifs"
+  },
+  "goals": {
+    "eyebrow": "Objectifs à long terme",
+    "title": "Objectifs",
+    "subtitle": "Découpe tes grands objectifs en étapes et suis ta progression.",
+    "new": "Nouvel objectif",
+    "emptyTitle": "Aucun objectif pour l'instant",
+    "emptyText": "Pars d’un modèle ou crée ton propre objectif.",
+    "activeCount": "Objectifs actifs : {{count}} / 10",
+    "target": "Échéance : {{date}}",
+    "status": {
+      "ACTIVE": "Actif",
+      "COMPLETED": "Atteint",
+      "ABANDONED": "Abandonné"
+    },
+    "progress": "{{done}} / {{total}} étapes",
+    "progressLabel": "Progression de {{title}}",
+    "linkedQuests": "Quêtes liées : {{count}}",
+    "moveUp": "Monter : {{title}}",
+    "moveDown": "Descendre : {{title}}",
+    "deleteMilestone": "Supprimer l'étape : {{title}}",
+    "newMilestone": "Nouvelle étape",
+    "add": "Ajouter",
+    "complete": "Marquer comme atteint",
+    "edit": "Modifier",
+    "abandon": "Abandonner",
+    "reopen": "Rouvrir",
+    "delete": "Supprimer",
+    "confirmDelete": "Supprimer l'objectif « {{title}} » et ses étapes ?",
+    "form": {
+      "createTitle": "Nouvel objectif",
+      "editTitle": "Modifier l'objectif",
+      "template": "Partir d'un modèle",
+      "noTemplate": "Aucun modèle, partir de zéro",
+      "title": "Titre",
+      "description": "Description (facultative)",
+      "category": "Catégorie",
+      "targetDate": "Échéance (facultative)",
+      "milestones": "Étapes",
+      "milestoneNumber": "Étape {{number}}",
+      "removeMilestone": "Retirer l'étape {{number}}",
+      "addMilestone": "Ajouter une étape",
+      "cancel": "Annuler",
+      "create": "Créer l'objectif",
+      "save": "Enregistrer"
+    }
   }
 }

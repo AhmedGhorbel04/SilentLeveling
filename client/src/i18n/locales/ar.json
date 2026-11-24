@@ -130,7 +130,9 @@
       "capNote": "مهامك الشخصية تتشارك حدًا يوميًا قدره 150 نقطة خبرة. المتبقي اليوم: {{left}}.",
       "cancel": "إلغاء",
       "create": "إنشاء المهمة",
-      "save": "حفظ"
+      "save": "حفظ",
+      "milestone": "المرحلة المرتبطة (اختياري)",
+      "noMilestone": "غير مرتبطة بهدف"
     }
   },
   "categories": {
@@ -243,6 +245,64 @@
     "DUE_DATE_OUT_OF_RANGE": "اختر تاريخًا بين اليوم و30 يومًا من الآن",
     "TOO_MANY_CUSTOM_QUESTS": "لديك بالفعل 20 مهمة نشطة. أنهِ بعضها أو احذفها أولًا.",
     "NOTHING_TO_UPDATE": "لا شيء للحفظ",
-    "UNKNOWN": "حدث خطأ ما. حاول مرة أخرى."
+    "UNKNOWN": "حدث خطأ ما. حاول مرة أخرى.",
+    "GOAL_NOT_FOUND": "هذا الهدف غير موجود",
+    "MILESTONE_NOT_FOUND": "هذه المرحلة غير موجودة",
+    "TOO_MANY_GOALS": "لديك بالفعل 10 أهداف نشطة. أنجز أحدها أو اتركه أولًا.",
+    "TOO_MANY_MILESTONES": "يمكن أن يحتوي الهدف على 20 مرحلة كحد أقصى",
+    "TARGET_DATE_INVALID": "تاريخ غير صالح",
+    "STATUS_INVALID": "حالة غير صالحة",
+    "COMPLETED_INVALID": "قيمة غير صالحة",
+    "POSITION_INVALID": "موضع غير صالح"
+  },
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "goals": "الأهداف"
+  },
+  "goals": {
+    "eyebrow": "أهداف طويلة المدى",
+    "title": "الأهداف",
+    "subtitle": "قسّم أهدافك الكبيرة إلى مراحل وتابع تقدّمك.",
+    "new": "هدف جديد",
+    "emptyTitle": "لا توجد أهداف بعد",
+    "emptyText": "ابدأ من نموذج جاهز أو أنشئ هدفك الخاص.",
+    "activeCount": "الأهداف النشطة: {{count}} / 10",
+    "target": "الموعد المستهدف: {{date}}",
+    "status": {
+      "ACTIVE": "نشط",
+      "COMPLETED": "مُنجز",
+      "ABANDONED": "متروك"
+    },
+    "progress": "{{done}} / {{total}} مراحل",
+    "progressLabel": "تقدّم {{title}}",
+    "linkedQuests": "المهام المرتبطة: {{count}}",
+    "moveUp": "نقل إلى الأعلى: {{title}}",
+    "moveDown": "نقل إلى الأسفل: {{title}}",
+    "deleteMilestone": "حذف المرحلة: {{title}}",
+    "newMilestone": "مرحلة جديدة",
+    "add": "إضافة",
+    "complete": "تحديد كمُنجز",
+    "edit": "تعديل",
+    "abandon": "ترك الهدف",
+    "reopen": "إعادة فتح",
+    "delete": "حذف",
+    "confirmDelete": "هل تريد حذف الهدف «{{title}}» ومراحله؟",
+    "form": {
+      "createTitle": "هدف جديد",
+      "editTitle": "تعديل الهدف",
+      "template": "البدء من نموذج",
+      "noTemplate": "بدون نموذج، البدء من الصفر",
+      "title": "العنوان",
+      "description": "الوصف (اختياري)",
+      "category": "الفئة",
+      "targetDate": "الموعد المستهدف (اختياري)",
+      "milestones": "المراحل",
+      "milestoneNumber": "المرحلة {{number}}",
+      "removeMilestone": "إزالة المرحلة {{number}}",
+      "addMilestone": "إضافة مرحلة",
+      "cancel": "إلغاء",
+      "create": "إنشاء الهدف",
+      "save": "حفظ"
+    }
   }
 }

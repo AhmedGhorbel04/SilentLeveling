@@ -98,6 +98,11 @@ export function QuestCard({
         {quest.description && !done && (
           <p className="mt-1 line-clamp-2 text-sm text-slate-400">{quest.description}</p>
         )}
+        {quest.milestone && (
+          <p className="mt-1 text-xs text-azure-400">
+            🎯 {quest.milestone.goalTitle} › {quest.milestone.title}
+          </p>
+        )}
       </div>
 
       <span className="shrink-0 font-display text-lg font-semibold text-azure-400" dir="ltr">

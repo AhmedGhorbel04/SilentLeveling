@@ -26,6 +26,7 @@ function quest(overrides: Partial<Quest> = {}): Quest {
     completedAt: null,
     title: { en: 'Read 10 pages', fr: 'Lire 10 pages', ar: 'اقرأ 10 صفحات' },
     description: null,
+    milestone: null,
     rerollable: true,
     ...overrides,
   };
