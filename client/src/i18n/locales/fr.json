@@ -78,6 +78,61 @@
   "dashboard": {
     "welcome": "Bienvenue, {{username}}"
   },
+  "status": {
+    "title": "Fenêtre de statut",
+    "rank": "Rang",
+    "level": "Niveau {{level}}",
+    "xpProgress": "Progression vers le niveau {{level}}",
+    "streak": "Série : {{count}}",
+    "bestStreak": "Record : {{count}}",
+    "nextRank": "Rang suivant : {{rank}} au niveau {{level}}",
+    "maxRank": "Rang le plus élevé atteint",
+    "rankLocked": "{{rank}} est verrouillé",
+    "rankLockedText": "Ton niveau est suffisant. Fais tes preuves dans la vraie vie pour aller plus loin.",
+    "legendaryNeeded": "Réussites légendaires vérifiées nécessaires : {{count}}",
+    "mythicNeeded": "Réussites mythiques vérifiées nécessaires : {{count}}",
+    "disciplineRate": "Discipline (30 jours)",
+    "totalXp": "XP totale",
+    "stats": {
+      "strength": "Force",
+      "intelligence": "Intelligence",
+      "discipline": "Discipline",
+      "consistency": "Régularité"
+    }
+  },
+  "levelUp": {
+    "eyebrow": "Notification du système",
+    "title": "NIVEAU SUPÉRIEUR",
+    "level": "Tu as atteint le niveau {{level}}",
+    "rank": "Nouveau rang : {{rank}}",
+    "continue": "Continuer"
+  },
+  "customQuests": {
+    "title": "Mes quêtes",
+    "new": "Nouvelle quête",
+    "empty": "Aucune quête personnelle. Ajoute tes propres objectifs ici.",
+    "xpLeft": "XP personnelle restante aujourd'hui : {{count}}",
+    "capReached": "Limite quotidienne d'XP personnelle atteinte : pas d'XP pour celle-ci.",
+    "due": "Pour le {{date}}",
+    "dueToday": "Pour aujourd'hui",
+    "edit": "Modifier : {{title}}",
+    "delete": "Supprimer : {{title}}",
+    "confirmDelete": "Supprimer la quête « {{title}} » ?",
+    "form": {
+      "createTitle": "Nouvelle quête",
+      "editTitle": "Modifier la quête",
+      "title": "Titre",
+      "description": "Description (facultative)",
+      "category": "Catégorie",
+      "difficulty": "Difficulté",
+      "dueDate": "Échéance",
+      "reward": "Récompense : {{xp}} XP",
+      "capNote": "Tes quêtes personnelles partagent une limite de 150 XP par jour. Restant aujourd'hui : {{left}} XP.",
+      "cancel": "Annuler",
+      "create": "Créer la quête",
+      "save": "Enregistrer"
+    }
+  },
   "categories": {
     "FITNESS": "Sport",
     "STUDIES": "Programmation & études",
@@ -180,6 +235,14 @@
     "QUEST_NOT_REROLLABLE": "Cette quête ne peut pas être remplacée",
     "NO_REROLLS_LEFT": "Plus de relances aujourd'hui",
     "NO_REROLL_AVAILABLE": "Aucune autre quête disponible pour cet objectif aujourd'hui",
+    "TITLE_TOO_SHORT": "Au moins 3 caractères",
+    "TITLE_TOO_LONG": "120 caractères maximum",
+    "DESCRIPTION_TOO_LONG": "1000 caractères maximum",
+    "DIFFICULTY_INVALID": "Choisis Facile, Normal ou Difficile",
+    "DUE_DATE_INVALID": "Date invalide",
+    "DUE_DATE_OUT_OF_RANGE": "Choisis une date entre aujourd'hui et dans 30 jours",
+    "TOO_MANY_CUSTOM_QUESTS": "Tu as déjà 20 quêtes actives. Termines-en ou supprimes-en d'abord.",
+    "NOTHING_TO_UPDATE": "Rien à enregistrer",
     "UNKNOWN": "Une erreur est survenue. Réessaie."
   }
 }

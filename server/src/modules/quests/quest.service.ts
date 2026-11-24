@@ -1,7 +1,9 @@
 import { prisma } from '../../lib/prisma.js';
 import {
+  CUSTOM_QUEST_DAILY_XP_CAP,
   REROLLS_PER_DAY,
   TEMPLATE_COOLDOWN_DAYS,
+  applyCustomQuestCap,
   applyStreakBonus,
   calculateQuestXp,
   pickRerollTemplate,
@@ -10,10 +12,18 @@ import {
   statGainsForQuest,
 } from '../../game/index.js';
 import { AppError } from '../../utils/AppError.js';
-import { addDays, fromDbDate, localDate, mondayOf, toDbDate } from '../../utils/time.js';
+import {
+  addDays,
+  fromDbDate,
+  localDate,
+  mondayOf,
+  startOfLocalDay,
+  toDbDate,
+} from '../../utils/time.js';
 import { awardXp, type AwardXpResult } from '../progression/progression.service.js';
 import { QUEST_TRANSACTION_OPTIONS, runRollover } from './rollover.service.js';
 import { toQuestDto, type QuestDto } from './quest.mapper.js';
+import { customXpEarnedToday } from './customQuest.service.js';
 
 // Every operation first runs the rollover, inside the same transaction, so it always
 // works on an up-to-date day (yesterday's quests already failed, today's generated).
@@ -23,7 +33,10 @@ export type TodayQuests = {
   daily: QuestDto[];
   weekly: QuestDto[];
   penalty: QuestDto[];
+  // The player's own quests: all active ones, plus those completed today
+  custom: QuestDto[];
   rerollsLeft: number;
+  customXpRemaining: number;
 };
 
 export function getTodayQuests(userId: string, now = new Date()): Promise<TodayQuests> {
@@ -41,6 +54,12 @@ export function getTodayQuests(userId: string, now = new Date()): Promise<TodayQ
           { type: 'DAILY', questDate: toDbDate(today) },
           { type: 'WEEKLY', questDate: toDbDate(mondayOf(today)) },
           { source: 'PENALTY', questDate: toDbDate(today) },
+          { source: 'CUSTOM', status: 'ACTIVE' },
+          {
+            source: 'CUSTOM',
+            status: 'COMPLETED',
+            completedAt: { gte: startOfLocalDay(today, user.timezone) },
+          },
         ],
       },
       include: { template: true },
@@ -53,7 +72,14 @@ export function getTodayQuests(userId: string, now = new Date()): Promise<TodayQ
       daily: dtos.filter((q) => q.type === 'DAILY'),
       weekly: dtos.filter((q) => q.type === 'WEEKLY'),
       penalty: dtos.filter((q) => q.source === 'PENALTY'),
+      custom: dtos
+        .filter((q) => q.source === 'CUSTOM')
+        .sort((a, b) => a.dueAt.getTime() - b.dueAt.getTime()), // soonest deadline first
       rerollsLeft: Math.max(0, REROLLS_PER_DAY - user.rerollsUsed),
+      customXpRemaining: Math.max(
+        0,
+        CUSTOM_QUEST_DAILY_XP_CAP - (await customXpEarnedToday(tx, user, now)),
+      ),
     };
   }, QUEST_TRANSACTION_OPTIONS);
 }
@@ -86,11 +112,15 @@ export function completeQuest(
 
     const user = await tx.user.findUniqueOrThrow({ where: { id: userId } });
 
-    // The client never sends XP: it is read from the stored quest (SRS §3.9)
-    const xp =
+    // The client never sends XP: it is read from the stored quest (SRS §3.9).
+    // Penalty quests give a fixed amount; custom quests share a daily cap.
+    let xp =
       quest.source === 'PENALTY'
         ? quest.xpReward
         : applyStreakBonus(quest.xpReward, user.currentStreak);
+    if (quest.source === 'CUSTOM') {
+      xp = applyCustomQuestCap(xp, await customXpEarnedToday(tx, user, now));
+    }
 
     const award = await awardXp(tx, {
       userId,

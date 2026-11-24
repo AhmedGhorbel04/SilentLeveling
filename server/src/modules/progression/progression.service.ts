@@ -83,7 +83,10 @@ export async function awardXp(tx: Tx, input: AwardXpInput): Promise<AwardXpResul
 
 // Approved real-life achievement claims, by tier. Claims are added in Milestone 8;
 // until then nobody has any, so ranks stop at C I as the rules require.
-async function getVerifiedAchievements(_tx: Tx, _userId: string): Promise<VerifiedAchievements> {
+export async function getVerifiedAchievements(
+  _tx: Tx,
+  _userId: string,
+): Promise<VerifiedAchievements> {
   return { legendary: 0, mythic: 0 };
 }
 

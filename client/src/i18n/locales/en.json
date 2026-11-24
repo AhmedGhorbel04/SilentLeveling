@@ -78,6 +78,61 @@
   "dashboard": {
     "welcome": "Welcome, {{username}}"
   },
+  "status": {
+    "title": "Status window",
+    "rank": "Rank",
+    "level": "Level {{level}}",
+    "xpProgress": "Progress to level {{level}}",
+    "streak": "Streak: {{count}}",
+    "bestStreak": "Best: {{count}}",
+    "nextRank": "Next rank: {{rank}} at level {{level}}",
+    "maxRank": "Highest rank reached",
+    "rankLocked": "{{rank}} is locked",
+    "rankLockedText": "Your level is high enough. Prove yourself in real life to go further.",
+    "legendaryNeeded": "Verified Legendary achievements needed: {{count}}",
+    "mythicNeeded": "Verified Mythic achievements needed: {{count}}",
+    "disciplineRate": "Discipline (30 days)",
+    "totalXp": "Total XP",
+    "stats": {
+      "strength": "Strength",
+      "intelligence": "Intelligence",
+      "discipline": "Discipline",
+      "consistency": "Consistency"
+    }
+  },
+  "levelUp": {
+    "eyebrow": "System notice",
+    "title": "LEVEL UP",
+    "level": "You reached level {{level}}",
+    "rank": "New rank: {{rank}}",
+    "continue": "Continue"
+  },
+  "customQuests": {
+    "title": "My quests",
+    "new": "New quest",
+    "empty": "No personal quests yet. Add your own goals here.",
+    "xpLeft": "Custom XP left today: {{count}}",
+    "capReached": "Daily custom XP limit reached: no XP for this one.",
+    "due": "Due {{date}}",
+    "dueToday": "Due today",
+    "edit": "Edit: {{title}}",
+    "delete": "Delete: {{title}}",
+    "confirmDelete": "Delete the quest \"{{title}}\"?",
+    "form": {
+      "createTitle": "New quest",
+      "editTitle": "Edit quest",
+      "title": "Title",
+      "description": "Description (optional)",
+      "category": "Category",
+      "difficulty": "Difficulty",
+      "dueDate": "Due date",
+      "reward": "Reward: {{xp}} XP",
+      "capNote": "Your own quests share a daily limit of 150 XP. Left today: {{left}} XP.",
+      "cancel": "Cancel",
+      "create": "Create quest",
+      "save": "Save"
+    }
+  },
   "categories": {
     "FITNESS": "Fitness",
     "STUDIES": "Programming & studies",
@@ -180,6 +235,14 @@
     "QUEST_NOT_REROLLABLE": "This quest cannot be replaced",
     "NO_REROLLS_LEFT": "No rerolls left today",
     "NO_REROLL_AVAILABLE": "No other quest is available for this goal today",
+    "TITLE_TOO_SHORT": "At least 3 characters",
+    "TITLE_TOO_LONG": "At most 120 characters",
+    "DESCRIPTION_TOO_LONG": "At most 1000 characters",
+    "DIFFICULTY_INVALID": "Choose Easy, Normal or Hard",
+    "DUE_DATE_INVALID": "Invalid date",
+    "DUE_DATE_OUT_OF_RANGE": "Choose a date between today and 30 days from now",
+    "TOO_MANY_CUSTOM_QUESTS": "You already have 20 active quests. Finish or delete some first.",
+    "NOTHING_TO_UPDATE": "Nothing to save",
     "UNKNOWN": "Something went wrong. Please try again."
   }
 }

@@ -1,31 +1,48 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { questsApi } from '../../api/quests';
+import { dashboardApi } from '../../api/dashboard';
 import { currentUserKey } from '../auth/useAuth';
 
 export const todayQuestsKey = ['quests', 'today'] as const;
+export const dashboardKey = ['dashboard'] as const;
 
 export function useTodayQuests() {
   return useQuery({ queryKey: todayQuestsKey, queryFn: questsApi.today });
 }
 
-export function useCompleteQuest() {
-  const queryClient = useQueryClient();
+export function useDashboard() {
+  return useQuery({ queryKey: dashboardKey, queryFn: dashboardApi.get });
+}
 
-  return useMutation({
-    mutationFn: questsApi.complete,
-    // Reload today's list from the server (statuses, streak, penalty) instead of
-    // guessing the new state in the browser
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: todayQuestsKey }),
-  });
+// After any change, reload the quest list and the status window from the server
+// (statuses, XP, level, streak) instead of guessing the new state in the browser
+function useRefreshAfter() {
+  const queryClient = useQueryClient();
+  return () =>
+    Promise.all([
+      queryClient.invalidateQueries({ queryKey: todayQuestsKey }),
+      queryClient.invalidateQueries({ queryKey: dashboardKey }),
+    ]);
+}
+
+export function useCompleteQuest() {
+  return useMutation({ mutationFn: questsApi.complete, onSuccess: useRefreshAfter() });
 }
 
 export function useRerollQuest() {
-  const queryClient = useQueryClient();
+  return useMutation({ mutationFn: questsApi.reroll, onSuccess: useRefreshAfter() });
+}
 
-  return useMutation({
-    mutationFn: questsApi.reroll,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: todayQuestsKey }),
-  });
+export function useCreateCustomQuest() {
+  return useMutation({ mutationFn: questsApi.createCustom, onSuccess: useRefreshAfter() });
+}
+
+export function useUpdateCustomQuest() {
+  return useMutation({ mutationFn: questsApi.updateCustom, onSuccess: useRefreshAfter() });
+}
+
+export function useDeleteCustomQuest() {
+  return useMutation({ mutationFn: questsApi.deleteCustom, onSuccess: useRefreshAfter() });
 }
 
 export function useOnboarding() {

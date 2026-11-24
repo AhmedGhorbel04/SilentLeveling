@@ -1,12 +1,18 @@
 import { Router, type Request, type Response } from 'express';
 import { z } from 'zod';
 import { requireAuth } from '../../middleware/requireAuth.js';
+import { validateBody } from '../../middleware/validate.js';
 import { AppError } from '../../utils/AppError.js';
 import * as questService from './quest.service.js';
+import * as customQuestService from './customQuest.service.js';
+import { createCustomQuestSchema, updateCustomQuestSchema } from './customQuest.schemas.js';
 
-// GET  /api/quests/today          today's daily, this week's weekly and penalty quests
-// POST /api/quests/:id/complete   complete a quest, returns the XP and level result
-// POST /api/quests/:id/reroll     replace a daily quest (3 per day)
+// GET    /api/quests/today          today's daily, weekly, penalty and custom quests
+// POST   /api/quests                create a custom quest
+// PATCH  /api/quests/:id            edit an active custom quest
+// DELETE /api/quests/:id            delete an active custom quest
+// POST   /api/quests/:id/complete   complete a quest, returns the XP and level result
+// POST   /api/quests/:id/reroll     replace a daily quest (3 per day)
 export const questRouter = Router();
 
 questRouter.use(requireAuth);
@@ -21,6 +27,21 @@ function questIdFrom(req: Request): string {
 
 questRouter.get('/today', async (req: Request, res: Response) => {
   res.json(await questService.getTodayQuests(req.userId!));
+});
+
+questRouter.post('/', validateBody(createCustomQuestSchema), async (req, res) => {
+  const quest = await customQuestService.createCustomQuest(req.userId!, req.body);
+  res.status(201).json({ quest });
+});
+
+questRouter.patch('/:id', validateBody(updateCustomQuestSchema), async (req, res) => {
+  const quest = await customQuestService.updateCustomQuest(req.userId!, questIdFrom(req), req.body);
+  res.json({ quest });
+});
+
+questRouter.delete('/:id', async (req, res) => {
+  await customQuestService.deleteCustomQuest(req.userId!, questIdFrom(req));
+  res.status(204).end();
 });
 
 questRouter.post('/:id/complete', async (req: Request, res: Response) => {

@@ -19,6 +19,11 @@ export function mondayOf(date: LocalDate): LocalDate {
   return DateTime.fromISO(date, { zone: 'utc' }).startOf('week').toISODate()!;
 }
 
+// The instant the player's day starts (local midnight), as a real timestamp
+export function startOfLocalDay(date: LocalDate, timezone: string): Date {
+  return DateTime.fromISO(date, { zone: timezone }).toJSDate();
+}
+
 // The instant the player's day ends (next local midnight), as a real timestamp.
 // Luxon handles daylight-saving changes, where a day can last 23 or 25 hours.
 export function endOfLocalDay(date: LocalDate, timezone: string): Date {

@@ -412,7 +412,7 @@ Priority: **M** = must have for v1, **S** = should have for v1, **C** = could ha
 | Server state     | **TanStack Query**                                               | Handles loading, errors, caching and refetching of API data, which removes a lot of manual `useEffect` code.                                                           |
 | Forms            | **React Hook Form + Zod**                                        | Fewer re-renders than controlled inputs; same validation library as the backend.                                                                                       |
 | Styling          | **Tailwind CSS**                                                 | Fast to build a custom dark UI; logical properties (`ms-`, `pe-`) make RTL work automatically.                                                                         |
-| Animations       | **Motion** (Framer Motion)                                       | Declarative animations for level-ups and transitions; respects "reduce motion".                                                                                        |
+| Animations       | **CSS animations** (Tailwind keyframes)                          | Enough for fades, the XP bar fill and the level-up overlay, with no extra library; disabled by the "reduce motion" setting. (Motion was planned; not needed so far.)   |
 | i18n             | **react-i18next**                                                | The common React translation library; handles plurals and language switching.                                                                                          |
 | Charts           | **Recharts**                                                     | Simple React chart components for XP history.                                                                                                                          |
 | Backend          | **Node.js 22 + Express + TypeScript**                            | Same language as the frontend, minimal framework, easy to understand every layer.                                                                                      |
@@ -705,16 +705,15 @@ Status codes used: `200`, `201`, `204`, `400` validation, `401` not logged in, `
 
 ### Quests
 
-| Method | Path                    | Description                                                                                                   |
-| ------ | ----------------------- | ------------------------------------------------------------------------------------------------------------- |
-| GET    | `/quests/today`         | Today's daily quests, this week's weekly quests, penalty quest and rerolls left (runs the rollover first). 🔒 |
-| GET    | `/quests?type=&status=` | Quest history (planned with custom quests, Milestone 4). 🔒                                                   |
-| POST   | `/quests`               | Create custom quest. 🔒                                                                                       |
-| POST   | `/quests/preview-xp`    | XP a custom quest would give (and remaining daily cap). 🔒                                                    |
-| PATCH  | `/quests/:id`           | Edit active custom quest. 🔒                                                                                  |
-| DELETE | `/quests/:id`           | Delete active custom quest. 🔒                                                                                |
-| POST   | `/quests/:id/complete`  | Complete a quest; returns progression result. 🔒                                                              |
-| POST   | `/quests/:id/reroll`    | Replace a daily system quest. 🔒                                                                              |
+| Method | Path                    | Description                                                                                                                                                         |
+| ------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GET    | `/quests/today`         | Today's daily, weekly, penalty and custom quests, rerolls left and custom XP left today (runs the rollover first). 🔒                                               |
+| GET    | `/quests?type=&status=` | Quest history (planned with the XP history chart, Milestone 9). 🔒                                                                                                  |
+| POST   | `/quests`               | Create custom quest (Easy–Hard, due within 30 days, max 20 active). The reward is shown by the form from the difficulty; no separate preview endpoint is needed. 🔒 |
+| PATCH  | `/quests/:id`           | Edit active custom quest. 🔒                                                                                                                                        |
+| DELETE | `/quests/:id`           | Delete active custom quest. 🔒                                                                                                                                      |
+| POST   | `/quests/:id/complete`  | Complete a quest; returns progression result. 🔒                                                                                                                    |
+| POST   | `/quests/:id/reroll`    | Replace a daily system quest. 🔒                                                                                                                                    |
 
 ### Goals
 

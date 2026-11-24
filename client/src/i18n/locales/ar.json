@@ -78,6 +78,61 @@
   "dashboard": {
     "welcome": "مرحبًا، {{username}}"
   },
+  "status": {
+    "title": "نافذة الحالة",
+    "rank": "الرتبة",
+    "level": "المستوى {{level}}",
+    "xpProgress": "التقدّم نحو المستوى {{level}}",
+    "streak": "السلسلة: {{count}}",
+    "bestStreak": "الأفضل: {{count}}",
+    "nextRank": "الرتبة التالية: {{rank}} عند المستوى {{level}}",
+    "maxRank": "بلغت أعلى رتبة",
+    "rankLocked": "الرتبة {{rank}} مقفلة",
+    "rankLockedText": "مستواك كافٍ. أثبت جدارتك في الحياة الحقيقية لتتقدّم أكثر.",
+    "legendaryNeeded": "الإنجازات الأسطورية الموثّقة المطلوبة: {{count}}",
+    "mythicNeeded": "الإنجازات الخرافية الموثّقة المطلوبة: {{count}}",
+    "disciplineRate": "الانضباط (30 يومًا)",
+    "totalXp": "مجموع الخبرة",
+    "stats": {
+      "strength": "القوة",
+      "intelligence": "الذكاء",
+      "discipline": "الانضباط",
+      "consistency": "المثابرة"
+    }
+  },
+  "levelUp": {
+    "eyebrow": "إشعار من النظام",
+    "title": "ارتقاء في المستوى",
+    "level": "وصلت إلى المستوى {{level}}",
+    "rank": "رتبة جديدة: {{rank}}",
+    "continue": "متابعة"
+  },
+  "customQuests": {
+    "title": "مهامي",
+    "new": "مهمة جديدة",
+    "empty": "لا توجد مهام شخصية بعد. أضف أهدافك الخاصة هنا.",
+    "xpLeft": "الخبرة الشخصية المتبقية اليوم: {{count}}",
+    "capReached": "بلغت الحد اليومي للخبرة الشخصية: لا خبرة لهذه المهمة.",
+    "due": "الموعد: {{date}}",
+    "dueToday": "الموعد: اليوم",
+    "edit": "تعديل: {{title}}",
+    "delete": "حذف: {{title}}",
+    "confirmDelete": "هل تريد حذف المهمة «{{title}}»؟",
+    "form": {
+      "createTitle": "مهمة جديدة",
+      "editTitle": "تعديل المهمة",
+      "title": "العنوان",
+      "description": "الوصف (اختياري)",
+      "category": "الفئة",
+      "difficulty": "الصعوبة",
+      "dueDate": "تاريخ الاستحقاق",
+      "reward": "المكافأة: {{xp}} نقطة خبرة",
+      "capNote": "مهامك الشخصية تتشارك حدًا يوميًا قدره 150 نقطة خبرة. المتبقي اليوم: {{left}}.",
+      "cancel": "إلغاء",
+      "create": "إنشاء المهمة",
+      "save": "حفظ"
+    }
+  },
   "categories": {
     "FITNESS": "اللياقة البدنية",
     "STUDIES": "البرمجة والدراسة",
@@ -180,6 +235,14 @@
     "QUEST_NOT_REROLLABLE": "لا يمكن استبدال هذه المهمة",
     "NO_REROLLS_LEFT": "لم تتبقَّ لك مرات استبدال اليوم",
     "NO_REROLL_AVAILABLE": "لا توجد مهمة أخرى متاحة لهذا الهدف اليوم",
+    "TITLE_TOO_SHORT": "3 أحرف على الأقل",
+    "TITLE_TOO_LONG": "120 حرفًا كحد أقصى",
+    "DESCRIPTION_TOO_LONG": "1000 حرف كحد أقصى",
+    "DIFFICULTY_INVALID": "اختر: سهل أو عادي أو صعب",
+    "DUE_DATE_INVALID": "تاريخ غير صالح",
+    "DUE_DATE_OUT_OF_RANGE": "اختر تاريخًا بين اليوم و30 يومًا من الآن",
+    "TOO_MANY_CUSTOM_QUESTS": "لديك بالفعل 20 مهمة نشطة. أنهِ بعضها أو احذفها أولًا.",
+    "NOTHING_TO_UPDATE": "لا شيء للحفظ",
     "UNKNOWN": "حدث خطأ ما. حاول مرة أخرى."
   }
 }

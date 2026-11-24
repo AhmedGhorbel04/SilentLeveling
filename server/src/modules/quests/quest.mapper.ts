@@ -21,6 +21,7 @@ export type QuestDto = {
   dueAt: Date;
   completedAt: Date | null;
   title: Translations;
+  description: string | null; // custom quests only
   rerollable: boolean;
 };
 
@@ -43,6 +44,7 @@ export function toQuestDto(quest: QuestWithTemplate): QuestDto {
     dueAt: quest.dueAt,
     completedAt: quest.completedAt,
     title,
+    description: quest.description,
     // Only generated daily quests can be rerolled (not the onboarding or penalty quest)
     rerollable:
       quest.status === 'ACTIVE' && quest.source === 'SYSTEM' && quest.template?.type === 'DAILY',

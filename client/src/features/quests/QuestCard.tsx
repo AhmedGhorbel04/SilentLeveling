@@ -2,6 +2,10 @@ import { useTranslation } from 'react-i18next';
 import type { Quest } from '../../api/quests';
 import { CATEGORY_ICONS, type Difficulty } from '../../game/constants';
 import type { LanguageCode } from '../../i18n';
+import { dueDateOf } from './questDates';
+
+const iconButton =
+  'grid size-8 shrink-0 place-items-center rounded-md text-slate-400 transition hover:bg-abyss hover:text-arcane-300';
 
 const DIFFICULTY_STYLES: Record<Difficulty, string> = {
   EASY: 'border-emerald-500/40 text-emerald-300',
@@ -14,23 +18,42 @@ type QuestCardProps = {
   quest: Quest;
   onComplete: () => void;
   onReroll?: () => void;
+  onEdit?: () => void; // custom quests only
+  onDelete?: () => void; // custom quests only
   isCompleting: boolean;
   isRerolling: boolean;
   canReroll: boolean;
+  today?: string; // to show "due today" for custom quests
 };
 
 export function QuestCard({
   quest,
   onComplete,
   onReroll,
+  onEdit,
+  onDelete,
   isCompleting,
   isRerolling,
   canReroll,
+  today,
 }: QuestCardProps) {
   const { t, i18n } = useTranslation();
   const title = quest.title[(i18n.resolvedLanguage ?? 'en') as LanguageCode];
   const done = quest.status === 'COMPLETED';
   const failed = quest.status === 'FAILED';
+  const isCustom = quest.source === 'CUSTOM';
+  const dueDate = isCustom ? dueDateOf(quest) : null;
+  const dueLabel =
+    dueDate === null
+      ? null
+      : dueDate === today
+        ? t('customQuests.dueToday')
+        : t('customQuests.due', {
+            date: new Intl.DateTimeFormat(i18n.resolvedLanguage, {
+              day: 'numeric',
+              month: 'short',
+            }).format(new Date(`${dueDate}T12:00:00`)),
+          });
 
   return (
     <li
@@ -69,8 +92,12 @@ export function QuestCard({
             {t(`difficulty.${quest.difficulty}`)}
           </span>
           {quest.minutes && <span>{t('quests.minutes', { count: quest.minutes })}</span>}
+          {dueLabel && !done && <span>⏳ {dueLabel}</span>}
           {failed && <span className="text-rose-400">{t('quests.failed')}</span>}
         </p>
+        {quest.description && !done && (
+          <p className="mt-1 line-clamp-2 text-sm text-slate-400">{quest.description}</p>
+        )}
       </div>
 
       <span className="shrink-0 font-display text-lg font-semibold text-azure-400" dir="ltr">
@@ -84,7 +111,7 @@ export function QuestCard({
           disabled={!canReroll || isRerolling}
           aria-label={t('quests.reroll', { title })}
           title={t('quests.reroll', { title })}
-          className={`grid size-8 shrink-0 place-items-center rounded-md text-slate-400 transition hover:bg-abyss hover:text-arcane-300 disabled:cursor-not-allowed disabled:opacity-30 ${
+          className={`${iconButton} disabled:cursor-not-allowed disabled:opacity-30 ${
             isRerolling ? 'animate-spin' : ''
           }`}
         >
@@ -103,6 +130,59 @@ export function QuestCard({
             />
           </svg>
         </button>
+      )}
+
+      {isCustom && !done && !failed && (onEdit || onDelete) && (
+        <div className="flex shrink-0">
+          {onEdit && (
+            <button
+              type="button"
+              onClick={onEdit}
+              aria-label={t('customQuests.edit', { title })}
+              title={t('customQuests.edit', { title })}
+              className={iconButton}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="size-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 20h4L19 9l-4-4L4 16v4ZM14 6l4 4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          )}
+          {onDelete && (
+            <button
+              type="button"
+              onClick={onDelete}
+              aria-label={t('customQuests.delete', { title })}
+              title={t('customQuests.delete', { title })}
+              className={`${iconButton} hover:text-rose-400`}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="size-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
       )}
     </li>
   );

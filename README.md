@@ -4,7 +4,7 @@
 
 SilentLeveling is a full-stack web application that turns real-life goals and habits into an RPG progression system. Players complete daily, weekly and long-term quests, earn XP, grow their stats and climb from rank **E IV** to **SS**. The highest ranks can only be reached by proving real-life achievements.
 
-> 🚧 **Work in progress.** Milestones 0–3 done (project setup, authentication, base UI in English, French and Arabic, game core: XP, levels, ranks, stats and streaks, quest engine with onboarding, daily rollover and penalty quests). See the [roadmap](docs/SRS.md#10-development-roadmap).
+> 🚧 **Work in progress.** **MVP complete** (milestones 0–4): accounts, onboarding, rule-based daily and weekly quests, custom quests, XP, levels, ranks, stats, streaks with penalty quests, and the status window, in English, French and Arabic. See the [roadmap](docs/SRS.md#10-development-roadmap).
 
 ## Tech stack
 
