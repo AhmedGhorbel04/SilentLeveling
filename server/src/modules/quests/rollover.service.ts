@@ -1,6 +1,8 @@
 import type { Prisma } from '../../generated/prisma/client.js';
 import { ROLLOVER_MAX_DAYS, recordDay, type StreakState } from '../../game/index.js';
 import { AppError } from '../../utils/AppError.js';
+import { checkAchievements } from '../achievements/achievement.service.js';
+import { notify } from '../notifications/notification.service.js';
 import { addDays, fromDbDate, localDate, mondayOf, toDbDate } from '../../utils/time.js';
 import {
   createPenaltyQuest,
@@ -81,9 +83,13 @@ export async function runRollover(tx: Tx, userId: string, now: Date): Promise<vo
 
   if (streak.beforePenalty !== null) {
     await createPenaltyQuest(tx, user, today);
+    await notify(tx, userId, 'PENALTY_QUEST', { streak: String(streak.beforePenalty) });
   }
   await generateDailyQuests(tx, user, today);
   await generateWeeklyQuestsIfMissing(tx, user, mondayOf(today));
+
+  // The new streak may unlock streak achievements
+  await checkAchievements(tx, userId);
 }
 
 // Closes one finished day and returns whether every daily quest was completed.

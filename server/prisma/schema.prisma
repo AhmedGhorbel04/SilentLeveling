@@ -71,6 +71,7 @@ model User {
   quests         Quest[]
   dailyLogs      DailyLog[]
   goals          Goal[]
+  notifications  Notification[]
 
   @@map("users")
 }
@@ -236,6 +237,30 @@ model Milestone {
 
   @@index([goalId, position])
   @@map("milestones")
+}
+
+// More types are added with friends (Milestone 7) and claims (Milestone 8)
+enum NotificationType {
+  ACHIEVEMENT_UNLOCKED
+  RANK_UP
+  PENALTY_QUEST
+}
+
+// In-app notifications (SRS §4.8). The text is built by the frontend from the type
+// and data, so it is always shown in the player's current language.
+model Notification {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String           @map("user_id") @db.Uuid
+  type      NotificationType
+  // e.g. { "code": "STREAK_7" } or { "rank": "C4" }
+  data      Json             @default("{}")
+  readAt    DateTime?        @map("read_at")
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("notifications")
 }
 
 // One row per finished day: used for the streak, the discipline rate and the calendar

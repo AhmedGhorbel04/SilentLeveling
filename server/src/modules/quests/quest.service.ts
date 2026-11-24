@@ -24,6 +24,11 @@ import { awardXp, type AwardXpResult } from '../progression/progression.service.
 import { QUEST_TRANSACTION_OPTIONS, runRollover } from './rollover.service.js';
 import { questInclude, toQuestDto, type QuestDto } from './quest.mapper.js';
 import { customXpEarnedToday } from './customQuest.service.js';
+import {
+  checkAchievements,
+  type UnlockedAchievement,
+} from '../achievements/achievement.service.js';
+import { notify } from '../notifications/notification.service.js';
 
 // Every operation first runs the rollover, inside the same transaction, so it always
 // works on an up-to-date day (yesterday's quests already failed, today's generated).
@@ -89,6 +94,7 @@ export type CompleteQuestResult = AwardXpResult & {
   streak: number;
   streakRestored: boolean;
   skillLevelUp: { category: string; level: string } | null;
+  achievements: UnlockedAchievement[]; // unlocked by this completion
 };
 
 export function completeQuest(
@@ -173,12 +179,19 @@ export function completeQuest(
       streakRestored = true;
     }
 
+    if (award.rankedUp) {
+      await notify(tx, userId, 'RANK_UP', { rank: award.rankAfter });
+    }
+    // Same transaction: if anything fails, the unlocks are rolled back with the XP
+    const achievements = await checkAchievements(tx, userId);
+
     return {
       ...award,
       quest: toQuestDto(completed),
       streak,
       streakRestored,
       skillLevelUp,
+      achievements,
     };
   }, QUEST_TRANSACTION_OPTIONS);
 }
