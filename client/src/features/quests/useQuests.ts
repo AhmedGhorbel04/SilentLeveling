@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { questsApi } from '../../api/quests';
 import { dashboardApi } from '../../api/dashboard';
 import { currentUserKey } from '../auth/useAuth';
+import { achievementsKey, notificationsKey, titlesKey } from '../achievements/queryKeys';
 
 export const todayQuestsKey = ['quests', 'today'] as const;
 export const dashboardKey = ['dashboard'] as const;
@@ -22,6 +23,10 @@ function useRefreshAfter() {
     Promise.all([
       queryClient.invalidateQueries({ queryKey: todayQuestsKey }),
       queryClient.invalidateQueries({ queryKey: dashboardKey }),
+      // A completion can unlock achievements and titles and create notifications
+      queryClient.invalidateQueries({ queryKey: notificationsKey }),
+      queryClient.invalidateQueries({ queryKey: achievementsKey }),
+      queryClient.invalidateQueries({ queryKey: titlesKey }),
     ]);
 }
 

@@ -1,5 +1,6 @@
 import { apiRequest } from './client';
 import type { CurrentUser } from './auth';
+import type { UnlockedAchievement } from './achievements';
 import type {
   AvatarKey,
   Category,
@@ -52,6 +53,7 @@ export type CompleteQuestResult = {
   streak: number;
   streakRestored: boolean;
   skillLevelUp: { category: Category; level: SkillLevel } | null;
+  achievements: UnlockedAchievement[];
 };
 
 export type OnboardingRequest = {

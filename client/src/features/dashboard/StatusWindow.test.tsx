@@ -11,6 +11,7 @@ afterEach(() => {
 const dashboard: Dashboard = {
   username: 'Shadow_Player',
   avatarKey: 'sigil-1',
+  activeTitle: null,
   totalXp: 1880,
   progress: { level: 11, xpIntoLevel: 140, xpForNextLevel: 300, percent: 46 },
   rank: { code: 'D4', label: 'D IV' },
@@ -56,6 +57,20 @@ describe('StatusWindow', () => {
     expect(await screen.findByText(/B IV is locked/)).toBeInTheDocument();
     expect(screen.getByText('Verified Legendary achievements needed: 1')).toBeInTheDocument();
     expect(screen.queryByText(/Mythic/)).not.toBeInTheDocument();
+  });
+
+  it('shows the active title in the selected language', async () => {
+    show({
+      ...dashboard,
+      activeTitle: {
+        id: 't1',
+        key: 'iron_will',
+        name: { en: 'Iron Will', fr: 'Volonté de fer', ar: 'الإرادة الحديدية' },
+        rarity: 'EPIC',
+      },
+    });
+
+    expect(await screen.findByText('✦ Iron Will')).toHaveClass('text-rarity-epic');
   });
 
   it('shows a dash instead of a discipline rate for a new player', async () => {

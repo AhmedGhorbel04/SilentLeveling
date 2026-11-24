@@ -253,11 +253,14 @@
     "TARGET_DATE_INVALID": "Date invalide",
     "STATUS_INVALID": "Statut invalide",
     "COMPLETED_INVALID": "Valeur invalide",
-    "POSITION_INVALID": "Position invalide"
+    "POSITION_INVALID": "Position invalide",
+    "TITLE_NOT_EARNED": "Tu n'as pas encore gagné ce titre",
+    "NOTIFICATION_NOT_FOUND": "Cette notification n'existe pas"
   },
   "nav": {
     "dashboard": "Tableau de bord",
-    "goals": "Objectifs"
+    "goals": "Objectifs",
+    "achievements": "Succès"
   },
   "goals": {
     "eyebrow": "Objectifs à long terme",
@@ -303,6 +306,93 @@
       "cancel": "Annuler",
       "create": "Créer l'objectif",
       "save": "Enregistrer"
+    }
+  },
+  "rarity": {
+    "COMMON": "Commun",
+    "RARE": "Rare",
+    "EPIC": "Épique",
+    "LEGENDARY": "Légendaire",
+    "MYTHIC": "Mythique"
+  },
+  "achievementsPage": {
+    "eyebrow": "Salle des exploits",
+    "title": "Succès",
+    "unlocked": "{{count}} / {{total}} débloqués",
+    "titlesHeading": "Titres",
+    "titlesText": "Choisis le titre affiché à côté de ton nom.",
+    "noTitles": "Débloque des succès pour gagner des titres.",
+    "noTitle": "Aucun titre",
+    "grantsTitle": "Titre : {{title}} ({{rarity}})",
+    "unlockedOn": "Débloqué le {{date}}",
+    "locked": "Verrouillé"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "open": "Notifications, non lues : {{count}}",
+    "markAllRead": "Tout marquer comme lu",
+    "empty": "Aucune notification pour le moment.",
+    "unread": "Non lue",
+    "achievement": "Succès débloqué : {{name}}",
+    "rankUp": "Nouveau rang : {{rank}}",
+    "penalty": "Journée manquée : termine la quête de pénalité aujourd'hui pour sauver ta série ({{count}})"
+  },
+  "achievements": {
+    "FIRST_STEP": {
+      "name": "Premier pas",
+      "description": "Termine ta première quête"
+    },
+    "AWAKENED": {
+      "name": "Éveil",
+      "description": "Atteins le niveau 5"
+    },
+    "STREAK_7": {
+      "name": "Une semaine tenue",
+      "description": "Atteins une série de 7 jours"
+    },
+    "STREAK_30": {
+      "name": "Trente jours",
+      "description": "Atteins une série de 30 jours"
+    },
+    "STREAK_100": {
+      "name": "Cent jours",
+      "description": "Atteins une série de 100 jours"
+    },
+    "QUESTS_100": {
+      "name": "Cent quêtes",
+      "description": "Termine 100 quêtes du système"
+    },
+    "EARLY_RISER": {
+      "name": "Guerrier de l'aube",
+      "description": "Termine 20 quêtes avant 8 h"
+    },
+    "REDEMPTION": {
+      "name": "Rédemption",
+      "description": "Termine une quête de pénalité"
+    },
+    "ALLY": {
+      "name": "Premier allié",
+      "description": "Ajoute ton premier ami"
+    },
+    "RANK_C": {
+      "name": "Rang C",
+      "description": "Atteins le rang C"
+    },
+    "RANK_B": {
+      "name": "Rang B",
+      "description": "Atteins le rang B"
+    },
+    "RANK_A": {
+      "name": "Rang A",
+      "description": "Atteins le rang A"
+    },
+    "RANK_S": {
+      "name": "Rang S",
+      "description": "Atteins le rang S"
+    },
+    "FIRST_LEGENDARY": {
+      "name": "Prouvé dans la vraie vie",
+      "description": "Fais vérifier une réussite réelle"
     }
   }
 }

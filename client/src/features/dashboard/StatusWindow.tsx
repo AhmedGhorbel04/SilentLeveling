@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Avatar } from '../../components/Avatar';
+import { TitleBadge } from '../achievements/TitleBadge';
 import { Spinner } from '../../components/ui/Spinner';
 import { Alert } from '../../components/ui/Alert';
 import { rankColor } from '../../game/ranks';
@@ -41,6 +42,7 @@ export function StatusWindow() {
           <p className="truncate font-display text-2xl font-bold text-white" dir="ltr">
             {data.username}
           </p>
+          {data.activeTitle && <TitleBadge title={data.activeTitle} />}
           <p className="text-sm text-slate-400">
             🔥 {t('status.streak', { count: data.streak.current })}
             <span className="ms-2 text-slate-500">

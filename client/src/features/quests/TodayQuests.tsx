@@ -8,6 +8,7 @@ import { ApiError } from '../../api/client';
 import type { CompleteQuestResult, CustomQuestRequest, Quest } from '../../api/quests';
 import type { LanguageCode } from '../../i18n';
 import { LevelUpOverlay } from '../dashboard/LevelUpOverlay';
+import { TitleBadge } from '../achievements/TitleBadge';
 import { CustomQuestForm } from './CustomQuestForm';
 import { QuestCard } from './QuestCard';
 import {
@@ -206,6 +207,17 @@ function CompletionBanner({
         {result.xpGained === 0 && result.quest.source === 'CUSTOM' && (
           <p className="text-sm text-amber-300">{t('customQuests.capReached')}</p>
         )}
+        {result.achievements?.map((achievement) => (
+          <p key={achievement.code} className="text-sm font-semibold text-amber-300">
+            🏆{' '}
+            {t('notifications.achievement', { name: t(`achievements.${achievement.code}.name`) })}
+            {achievement.title && (
+              <span className="ms-2">
+                <TitleBadge title={achievement.title} />
+              </span>
+            )}
+          </p>
+        ))}
         {result.streakRestored && (
           <p className="text-sm text-slate-300">
             {t('quests.streakRestored', { count: result.streak })}
