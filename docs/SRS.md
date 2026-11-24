@@ -190,13 +190,13 @@ A rank requires **a minimum level** and, from B upward, **verified legendary ach
 
 ### 3.5 Quest types
 
-| Type      | Created by                 | Deadline                                 | XP                       |
-| --------- | -------------------------- | ---------------------------------------- | ------------------------ |
-| Daily     | Quest engine               | End of the player's day (local midnight) | Formula                  |
-| Weekly    | Quest engine               | End of Sunday (local time)               | Formula                  |
-| Custom    | Player                     | Chosen by the player (max 30 days)       | Formula, capped (§3.9)   |
-| Penalty   | System, after a missed day | 24 h after creation                      | 25 XP fixed              |
-| Legendary | Admin (catalog)            | None                                     | Fixed, on admin approval |
+| Type      | Created by                 | Deadline                                   | XP                       |
+| --------- | -------------------------- | ------------------------------------------ | ------------------------ |
+| Daily     | Quest engine               | End of the player's day (local midnight)   | Formula                  |
+| Weekly    | Quest engine               | End of Sunday (local time)                 | Formula                  |
+| Custom    | Player                     | Chosen by the player (max 30 days)         | Formula, capped (§3.9)   |
+| Penalty   | System, after a missed day | End of the day it appears (local midnight) | 25 XP fixed              |
+| Legendary | Admin (catalog)            | None                                       | Fixed, on admin approval |
 
 ### 3.6 Quest engine (rule-based)
 
@@ -205,8 +205,12 @@ A rank requires **a minimum level** and, from B upward, **verified legendary ach
 **Daily generation.** For each new day:
 
 1. Time budget = the player's daily minutes (15, 30, 60, 120 or 240).
-2. Rotate through the player's focus areas; for each, pick a random active template matching the category and the player's level in it, excluding templates used in the last 3 days.
-3. Add quests until the time budget is filled (±10 minutes). Minimum 1 quest, maximum 6.
+2. Candidates for a focus area: active templates matching its category and the player's level in it, excluding templates used in the last 3 days (unless no other template exists).
+3. **Phase 1:** one random quest per focus area, so no goal is forgotten.
+4. **Phase 2:** keep rotating through the focus areas, adding quests until the time budget is filled (−10 to +10 minutes), never going over +10. Minimum 1 quest, maximum 6.
+5. 20 random plans are built and the best one is kept: first the one covering the most focus areas, then the one closest to the time budget. (Choosing one quest at a time can leave a gap no template fits; trying several plans avoids it.)
+
+The first day also includes a 5-minute **starter quest** ("Accept the System…") in the player's main goal, so the first level-up comes within minutes (FR-13).
 
 **Weekly generation.** Every Monday: 1 weekly quest per focus area (max 3).
 
@@ -216,19 +220,19 @@ A rank requires **a minimum level** and, from B upward, **verified legendary ach
 
 **Rollover (lazy evaluation).** Instead of a scheduled job, the rollover runs **on the player's first API request after their local midnight**:
 
-1. For each past day that has not been processed: mark unfinished daily quests `FAILED`, record a daily log, update the streak.
-2. If the most recent processed day was missed, create a penalty quest.
-3. Mark expired weekly and custom quests `FAILED`.
-4. Generate today's quests (and this week's, on Monday or on the first visit of the week).
+1. For each past day that has not been processed (at most the last 60): mark unfinished daily quests `FAILED`, record a daily log, update the streak. A day on which the player never opened the app has no quests and counts as **missed**.
+2. If the streak can still be saved (exactly one day missed after a streak), create a penalty quest.
+3. Mark expired weekly, penalty and custom quests `FAILED`.
+4. Generate today's quests (and this week's, on the first visit of the week).
 
-This works even if the server was asleep, and it never processes the same day twice (tracked by `users.last_rollover_date`).
+This works even if the server was asleep, and it never processes the same day twice (tracked by `users.last_rollover_date`). The rollover locks the player's row (`SELECT … FOR UPDATE`), so two requests arriving at the same moment cannot both generate quests.
 
 ### 3.7 Discipline streak
 
 - A day **counts** when all of its daily quests were completed.
 - **Current streak** = consecutive counted days. **Best streak** is kept on the profile.
 - **Streak bonus:** +5% XP for every full 7 days of streak, max +50% (reached at 70 days). Applies to daily, weekly and custom quests.
-- A missed day resets the streak to 0 and creates a **penalty quest**. Completing the penalty quest within 24 h **restores** the streak to its previous value (the missed day itself does not count). The penalty quest is a single chance: missing the next day as well loses the streak for good.
+- A missed day resets the streak to 0 and creates a **penalty quest**. Completing the penalty quest before the end of that day **restores** the streak to its previous value (the missed day itself does not count). The penalty quest is a single chance: missing the next day as well loses the streak for good.
 - **Discipline rate** (shown on the profile) = percentage of daily quests completed over the last 30 days.
 
 ### 3.8 Achievements and titles
@@ -701,15 +705,16 @@ Status codes used: `200`, `201`, `204`, `400` validation, `401` not logged in, `
 
 ### Quests
 
-| Method | Path                    | Description                                                |
-| ------ | ----------------------- | ---------------------------------------------------------- |
-| GET    | `/quests?type=&status=` | List own quests. 🔒                                        |
-| POST   | `/quests`               | Create custom quest. 🔒                                    |
-| POST   | `/quests/preview-xp`    | XP a custom quest would give (and remaining daily cap). 🔒 |
-| PATCH  | `/quests/:id`           | Edit active custom quest. 🔒                               |
-| DELETE | `/quests/:id`           | Delete active custom quest. 🔒                             |
-| POST   | `/quests/:id/complete`  | Complete a quest; returns progression result. 🔒           |
-| POST   | `/quests/:id/reroll`    | Replace a daily system quest. 🔒                           |
+| Method | Path                    | Description                                                                                                   |
+| ------ | ----------------------- | ------------------------------------------------------------------------------------------------------------- |
+| GET    | `/quests/today`         | Today's daily quests, this week's weekly quests, penalty quest and rerolls left (runs the rollover first). 🔒 |
+| GET    | `/quests?type=&status=` | Quest history (planned with custom quests, Milestone 4). 🔒                                                   |
+| POST   | `/quests`               | Create custom quest. 🔒                                                                                       |
+| POST   | `/quests/preview-xp`    | XP a custom quest would give (and remaining daily cap). 🔒                                                    |
+| PATCH  | `/quests/:id`           | Edit active custom quest. 🔒                                                                                  |
+| DELETE | `/quests/:id`           | Delete active custom quest. 🔒                                                                                |
+| POST   | `/quests/:id/complete`  | Complete a quest; returns progression result. 🔒                                                              |
+| POST   | `/quests/:id/reroll`    | Replace a daily system quest. 🔒                                                                              |
 
 ### Goals
 
