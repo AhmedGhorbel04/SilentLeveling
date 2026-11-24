@@ -2,6 +2,7 @@ import { Outlet, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Logo } from '../components/ui/Logo';
 import { Button } from '../components/ui/Button';
+import { Avatar } from '../components/Avatar';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
 import { useCurrentUser, useLogout } from '../features/auth/useAuth';
 
@@ -21,7 +22,8 @@ export function AppLayout() {
         >
           <Logo to="/dashboard" compactOnMobile />
           <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-            <span className="hidden text-sm font-medium text-slate-300 sm:inline">
+            <span className="hidden items-center gap-2 text-sm font-medium text-slate-300 sm:inline-flex">
+              {user?.avatarKey && <Avatar avatarKey={user.avatarKey} size={28} />}
               {user?.username}
             </span>
             <LanguageSwitcher />

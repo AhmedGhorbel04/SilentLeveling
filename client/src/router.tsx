@@ -1,10 +1,11 @@
 import { createBrowserRouter } from 'react-router';
 import { AuthLayout } from './layouts/AuthLayout';
 import { AppLayout } from './layouts/AppLayout';
-import { GuestRoute, ProtectedRoute } from './routes/guards';
+import { GuestRoute, OnboardingRoute, ProtectedRoute } from './routes/guards';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './features/auth/LoginPage';
 import { RegisterPage } from './features/auth/RegisterPage';
+import { OnboardingPage } from './features/onboarding/OnboardingPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
@@ -20,6 +21,15 @@ export const router = createBrowserRouter([
           { path: '/login', element: <LoginPage /> },
           { path: '/register', element: <RegisterPage /> },
         ],
+      },
+    ],
+  },
+  {
+    element: <OnboardingRoute />,
+    children: [
+      {
+        element: <AppLayout />,
+        children: [{ path: '/onboarding', element: <OnboardingPage /> }],
       },
     ],
   },

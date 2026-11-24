@@ -7,6 +7,7 @@
     "logout": "تسجيل الخروج",
     "language": "اللغة",
     "backHome": "العودة إلى الصفحة الرئيسية",
+    "close": "إغلاق",
     "mainNavigation": "التنقل الرئيسي"
   },
   "landing": {
@@ -75,9 +76,70 @@
     }
   },
   "dashboard": {
-    "welcome": "مرحبًا، {{username}}",
-    "subtitle": "حسابك جاهز.",
-    "comingSoon": "نافذة حالتك ومهامك وإحصائياتك قادمة في التحديثات القادمة للنظام."
+    "welcome": "مرحبًا، {{username}}"
+  },
+  "categories": {
+    "FITNESS": "اللياقة البدنية",
+    "STUDIES": "البرمجة والدراسة",
+    "LANGUAGES": "اللغات",
+    "READING": "القراءة",
+    "CAREER": "المسيرة المهنية والمشاريع",
+    "HEALTH": "الصحة والعادات"
+  },
+  "levels": {
+    "BEGINNER": "مبتدئ",
+    "INTERMEDIATE": "متوسط",
+    "ADVANCED": "متقدّم"
+  },
+  "difficulty": {
+    "EASY": "سهل",
+    "NORMAL": "عادي",
+    "HARD": "صعب",
+    "EXTREME": "شديد الصعوبة"
+  },
+  "onboarding": {
+    "eyebrow": "تهيئة النظام",
+    "progress": "الخطوة {{step}} من {{total}}",
+    "back": "رجوع",
+    "next": "متابعة",
+    "finish": "ابدأ رحلتي",
+    "goals": {
+      "title": "اختر أهدافك",
+      "subtitle": "اختر من مجال واحد إلى 3 مجالات. أول ما تختاره هو هدفك الرئيسي."
+    },
+    "levels": {
+      "title": "مستواك الحالي",
+      "subtitle": "كن صادقًا: ستزداد صعوبة مهامك كلما تقدّمت."
+    },
+    "time": {
+      "title": "الوقت اليومي",
+      "subtitle": "وقت أكثر يعني مهامًا أكثر وخبرة أكثر كل يوم.",
+      "option15": "15 دقيقة",
+      "option30": "30 دقيقة",
+      "option60": "ساعة",
+      "option120": "ساعتان",
+      "option240": "4 ساعات"
+    },
+    "avatar": {
+      "title": "اختر شعارك",
+      "subtitle": "شعارك الذي يظهر في ملفك الشخصي.",
+      "option": "الشعار {{number}}"
+    }
+  },
+  "quests": {
+    "dailyTitle": "المهام اليومية",
+    "weeklyTitle": "المهام الأسبوعية",
+    "penaltyTitle": "مهمة العقوبة",
+    "penaltyText": "فاتك يوم أمس. أكمل هذه المهمة اليوم لاستعادة سلسلتك.",
+    "progress": "{{done}}/{{total}} مكتملة",
+    "rerollsLeft": "مرات الاستبدال المتبقية: {{count}}",
+    "minutes": "{{count}} دقيقة",
+    "failed": "فاشلة",
+    "complete": "إكمال: {{title}}",
+    "reroll": "استبدال هذه المهمة: {{title}}",
+    "levelUp": "ارتقيت مستوى! المستوى {{level}}",
+    "streakRestored": "استُعيدت السلسلة 🔥 {{count}}",
+    "skillLevelUp": "{{category}}: أصبحت الآن {{level}}"
   },
   "notFound": {
     "title": "الصفحة غير موجودة",
@@ -104,6 +166,20 @@
     "TOO_MANY_REQUESTS": "محاولات كثيرة جدًا. انتظر بضع دقائق.",
     "UNAUTHENTICATED": "يُرجى تسجيل الدخول مرة أخرى",
     "NETWORK_ERROR": "تعذّر الاتصال بالخادم. تحقّق من اتصالك.",
+    "ONBOARDING_REQUIRED": "أكمل إعداد حسابك أولًا",
+    "ALREADY_ONBOARDED": "حسابك مُعدّ بالفعل",
+    "FOCUS_AREAS_REQUIRED": "اختر هدفًا واحدًا على الأقل",
+    "FOCUS_AREAS_TOO_MANY": "اختر 3 أهداف كحد أقصى",
+    "FOCUS_AREAS_DUPLICATE": "لا يمكن اختيار الهدف نفسه مرتين",
+    "CATEGORY_INVALID": "هدف غير معروف",
+    "LEVEL_INVALID": "مستوى غير معروف",
+    "DAILY_MINUTES_INVALID": "اختر إحدى المدد المقترحة",
+    "AVATAR_INVALID": "اختر أحد الشعارات المقترحة",
+    "QUEST_NOT_FOUND": "هذه المهمة غير موجودة",
+    "QUEST_NOT_ACTIVE": "هذه المهمة منتهية أو منتهية الصلاحية. حدّث الصفحة.",
+    "QUEST_NOT_REROLLABLE": "لا يمكن استبدال هذه المهمة",
+    "NO_REROLLS_LEFT": "لم تتبقَّ لك مرات استبدال اليوم",
+    "NO_REROLL_AVAILABLE": "لا توجد مهمة أخرى متاحة لهذا الهدف اليوم",
     "UNKNOWN": "حدث خطأ ما. حاول مرة أخرى."
   }
 }

@@ -7,6 +7,7 @@
     "logout": "Se déconnecter",
     "language": "Langue",
     "backHome": "Retour à l'accueil",
+    "close": "Fermer",
     "mainNavigation": "Navigation principale"
   },
   "landing": {
@@ -75,9 +76,70 @@
     }
   },
   "dashboard": {
-    "welcome": "Bienvenue, {{username}}",
-    "subtitle": "Ton compte est prêt.",
-    "comingSoon": "Ta fenêtre de statut, tes quêtes et tes statistiques arrivent dans les prochaines mises à jour du système."
+    "welcome": "Bienvenue, {{username}}"
+  },
+  "categories": {
+    "FITNESS": "Sport",
+    "STUDIES": "Programmation & études",
+    "LANGUAGES": "Langues",
+    "READING": "Lecture",
+    "CAREER": "Carrière & projets",
+    "HEALTH": "Santé & habitudes"
+  },
+  "levels": {
+    "BEGINNER": "Débutant",
+    "INTERMEDIATE": "Intermédiaire",
+    "ADVANCED": "Avancé"
+  },
+  "difficulty": {
+    "EASY": "Facile",
+    "NORMAL": "Normal",
+    "HARD": "Difficile",
+    "EXTREME": "Extrême"
+  },
+  "onboarding": {
+    "eyebrow": "Initialisation du système",
+    "progress": "Étape {{step}} sur {{total}}",
+    "back": "Retour",
+    "next": "Continuer",
+    "finish": "Commencer l'aventure",
+    "goals": {
+      "title": "Choisis tes objectifs",
+      "subtitle": "Choisis de 1 à 3 domaines. Le premier choisi est ton objectif principal."
+    },
+    "levels": {
+      "title": "Ton niveau actuel",
+      "subtitle": "Sois honnête : tes quêtes deviennent plus difficiles à mesure que tu progresses."
+    },
+    "time": {
+      "title": "Temps par jour",
+      "subtitle": "Plus de temps, c'est plus de quêtes et plus d'XP chaque jour.",
+      "option15": "15 min",
+      "option30": "30 min",
+      "option60": "1 h",
+      "option120": "2 h",
+      "option240": "4 h"
+    },
+    "avatar": {
+      "title": "Choisis ton sceau",
+      "subtitle": "Ton emblème, affiché sur ton profil.",
+      "option": "Sceau {{number}}"
+    }
+  },
+  "quests": {
+    "dailyTitle": "Quêtes du jour",
+    "weeklyTitle": "Quêtes de la semaine",
+    "penaltyTitle": "Quête de pénalité",
+    "penaltyText": "Tu as manqué la journée d'hier. Termine cette quête aujourd'hui pour récupérer ta série.",
+    "progress": "{{done}}/{{total}} terminées",
+    "rerollsLeft": "Relances restantes : {{count}}",
+    "minutes": "{{count}} min",
+    "failed": "Échouée",
+    "complete": "Terminer : {{title}}",
+    "reroll": "Remplacer cette quête : {{title}}",
+    "levelUp": "Niveau supérieur ! Niveau {{level}}",
+    "streakRestored": "Série récupérée 🔥 {{count}}",
+    "skillLevelUp": "{{category}} : tu es maintenant {{level}}"
   },
   "notFound": {
     "title": "Page introuvable",
@@ -104,6 +166,20 @@
     "TOO_MANY_REQUESTS": "Trop de tentatives. Réessaie dans quelques minutes.",
     "UNAUTHENTICATED": "Reconnecte-toi, s'il te plaît",
     "NETWORK_ERROR": "Impossible de joindre le serveur. Vérifie ta connexion.",
+    "ONBOARDING_REQUIRED": "Termine d'abord la configuration de ton compte",
+    "ALREADY_ONBOARDED": "Ton compte est déjà configuré",
+    "FOCUS_AREAS_REQUIRED": "Choisis au moins un objectif",
+    "FOCUS_AREAS_TOO_MANY": "Choisis au maximum 3 objectifs",
+    "FOCUS_AREAS_DUPLICATE": "Chaque objectif ne peut être choisi qu'une fois",
+    "CATEGORY_INVALID": "Objectif inconnu",
+    "LEVEL_INVALID": "Niveau inconnu",
+    "DAILY_MINUTES_INVALID": "Choisis l'une des durées proposées",
+    "AVATAR_INVALID": "Choisis l'un des sceaux proposés",
+    "QUEST_NOT_FOUND": "Cette quête n'existe pas",
+    "QUEST_NOT_ACTIVE": "Cette quête est terminée ou expirée. Actualise la page.",
+    "QUEST_NOT_REROLLABLE": "Cette quête ne peut pas être remplacée",
+    "NO_REROLLS_LEFT": "Plus de relances aujourd'hui",
+    "NO_REROLL_AVAILABLE": "Aucune autre quête disponible pour cet objectif aujourd'hui",
     "UNKNOWN": "Une erreur est survenue. Réessaie."
   }
 }
