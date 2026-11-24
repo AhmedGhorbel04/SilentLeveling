@@ -55,28 +55,35 @@ type DailyParams = {
 const DAILY_PLAN_ATTEMPTS = 20;
 
 // Picks today's daily quests:
-// - rotates through the focus areas so every goal gets attention
+// - every goal gets at least one quest when the time allows
 // - fills the player's daily time as closely as possible (never more than +10 minutes)
 // - at least 1 quest, at most 6
 // Choosing one quest at a time can paint itself into a corner (small early picks leave
-// a gap nothing fits), so we build several random plans and keep the closest one.
+// a gap nothing fits), so we build several random plans and keep the best one:
+// first the plan covering the most goals, then the one closest to the daily time.
 export function pickDailyTemplates(params: DailyParams): TemplateCandidate[] {
   let best: TemplateCandidate[] = [];
-  let bestGap = Infinity;
+  let bestScore = { goals: -1, gap: Infinity };
 
   for (let attempt = 0; attempt < DAILY_PLAN_ATTEMPTS; attempt++) {
     const plan = buildDailyPlan(params);
-    const gap = Math.abs(params.dailyMinutes - plan.reduce((sum, t) => sum + t.minutes, 0));
-    if (gap < bestGap) {
+    const score = {
+      goals: new Set(plan.map((t) => t.category)).size,
+      gap: Math.abs(params.dailyMinutes - plan.reduce((sum, t) => sum + t.minutes, 0)),
+    };
+    if (
+      score.goals > bestScore.goals ||
+      (score.goals === bestScore.goals && score.gap < bestScore.gap)
+    ) {
       best = plan;
-      bestGap = gap;
+      bestScore = score;
     }
   }
 
   return best;
 }
 
-// One random plan for the day
+// One random plan for the day, built in two phases
 function buildDailyPlan(params: DailyParams): TemplateCandidate[] {
   const { focusAreas, dailyMinutes, templates, recentlyUsedIds, random } = params;
   const minMinutes = dailyMinutes - DAILY_TIME_TOLERANCE_MINUTES;
@@ -85,32 +92,41 @@ function buildDailyPlan(params: DailyParams): TemplateCandidate[] {
   const picked: TemplateCandidate[] = [];
   const pickedIds = new Set<string>();
   let totalMinutes = 0;
+
+  const fittingFor = (area: FocusAreaInput) =>
+    candidatesFor(area, templates, pickedIds, recentlyUsedIds).filter(
+      (t) => totalMinutes + t.minutes <= maxMinutes,
+    );
+  const add = (template: TemplateCandidate) => {
+    picked.push(template);
+    pickedIds.add(template.id);
+    totalMinutes += template.minutes;
+  };
+
+  // Phase 1: one quest per goal, so no goal is forgotten
+  for (const area of focusAreas) {
+    const fitting = fittingFor(area);
+    if (fitting.length > 0 && picked.length < MAX_DAILY_QUESTS) add(pickRandom(fitting, random));
+  }
+
+  // Phase 2: keep rotating through the goals until the daily time is filled
   let areaIndex = 0;
   let areasWithoutFit = 0;
-
   while (
     picked.length < MAX_DAILY_QUESTS &&
     totalMinutes < minMinutes &&
     areasWithoutFit < focusAreas.length
   ) {
-    const area = focusAreas[areaIndex % focusAreas.length]!;
+    const fitting = fittingFor(focusAreas[areaIndex % focusAreas.length]!);
     areaIndex++;
-
-    const fitting = candidatesFor(area, templates, pickedIds, recentlyUsedIds).filter(
-      (t) => totalMinutes + t.minutes <= maxMinutes,
-    );
     if (fitting.length === 0) {
       areasWithoutFit++;
       continue;
     }
 
-    // If some template would complete the day inside the target range, take one of those.
-    // Without this, small early picks can leave a gap that no remaining template fits.
+    // If some template would complete the day inside the target range, take one of those
     const finishing = fitting.filter((t) => totalMinutes + t.minutes >= minMinutes);
-    const template = pickRandom(finishing.length > 0 ? finishing : fitting, random);
-    picked.push(template);
-    pickedIds.add(template.id);
-    totalMinutes += template.minutes;
+    add(pickRandom(finishing.length > 0 ? finishing : fitting, random));
     areasWithoutFit = 0;
   }
 

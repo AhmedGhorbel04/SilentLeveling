@@ -77,6 +77,36 @@ describe('pickDailyTemplates', () => {
     expect(totalMinutes(picked)).toBe(60);
   });
 
+  it('gives every goal a quest, even when one quest of the first goal would fill the day', () => {
+    // Found in the browser: a single 50-minute quest filled a 60-minute day by itself,
+    // and the second goal got nothing
+    const picked = pickDailyTemplates({
+      focusAreas: [...twoAreas],
+      dailyMinutes: 60,
+      templates: [
+        template('stu-50', 'STUDIES', 50),
+        ...templates.filter((t) => t.category === 'FITNESS'),
+      ],
+      recentlyUsedIds: new Set(),
+      random: seededRandom(3),
+    });
+
+    expect(new Set(picked.map((t) => t.category))).toEqual(new Set(['FITNESS', 'STUDIES']));
+  });
+
+  it('covers all three goals when there is time for it', () => {
+    for (const seed of [1, 2, 3]) {
+      const picked = pickDailyTemplates({
+        focusAreas: [...twoAreas, { category: 'READING', level: 'BEGINNER' }],
+        dailyMinutes: 60,
+        templates: [...templates, template('read-15', 'READING', 15)],
+        recentlyUsedIds: new Set(),
+        random: seededRandom(seed),
+      });
+      expect(new Set(picked.map((t) => t.category)).size).toBe(3);
+    }
+  });
+
   it('alternates between focus areas', () => {
     const picked = pickDailyTemplates({
       focusAreas: [...twoAreas],
