@@ -12,6 +12,7 @@ import {
   updateGoalSchema,
   updateMilestoneSchema,
 } from '../modules/goals/goal.schemas.js';
+import { completeSchema } from '../modules/quests/quest.routes.js';
 import { activeTitleSchema } from '../modules/achievements/achievement.routes.js';
 import { bioSchema, sendRequestSchema } from '../modules/friends/friend.routes.js';
 import {
@@ -87,7 +88,9 @@ export const routes: Route[] = [
   }),
   r('patch', '/quests/{id}', 'Quests', 'Edit a custom quest', { body: updateCustomQuestSchema }),
   r('delete', '/quests/{id}', 'Quests', 'Delete a custom quest', { status: 204 }),
-  r('post', '/quests/{id}/complete', 'Quests', 'Complete a quest and receive its XP'),
+  r('post', '/quests/{id}/complete', 'Quests', 'Complete a quest and receive its XP', {
+    body: completeSchema,
+  }),
   r('post', '/quests/{id}/reroll', 'Quests', 'Replace a daily quest (once per day)'),
 
   r('get', '/goals', 'Goals', 'Long-term goals with their milestones'),
