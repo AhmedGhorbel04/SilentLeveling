@@ -12,6 +12,11 @@ import {
   updateGoalSchema,
   updateMilestoneSchema,
 } from '../modules/goals/goal.schemas.js';
+import {
+  deviceSchema,
+  reminderSettingsSchema,
+  removeDeviceSchema,
+} from '../modules/reminders/reminder.routes.js';
 import { completeSchema } from '../modules/quests/quest.routes.js';
 import { activeTitleSchema } from '../modules/achievements/achievement.routes.js';
 import { bioSchema, sendRequestSchema } from '../modules/friends/friend.routes.js';
@@ -80,6 +85,23 @@ export const routes: Route[] = [
     body: activeTitleSchema,
   }),
   r('patch', '/me/profile', 'Player', 'Update the bio', { body: bioSchema }),
+
+  r('get', '/me/reminders', 'Player', 'Reminder settings and the public push key'),
+  r('patch', '/me/reminders', 'Player', 'Turn the daily reminder on or off, or change its time', {
+    body: reminderSettingsSchema,
+  }),
+  r('post', '/push/devices', 'Player', 'Register this device for notifications', {
+    body: deviceSchema,
+    status: 204,
+  }),
+  r('delete', '/push/devices', 'Player', 'Stop notifications on this device', {
+    body: removeDeviceSchema,
+    status: 204,
+  }),
+  r('post', '/push/test', 'Player', 'Send a test notification to my devices'),
+  r('post', '/cron/reminders', 'System', 'Send the reminders due now (scheduled job)', {
+    access: 'public',
+  }),
 
   r('get', '/quests/today', 'Quests', 'Daily quests of today and weekly quests of this week'),
   r('post', '/quests', 'Quests', 'Create a custom quest', {

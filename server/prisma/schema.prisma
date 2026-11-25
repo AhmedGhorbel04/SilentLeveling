@@ -59,6 +59,12 @@ model User {
   rerollsUsed      Int       @default(0) @map("rerolls_used")
   rerollsDate      DateTime? @map("rerolls_date") @db.Date
 
+  // Daily reminder (M11): a push notification at this local time ("HH:MM") if
+  // daily quests are left. lastReminderDate = local day of the last one sent.
+  reminderEnabled  Boolean   @default(false) @map("reminder_enabled")
+  reminderTime     String    @default("20:00") @map("reminder_time") @db.VarChar(5)
+  lastReminderDate DateTime? @map("last_reminder_date") @db.Date
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -76,8 +82,27 @@ model User {
   receivedRequests Friendship[]       @relation("FriendshipAddressee")
   claims           AchievementClaim[] @relation("ClaimPlayer")
   reviewedClaims   AchievementClaim[] @relation("ClaimReviewer")
+  pushDevices      PushSubscription[]
 
+  @@index([reminderEnabled])
   @@map("users")
+}
+
+// A browser or installed app that accepted notifications (Web Push).
+// One player can have several: phone, laptop...
+model PushSubscription {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  // The push service URL of this device: unique, it identifies the device
+  endpoint  String   @unique @db.VarChar(1000)
+  p256dh    String   @db.VarChar(200)
+  auth      String   @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("push_subscriptions")
 }
 
 enum Category {
