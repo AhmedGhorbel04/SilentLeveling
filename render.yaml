@@ -9,8 +9,12 @@ services:
     branch: main
     buildCommand: npm ci --include=dev && npm run build -w server
     # The free plan has no pre-deploy step: migrations and the reference data
-    # (ranks, titles, achievements...) are applied at start. Both are idempotent.
-    startCommand: npm run db:deploy -w server && npm run db:seed -w server && npm start -w server
+    # (titles, achievements...) are applied at start. Both are idempotent.
+    # Migrations retry once: Neon's free database can be slow to wake up, and two
+    # deploys started close together wait for each other's migration lock.
+    startCommand: >-
+      (npm run db:deploy -w server || (sleep 15 && npm run db:deploy -w server))
+      && npm run db:seed -w server && npm start -w server
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:
