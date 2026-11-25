@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { onlineManager } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Alert } from '../../components/ui/Alert';
 import { Button } from '../../components/ui/Button';
@@ -63,8 +64,13 @@ export function TodayQuests() {
 
   function saveCustomQuest(values: CustomQuestRequest) {
     const close = { onSuccess: () => setForm({ mode: 'closed' }) };
-    if (form.mode === 'edit') updateCustom.mutate({ id: form.quest.id, ...values }, close);
-    else createCustom.mutate(values, close);
+    if (form.mode === 'edit') {
+      updateCustom.mutate({ id: form.quest.id, ...values }, close);
+      return;
+    }
+    createCustom.mutate({ ...values, id: crypto.randomUUID() }, close);
+    // Offline the request waits for the connection: the quest is already shown
+    if (!onlineManager.isOnline()) setForm({ mode: 'closed' });
   }
 
   function openForm(next: FormState) {
@@ -80,10 +86,21 @@ export function TodayQuests() {
           key={quest.id}
           quest={quest}
           today={data.date}
-          isCompleting={complete.isPending && complete.variables === quest.id}
+          isCompleting={
+            complete.isPending && !complete.isPaused && complete.variables?.id === quest.id
+          }
           isRerolling={reroll.isPending && reroll.variables === quest.id}
           canReroll={data.rerollsLeft > 0}
-          onComplete={() => complete.mutate(quest.id, { onSuccess: onCompleted })}
+          onComplete={() =>
+            complete.mutate(
+              // Offline, the server must know when it really happened (see quest.service)
+              {
+                id: quest.id,
+                completedAt: onlineManager.isOnline() ? undefined : new Date().toISOString(),
+              },
+              { onSuccess: onCompleted },
+            )
+          }
           onReroll={() => reroll.mutate(quest.id)}
           onEdit={() => openForm({ mode: 'edit', quest })}
           onDelete={() => onDelete(quest)}

@@ -362,6 +362,86 @@ describe('daily rollover', () => {
   });
 });
 
+describe('syncing a quest completed offline', () => {
+  // Tuesday 23:50 UTC, synced Wednesday 00:30 UTC
+  const lateTuesday = new Date('2026-11-24T23:50:00Z');
+  const earlyWednesday = new Date('2026-11-25T00:30:00Z');
+
+  it('counts for the day it was done, so the streak survives the night', async () => {
+    const user = await onboardedPlayer();
+    const { daily } = await getTodayQuests(user.id, TUESDAY);
+
+    for (const quest of daily) {
+      await completeQuest(user.id, quest.id, earlyWednesday, lateTuesday);
+    }
+    // After the queue, the app refreshes: this closes Tuesday and opens Wednesday
+    expect((await getTodayQuests(user.id, earlyWednesday)).date).toBe('2026-11-25');
+
+    const log = await prisma.dailyLog.findUniqueOrThrow({
+      where: { userId_date: { userId: user.id, date: new Date('2026-11-24T00:00:00Z') } },
+    });
+    expect(log.allCompleted).toBe(true);
+    const saved = await prisma.user.findUniqueOrThrow({ where: { id: user.id } });
+    expect(saved.currentStreak).toBe(1);
+    // The XP lands on Tuesday in the history chart
+    const ledger = await prisma.xpTransaction.findMany({ where: { userId: user.id } });
+    expect(ledger.every((row) => row.createdAt.getTime() === lateTuesday.getTime())).toBe(true);
+  });
+
+  it('refuses a completion time after the quest expired', async () => {
+    const user = await onboardedPlayer();
+    const { daily } = await getTodayQuests(user.id, TUESDAY);
+
+    await expect(
+      completeQuest(user.id, daily[0]!.id, earlyWednesday, new Date('2026-11-25T00:10:00Z')),
+    ).rejects.toMatchObject({ status: 409, code: 'QUEST_NOT_ACTIVE' });
+  });
+
+  it('refuses a quest already closed by an earlier visit after midnight', async () => {
+    const user = await onboardedPlayer();
+    const { daily } = await getTodayQuests(user.id, TUESDAY);
+    await getTodayQuests(user.id, earlyWednesday); // another device closed Tuesday first
+
+    await expect(
+      completeQuest(user.id, daily[0]!.id, earlyWednesday, lateTuesday),
+    ).rejects.toMatchObject({ code: 'QUEST_NOT_ACTIVE' });
+  });
+
+  it('uses the server time when the device clock is ahead', async () => {
+    const user = await onboardedPlayer();
+    const { daily } = await getTodayQuests(user.id, TUESDAY);
+
+    const result = await completeQuest(user.id, daily[0]!.id, TUESDAY, daysLater(2));
+
+    const saved = await prisma.quest.findUniqueOrThrow({ where: { id: result.quest.id } });
+    expect(saved.completedAt).toEqual(TUESDAY);
+  });
+
+  it('validates completedAt over HTTP and refuses actions older than a week', async () => {
+    const agent = request.agent(createApp());
+    await agent
+      .post('/api/auth/register')
+      .send({ username: 'offline_player', email: 'off@example.com', password: 'secret123' });
+    await agent.post('/api/onboarding').send(defaultChoices);
+    const { daily } = (await agent.get('/api/quests/today')).body;
+
+    const invalid = await agent
+      .post(`/api/quests/${daily[0].id}/complete`)
+      .send({ completedAt: 'yesterday' });
+    expect(invalid.body.error.details).toEqual({ completedAt: 'COMPLETED_AT_INVALID' });
+
+    const tooOld = await agent
+      .post(`/api/quests/${daily[0].id}/complete`)
+      .send({ completedAt: new Date(Date.now() - 8 * 86_400_000).toISOString() });
+    expect(tooOld.status).toBe(400);
+
+    const ok = await agent
+      .post(`/api/quests/${daily[0].id}/complete`)
+      .send({ completedAt: new Date(Date.now() - 1000).toISOString() });
+    expect(ok.status).toBe(200);
+  });
+});
+
 describe('rerolling a quest', () => {
   it('replaces a daily quest with another one of the same category', async () => {
     const user = await onboardedPlayer();

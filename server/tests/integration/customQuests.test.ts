@@ -121,6 +121,31 @@ describe('creating custom quests', () => {
   });
 });
 
+describe('creating a custom quest offline', () => {
+  const offlineId = '7a1f3c2e-4b5d-4e6f-8a9b-0c1d2e3f4a5b';
+
+  it('creates it once even if the sync sends it twice', async () => {
+    const user = await onboardedPlayer();
+
+    const first = await createCustomQuest(user.id, { ...hardQuest, id: offlineId }, TUESDAY);
+    const again = await createCustomQuest(user.id, { ...hardQuest, id: offlineId }, TUESDAY);
+
+    expect(first.id).toBe(offlineId);
+    expect(again.id).toBe(offlineId);
+    expect(await prisma.quest.count({ where: { userId: user.id, source: 'CUSTOM' } })).toBe(1);
+  });
+
+  it("refuses an id that belongs to another player's quest", async () => {
+    const owner = await onboardedPlayer();
+    const other = await onboardedPlayer();
+    await createCustomQuest(owner.id, { ...hardQuest, id: offlineId }, TUESDAY);
+
+    await expect(
+      createCustomQuest(other.id, { ...hardQuest, id: offlineId }, TUESDAY),
+    ).rejects.toMatchObject({ status: 409, code: 'QUEST_ID_TAKEN' });
+  });
+});
+
 describe('the custom quest daily XP cap (150 XP)', () => {
   it('gives full XP, then what is left of the cap, then nothing', async () => {
     const user = await onboardedPlayer();

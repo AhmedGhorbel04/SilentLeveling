@@ -38,7 +38,7 @@ export type UpdateGoalRequest = Partial<Omit<CreateGoalRequest, 'milestones'>> &
 
 export type UpdateMilestoneRequest = { title?: string; completed?: boolean; position?: number };
 
-type GoalResponse = { goal: Goal };
+export type GoalResponse = { goal: Goal };
 
 export const goalsApi = {
   list: () => apiRequest<{ goals: Goal[] }>('/goals'),

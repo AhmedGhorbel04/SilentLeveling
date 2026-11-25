@@ -543,5 +543,12 @@
       "partial": "Some quests done",
       "missed": "Missed"
     }
+  },
+  "offline": {
+    "offline": "You're offline. You can still complete quests, add your own and tick milestones: they'll sync when you're back.",
+    "waiting_one": "You're offline. {{count}} change will sync when you're back.",
+    "waiting_other": "You're offline. {{count}} changes will sync when you're back.",
+    "syncing_one": "Syncing {{count}} change…",
+    "syncing_other": "Syncing {{count}} changes…"
   }
 }

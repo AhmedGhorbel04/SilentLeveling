@@ -11,8 +11,9 @@ import { createCustomQuestSchema, updateCustomQuestSchema } from './customQuest.
 // POST   /api/quests                create a custom quest
 // PATCH  /api/quests/:id            edit an active custom quest
 // DELETE /api/quests/:id            delete an active custom quest
-// POST   /api/quests/:id/complete   complete a quest, returns the XP and level result
+// POST   /api/quests/:id/complete   complete a quest ({ completedAt? }), returns the XP and level result
 // POST   /api/quests/:id/reroll     replace a daily quest (3 per day)
+
 export const questRouter = Router();
 
 questRouter.use(requireAuth);
@@ -44,8 +45,21 @@ questRouter.delete('/:id', async (req, res) => {
   res.status(204).end();
 });
 
-questRouter.post('/:id/complete', async (req: Request, res: Response) => {
-  res.json(await questService.completeQuest(req.userId!, questIdFrom(req)));
+// Optional: when the quest was completed, for actions done offline and synced later
+export const completeSchema = z.object({
+  completedAt: z.iso.datetime({ offset: true, error: 'COMPLETED_AT_INVALID' }).optional(),
+});
+
+questRouter.post('/:id/complete', validateBody(completeSchema), async (req, res) => {
+  const { completedAt } = req.body as z.infer<typeof completeSchema>;
+  res.json(
+    await questService.completeQuest(
+      req.userId!,
+      questIdFrom(req),
+      new Date(),
+      completedAt ? new Date(completedAt) : undefined,
+    ),
+  );
 });
 
 questRouter.post('/:id/reroll', async (req: Request, res: Response) => {

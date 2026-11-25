@@ -29,6 +29,9 @@ const dueDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'DUE_DATE_INVALID');
 const milestoneId = z.uuid('MILESTONE_NOT_FOUND').nullable();
 
 export const createCustomQuestSchema = z.object({
+  // Chosen by the app when the quest is created offline: sending it twice (sync
+  // retried after a lost response) cannot create a duplicate
+  id: z.uuid('QUEST_ID_INVALID').optional(),
   title,
   description: description.optional(),
   category,

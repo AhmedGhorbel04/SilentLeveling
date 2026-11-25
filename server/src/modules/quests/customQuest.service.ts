@@ -59,6 +59,16 @@ export function createCustomQuest(
 ): Promise<QuestDto> {
   return prisma.$transaction(async (tx) => {
     await runRollover(tx, userId, now);
+
+    if (input.id) {
+      const existing = await tx.quest.findUnique({
+        where: { id: input.id },
+        include: questInclude,
+      });
+      if (existing?.userId === userId) return toQuestDto(existing); // already synced
+      if (existing) throw new AppError(409, 'QUEST_ID_TAKEN', 'Quest id already used');
+    }
+
     const user = await tx.user.findUniqueOrThrow({ where: { id: userId } });
     const today = localDate(user.timezone, now);
     const dueDate = input.dueDate ?? today;
@@ -74,6 +84,7 @@ export function createCustomQuest(
 
     const quest = await tx.quest.create({
       data: {
+        id: input.id,
         userId,
         source: 'CUSTOM',
         type: 'ONE_TIME',

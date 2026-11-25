@@ -97,13 +97,26 @@ export type CompleteQuestResult = AwardXpResult & {
   achievements: UnlockedAchievement[]; // unlocked by this completion
 };
 
+// How long an action done offline can wait before being synced
+export const OFFLINE_MAX_DELAY_MS = 7 * 24 * 60 * 60 * 1000;
+
+// `completedAt`: when the player completed the quest, if it happened offline and is
+// only being synced now. The quest is judged at that moment: days before it are
+// closed first, so a quest done at 23:50 offline still counts for its own day.
 export function completeQuest(
   userId: string,
   questId: string,
   now = new Date(),
+  completedAt?: Date,
 ): Promise<CompleteQuestResult> {
+  // A clock slightly ahead of the server's is not the player's fault
+  const at = completedAt && completedAt < now ? completedAt : now;
+  if (now.getTime() - at.getTime() > OFFLINE_MAX_DELAY_MS) {
+    throw new AppError(400, 'VALIDATION_ERROR', 'Too old', { completedAt: 'COMPLETED_AT_INVALID' });
+  }
+
   return prisma.$transaction(async (tx) => {
-    await runRollover(tx, userId, now);
+    await runRollover(tx, userId, at);
 
     const quest = await tx.quest.findFirst({ where: { id: questId, userId } });
     if (!quest) throw new AppError(404, 'QUEST_NOT_FOUND', 'Quest not found');
@@ -111,8 +124,8 @@ export function completeQuest(
     // Atomic status change: only succeeds if the quest is still active and not expired.
     // A double click sends two requests; the second one changes 0 rows and is refused.
     const { count } = await tx.quest.updateMany({
-      where: { id: questId, userId, status: 'ACTIVE', dueAt: { gt: now } },
-      data: { status: 'COMPLETED', completedAt: now },
+      where: { id: questId, userId, status: 'ACTIVE', dueAt: { gt: at } },
+      data: { status: 'COMPLETED', completedAt: at },
     });
     if (count === 0) throw new AppError(409, 'QUEST_NOT_ACTIVE', 'This quest cannot be completed');
 
@@ -125,7 +138,7 @@ export function completeQuest(
         ? quest.xpReward
         : applyStreakBonus(quest.xpReward, user.currentStreak);
     if (quest.source === 'CUSTOM') {
-      xp = applyCustomQuestCap(xp, await customXpEarnedToday(tx, user, now));
+      xp = applyCustomQuestCap(xp, await customXpEarnedToday(tx, user, at));
     }
 
     const award = await awardXp(tx, {
@@ -134,6 +147,7 @@ export function completeQuest(
       reason: 'QUEST',
       questId,
       statGains: statGainsForQuest(quest.category, xp),
+      at,
     });
 
     const completed = await tx.quest.update({
@@ -184,6 +198,10 @@ export function completeQuest(
     }
     // Same transaction: if anything fails, the unlocks are rolled back with the XP
     const achievements = await checkAchievements(tx, userId);
+
+    // Synced late: the days after `at` are NOT closed here. The app sends its whole
+    // offline queue before anything else, and the other quests of that day would
+    // be expired by the time they arrive. The next normal request closes them.
 
     return {
       ...award,

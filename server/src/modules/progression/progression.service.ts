@@ -24,6 +24,8 @@ export type AwardXpInput = {
   questId?: string;
   // The approved claim that gave this XP (unique too)
   claimId?: string;
+  // When it was earned, if not now (a quest completed offline and synced later)
+  at?: Date;
 };
 
 export type AwardXpResult = {
@@ -55,7 +57,9 @@ export async function awardXp(tx: Tx, input: AwardXpInput): Promise<AwardXpResul
     return buildResult(0, before.totalXp, before, before.level, before.rank);
   }
 
-  await tx.xpTransaction.create({ data: { userId, amount, reason, questId, claimId } });
+  await tx.xpTransaction.create({
+    data: { userId, amount, reason, questId, claimId, createdAt: input.at },
+  });
 
   // Atomic increment in SQL ("total_xp = total_xp + amount"), not read-then-write:
   // two awards at the same moment both count, because PostgreSQL locks the row

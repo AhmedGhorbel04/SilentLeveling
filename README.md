@@ -19,6 +19,7 @@ _The free backend sleeps when nobody uses it: the first request can take about a
 - **Friends**: profiles and a weekly or all-time ranking among friends only. No global leaderboard.
 - **Legendary quests**: claim a real-life achievement with a proof link; an admin reviews it, grants XP and a title, and that unlocks ranks B and above. Admins can also edit the catalog.
 - **Progress page**: XP chart over 7, 30 or 90 days and a calendar of cleared days.
+- **Installable and offline-ready**: install it on a phone or PC. Offline you can still see your data, complete quests, add your own and tick milestones; changes sync when you're back online.
 - **English, French and Arabic**, with a full right-to-left layout in Arabic.
 - **Responsive and accessible**: Lighthouse accessibility 100, no axe violations on any page.
 
