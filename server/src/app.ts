@@ -17,6 +17,7 @@ import { achievementRouter, titleRouter } from './modules/achievements/achieveme
 import { notificationRouter } from './modules/notifications/notification.routes.js';
 import { friendRouter, profileRouter, userRouter } from './modules/friends/friend.routes.js';
 import { buildOpenApiDocument } from './docs/openapi.js';
+import { cronRouter, pushRouter, reminderRouter } from './modules/reminders/reminder.routes.js';
 import { adminRouter, claimRouter, legendaryRouter } from './modules/claims/claim.routes.js';
 
 type AppOptions = {
@@ -74,6 +75,9 @@ export function createApp(options: AppOptions = {}) {
   app.use('/api/legendary-quests', legendaryRouter);
   app.use('/api/claims', claimRouter);
   app.use('/api/admin', adminRouter);
+  app.use('/api/me/reminders', reminderRouter);
+  app.use('/api/push', pushRouter);
+  app.use('/api/cron', cronRouter);
   app.use('/api/goals', goalRouter);
   app.use('/api/milestones', milestoneRouter);
 

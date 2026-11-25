@@ -25,6 +25,8 @@ const pwa = VitePWA({
     ],
   },
   workbox: {
+    // Shows the quest reminders (push notifications)
+    importScripts: ['push-sw.js'],
     globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
     // Font subsets the app never shows (Devanagari, Cyrillic, Greek, Vietnamese)
     globIgnores: ['**/*-{devanagari,cyrillic,cyrillic-ext,greek,vietnamese}-*'],

@@ -22,6 +22,14 @@ const envSchema = z.object({
   RESEND_API_KEY: z.string().optional(),
   ADMIN_EMAIL: z.email().optional(),
   MAIL_FROM: z.string().default('SilentLeveling <onboarding@resend.dev>'),
+  // Optional: push notifications (quest reminders). Generate the pair once with
+  // `npx web-push generate-vapid-keys`. Without them, reminders are unavailable.
+  VAPID_PUBLIC_KEY: z.string().optional(),
+  VAPID_PRIVATE_KEY: z.string().optional(),
+  // Who push services can contact about this app (a URL or mailto:)
+  VAPID_SUBJECT: z.string().default('https://silentleveling.vercel.app'),
+  // Secret the scheduled job sends to POST /api/cron/reminders
+  CRON_SECRET: z.string().min(32, 'CRON_SECRET must be at least 32 characters').optional(),
 });
 
 // Hosting dashboards often save an optional field left blank as "": treat it as unset
