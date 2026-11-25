@@ -277,7 +277,10 @@
     "TITLE_NOT_FOUND": "Ce titre n'existe pas",
     "REASON_TOO_SHORT": "Au moins 5 caractères",
     "FORBIDDEN": "Tu n'as pas le droit de faire ça",
-    "LEGENDARY_QUEST_HAS_CLAIMS": "Des joueurs ont déjà réclamé cette quête : désactive-la plutôt."
+    "LEGENDARY_QUEST_HAS_CLAIMS": "Des joueurs ont déjà réclamé cette quête : désactive-la plutôt.",
+    "NO_PUSH_DEVICE": "Active d'abord les rappels sur cet appareil.",
+    "PUSH_UNAVAILABLE": "Les notifications ne sont pas disponibles pour le moment.",
+    "REMINDER_TIME_INVALID": "Choisis une heure valide."
   },
   "nav": {
     "dashboard": "Tableau de bord",
@@ -550,5 +553,17 @@
     "waiting_other": "Tu es hors ligne. {{count}} modifications seront synchronisées à ton retour.",
     "syncing_one": "Synchronisation de {{count}} modification…",
     "syncing_other": "Synchronisation de {{count}} modifications…"
+  },
+  "reminders": {
+    "title": "Rappel quotidien",
+    "toggle": "Activé",
+    "description": "Une notification à l'heure choisie s'il te reste des quêtes du jour.",
+    "time": "Me rappeler à",
+    "test": "Envoyer un test",
+    "testSent": "Test envoyé : regarde tes notifications.",
+    "iosInstall": "Sur iPhone et iPad, ajoute SilentLeveling à l'écran d'accueil (Partager → Sur l'écran d'accueil), puis ouvre-le depuis là pour activer les rappels.",
+    "unsupported": "Ce navigateur ne peut pas recevoir de notifications. Essaie Chrome, Edge ou l’application installée.",
+    "blocked": "Les notifications sont bloquées pour ce site. Autorise-les dans les réglages du navigateur, puis reviens.",
+    "otherDevice": "Les rappels sont activés sur un autre appareil. Active-les ici pour les recevoir aussi sur celui-ci."
   }
 }

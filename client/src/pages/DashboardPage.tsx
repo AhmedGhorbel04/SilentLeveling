@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { StatusWindow } from '../features/dashboard/StatusWindow';
+import { RemindersCard } from '../features/reminders/RemindersCard';
 import { TodayQuests } from '../features/quests/TodayQuests';
 
 // Status window on the side (sticky on large screens), quests in the main column.
@@ -11,8 +12,9 @@ export function DashboardPage() {
     <div className="grid items-start gap-6 lg:grid-cols-[minmax(320px,380px)_1fr]">
       {/* The page title is visual through the status window; screen readers still get an h1 */}
       <h1 className="sr-only">{t('nav.dashboard')}</h1>
-      <div className="lg:sticky lg:top-6">
+      <div className="flex flex-col gap-6 lg:sticky lg:top-6">
         <StatusWindow />
+        <RemindersCard />
       </div>
       <TodayQuests />
     </div>

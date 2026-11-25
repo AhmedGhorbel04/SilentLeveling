@@ -277,7 +277,10 @@
     "TITLE_NOT_FOUND": "This title does not exist",
     "REASON_TOO_SHORT": "At least 5 characters",
     "FORBIDDEN": "You are not allowed to do this",
-    "LEGENDARY_QUEST_HAS_CLAIMS": "Players already claimed this quest: deactivate it instead."
+    "LEGENDARY_QUEST_HAS_CLAIMS": "Players already claimed this quest: deactivate it instead.",
+    "NO_PUSH_DEVICE": "Turn reminders on for this device first.",
+    "PUSH_UNAVAILABLE": "Notifications are not available right now.",
+    "REMINDER_TIME_INVALID": "Choose a valid time."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -550,5 +553,17 @@
     "waiting_other": "You're offline. {{count}} changes will sync when you're back.",
     "syncing_one": "Syncing {{count}} change…",
     "syncing_other": "Syncing {{count}} changes…"
+  },
+  "reminders": {
+    "title": "Daily reminder",
+    "toggle": "On",
+    "description": "A notification at your chosen time if daily quests are left.",
+    "time": "Remind me at",
+    "test": "Send a test",
+    "testSent": "Test sent: check your notifications.",
+    "iosInstall": "On iPhone and iPad, add SilentLeveling to your Home screen (Share → Add to Home Screen), then open it from there to turn reminders on.",
+    "unsupported": "This browser can't receive notifications. Try Chrome, Edge or the installed app.",
+    "blocked": "Notifications are blocked for this site. Allow them in your browser settings, then come back.",
+    "otherDevice": "Reminders are on for another device. Turn them on here to get them on this one too."
   }
 }
