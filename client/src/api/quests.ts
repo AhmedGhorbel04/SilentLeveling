@@ -73,13 +73,17 @@ export type CustomQuestRequest = {
 
 export const questsApi = {
   today: () => apiRequest<TodayQuests>('/quests/today'),
-  complete: (id: string) =>
-    apiRequest<CompleteQuestResult>(`/quests/${id}/complete`, { method: 'POST' }),
+  // completedAt: only for a quest completed offline and synced later
+  complete: (id: string, completedAt?: string) =>
+    apiRequest<CompleteQuestResult>(`/quests/${id}/complete`, {
+      method: 'POST',
+      body: completedAt ? { completedAt } : undefined,
+    }),
   reroll: (id: string) =>
     apiRequest<{ quest: Quest; rerollsLeft: number }>(`/quests/${id}/reroll`, { method: 'POST' }),
   onboard: (data: OnboardingRequest) =>
     apiRequest<{ user: CurrentUser }>('/onboarding', { method: 'POST', body: data }),
-  createCustom: (data: CustomQuestRequest) =>
+  createCustom: (data: CustomQuestRequest & { id?: string }) =>
     apiRequest<{ quest: Quest }>('/quests', { method: 'POST', body: data }),
   updateCustom: ({ id, ...data }: CustomQuestRequest & { id: string }) =>
     apiRequest<{ quest: Quest }>(`/quests/${id}`, { method: 'PATCH', body: data }),

@@ -80,6 +80,8 @@ describe('custom quests', () => {
     const call = fetchMock.mock.calls.find(([, init]) => init?.method === 'POST')!;
     const body = JSON.parse(call[1]!.body as string);
     expect(body).toEqual({
+      // Chosen by the app, so a sync retried after going offline can't duplicate it
+      id: expect.stringMatching(/^[0-9a-f-]{36}$/),
       title: 'Send my CV',
       description: '',
       category: 'STUDIES',

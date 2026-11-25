@@ -1,5 +1,6 @@
+import { offlineMutations, type UpdateMilestoneVariables } from '../../offline/queryClient';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { goalsApi } from '../../api/goals';
+import { goalsApi, type GoalResponse } from '../../api/goals';
 import { todayQuestsKey } from '../quests/useQuests';
 
 export const goalsKey = ['goals'] as const;
@@ -35,8 +36,11 @@ export function useAddMilestone() {
   return useMutation({ mutationFn: goalsApi.addMilestone, onSuccess: useRefreshGoals() });
 }
 
+// Can be done offline (ticking a milestone): see offline/queryClient.ts
 export function useUpdateMilestone() {
-  return useMutation({ mutationFn: goalsApi.updateMilestone, onSuccess: useRefreshGoals() });
+  return useMutation<GoalResponse, Error, UpdateMilestoneVariables>({
+    mutationKey: offlineMutations.updateMilestone,
+  });
 }
 
 export function useDeleteMilestone() {

@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { questsApi } from '../../api/quests';
+import { questsApi, type CompleteQuestResult, type Quest } from '../../api/quests';
+import {
+  offlineMutations,
+  type CompleteQuestVariables,
+  type CreateQuestVariables,
+} from '../../offline/queryClient';
 import { dashboardApi } from '../../api/dashboard';
 import { currentUserKey } from '../auth/useAuth';
 import { achievementsKey, notificationsKey, titlesKey } from '../achievements/queryKeys';
@@ -30,16 +35,23 @@ function useRefreshAfter() {
     ]);
 }
 
+// Can be done offline: the action is queued, shown right away and synced later.
+// The function and the reload after it are defined once in offline/queryClient.ts.
 export function useCompleteQuest() {
-  return useMutation({ mutationFn: questsApi.complete, onSuccess: useRefreshAfter() });
+  return useMutation<CompleteQuestResult, Error, CompleteQuestVariables>({
+    mutationKey: offlineMutations.completeQuest,
+  });
 }
 
 export function useRerollQuest() {
   return useMutation({ mutationFn: questsApi.reroll, onSuccess: useRefreshAfter() });
 }
 
+// Can be done offline too: the app picks the quest id, so a retried sync can't duplicate it
 export function useCreateCustomQuest() {
-  return useMutation({ mutationFn: questsApi.createCustom, onSuccess: useRefreshAfter() });
+  return useMutation<{ quest: Quest }, Error, CreateQuestVariables>({
+    mutationKey: offlineMutations.createQuest,
+  });
 }
 
 export function useUpdateCustomQuest() {

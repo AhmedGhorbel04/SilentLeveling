@@ -543,5 +543,12 @@
       "partial": "Une partie faite",
       "missed": "Manqué"
     }
+  },
+  "offline": {
+    "offline": "Tu es hors ligne. Tu peux encore valider des quêtes, en ajouter et cocher des étapes : tout sera synchronisé à ton retour.",
+    "waiting_one": "Tu es hors ligne. {{count}} modification sera synchronisée à ton retour.",
+    "waiting_other": "Tu es hors ligne. {{count}} modifications seront synchronisées à ton retour.",
+    "syncing_one": "Synchronisation de {{count}} modification…",
+    "syncing_other": "Synchronisation de {{count}} modifications…"
   }
 }

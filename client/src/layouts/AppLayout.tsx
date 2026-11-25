@@ -4,6 +4,7 @@ import { Logo } from '../components/ui/Logo';
 import { Button } from '../components/ui/Button';
 import { Avatar } from '../components/Avatar';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
+import { OfflineBanner } from '../offline/OfflineBanner';
 import { NotificationBell } from '../features/achievements/NotificationBell';
 import { useCurrentUser, useLogout } from '../features/auth/useAuth';
 
@@ -84,6 +85,7 @@ export function AppLayout() {
           </ul>
         )}
       </header>
+      <OfflineBanner />
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 sm:py-10">
         <Outlet />
