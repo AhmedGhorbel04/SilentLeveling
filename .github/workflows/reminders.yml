@@ -1,0 +1,27 @@
+name: Quest reminders
+
+# The API sleeps on Render's free plan, so it can't run a timer itself. Every 15
+# minutes this job wakes it and asks it to send the reminders that are due.
+# GitHub can start scheduled jobs a few minutes late; the API allows for it.
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch: # "Run workflow" button, to test by hand
+
+jobs:
+  send:
+    name: Send due reminders
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Only on the real repository, not on forks
+    if: github.repository == 'AhmedGhorbel04/SilentLeveling'
+    steps:
+      - name: Call the API
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          # --retry: the first request may hit a sleeping API that takes ~1 min to wake up
+          curl --fail-with-body --silent --show-error --max-time 120 \
+            --retry 3 --retry-delay 20 --retry-all-errors \
+            -X POST "https://silentleveling.vercel.app/api/cron/reminders" \
+            -H "Authorization: Bearer $CRON_SECRET"

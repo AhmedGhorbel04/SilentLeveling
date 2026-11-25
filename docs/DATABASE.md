@@ -25,6 +25,7 @@ erDiagram
     users |o--o| titles : "shows (active title)"
     users ||--o{ friendships : "sends / receives"
     users ||--o{ notifications : receives
+    users ||--o{ push_subscriptions : "gets reminders on"
     users ||--o{ achievement_claims : submits
     users |o--o{ achievement_claims : "reviews (admin)"
     legendary_quests |o--o{ achievement_claims : "claimed as"

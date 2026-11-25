@@ -20,6 +20,7 @@ _The free backend sleeps when nobody uses it: the first request can take about a
 - **Legendary quests**: claim a real-life achievement with a proof link; an admin reviews it, grants XP and a title, and that unlocks ranks B and above. Admins can also edit the catalog.
 - **Progress page**: XP chart over 7, 30 or 90 days and a calendar of cleared days.
 - **Installable and offline-ready**: install it on a phone or PC. Offline you can still see your data, complete quests, add your own and tick milestones; changes sync when you're back online.
+- **Daily reminder**: a push notification at the time you choose, only if daily quests are left, on every device where you turned it on.
 - **English, French and Arabic**, with a full right-to-left layout in Arabic.
 - **Responsive and accessible**: Lighthouse accessibility 100, no axe violations on any page.
 
@@ -107,6 +108,7 @@ Run from the project root:
 - **Database:** a Neon project; its direct (non-pooled) connection string is the API's `DATABASE_URL`.
 - **API:** Render, from [`render.yaml`](render.yaml). Each start applies migrations and the seed.
 - **Frontend:** Vercel with root directory `client`; [`client/vercel.json`](client/vercel.json) holds the `/api` rewrite.
+- **Reminders (optional):** generate a key pair once with `npx web-push generate-vapid-keys` and set `VAPID_PUBLIC_KEY` and `VAPID_PRIVATE_KEY` on Render. Set the same random `CRON_SECRET` (32+ characters) on Render and as a GitHub Actions secret: [`reminders.yml`](.github/workflows/reminders.yml) calls the API every 15 minutes with it.
 - Every push to `main` redeploys both. CI (lint, types, tests, build) must pass before a PR can be merged.
 
 ## Project structure
