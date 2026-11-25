@@ -62,6 +62,20 @@ export const claimsApi = {
     apiRequest<{ claim: Claim }>('/claims', { method: 'POST', body: data }),
 };
 
+export type AdminLegendaryQuest = Omit<LegendaryQuest, 'myClaimStatus'> & {
+  active: boolean;
+  titleId: string | null;
+};
+
+export type LegendaryQuestRequest = {
+  title: Translations;
+  category: Category;
+  tier: Tier;
+  xpReward: number;
+  titleId: string | null;
+  active: boolean;
+};
+
 export const adminApi = {
   claims: (status: ClaimStatus) =>
     apiRequest<{ claims: ReviewClaim[] }>(`/admin/claims?status=${status}`),
@@ -73,10 +87,16 @@ export const adminApi = {
   reject: ({ id, reason }: { id: string; reason: string }) =>
     apiRequest<void>(`/admin/claims/${id}/reject`, { method: 'POST', body: { reason } }),
   titles: () => apiRequest<{ titles: Title[] }>('/admin/titles'),
-  catalog: () =>
-    apiRequest<{ quests: (Omit<LegendaryQuest, 'myClaimStatus'> & { active: boolean })[] }>(
-      '/admin/legendary-quests',
-    ),
+  catalog: () => apiRequest<{ quests: AdminLegendaryQuest[] }>('/admin/legendary-quests'),
   setActive: ({ id, active }: { id: string; active: boolean }) =>
     apiRequest<void>(`/admin/legendary-quests/${id}`, { method: 'PATCH', body: { active } }),
+  createQuest: (data: LegendaryQuestRequest) =>
+    apiRequest<{ quest: AdminLegendaryQuest }>('/admin/legendary-quests', {
+      method: 'POST',
+      body: data,
+    }),
+  updateQuest: ({ id, ...data }: LegendaryQuestRequest & { id: string }) =>
+    apiRequest<void>(`/admin/legendary-quests/${id}`, { method: 'PATCH', body: data }),
+  deleteQuest: (id: string) =>
+    apiRequest<void>(`/admin/legendary-quests/${id}`, { method: 'DELETE' }),
 };

@@ -63,3 +63,6 @@ function useAdminMutation<T>(mutationFn: (input: T) => Promise<unknown>) {
 export const useApproveClaim = () => useAdminMutation(adminApi.approve);
 export const useRejectClaim = () => useAdminMutation(adminApi.reject);
 export const useSetQuestActive = () => useAdminMutation(adminApi.setActive);
+export const useCreateQuest = () => useAdminMutation(adminApi.createQuest);
+export const useUpdateQuest = () => useAdminMutation(adminApi.updateQuest);
+export const useDeleteQuest = () => useAdminMutation(adminApi.deleteQuest);

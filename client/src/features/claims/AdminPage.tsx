@@ -3,8 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { Alert } from '../../components/ui/Alert';
 import { Button } from '../../components/ui/Button';
 import { Spinner } from '../../components/ui/Spinner';
+import { Modal } from '../../components/ui/Modal';
 import { ApiError } from '../../api/client';
-import type { ApproveClaimRequest, ClaimStatus, ReviewClaim, Tier } from '../../api/claims';
+import type {
+  AdminLegendaryQuest,
+  ApproveClaimRequest,
+  ClaimStatus,
+  ReviewClaim,
+  Tier,
+} from '../../api/claims';
+import { LegendaryQuestForm } from './LegendaryQuestForm';
 import type { LanguageCode } from '../../i18n';
 import { rankLabel } from '../../game/ranks';
 import {
@@ -19,7 +27,7 @@ import {
 const fieldClasses =
   'w-full rounded-md border border-abyss-border bg-void/60 px-3 py-2 text-sm text-slate-100 focus:border-arcane-500 focus:outline-none';
 
-// Admin page: review claims (FR-64) and switch catalog quests on or off (FR-66).
+// Admin page: review claims (FR-64) and manage the legendary catalog (FR-66).
 // Only reachable by admins; the API checks the role again on every request.
 export function AdminPage() {
   const { t } = useTranslation();
@@ -220,12 +228,32 @@ function CatalogSection() {
   const language = (i18n.resolvedLanguage ?? 'en') as LanguageCode;
   const catalog = useAdminCatalog();
   const setActive = useSetQuestActive();
+  // null = closed, 'new' = create, otherwise the quest being edited
+  const [editing, setEditing] = useState<AdminLegendaryQuest | 'new' | null>(null);
 
   return (
     <section aria-labelledby="catalog-heading" className="system-panel p-5">
-      <h2 id="catalog-heading" className="mb-3 font-display text-xl font-bold text-white">
-        {t('admin.catalog')}
-      </h2>
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <h2 id="catalog-heading" className="font-display text-xl font-bold text-white">
+          {t('admin.catalog')}
+        </h2>
+        <Button variant="secondary" onClick={() => setEditing('new')}>
+          {t('admin.questForm.new')}
+        </Button>
+      </div>
+
+      {editing && (
+        <Modal
+          title={editing === 'new' ? t('admin.questForm.new') : editing.title[language]}
+          onClose={() => setEditing(null)}
+        >
+          <LegendaryQuestForm
+            quest={editing === 'new' ? null : editing}
+            onDone={() => setEditing(null)}
+          />
+        </Modal>
+      )}
+
       <ul className="flex flex-col gap-1">
         {catalog.data?.map((quest) => (
           <li
@@ -247,6 +275,14 @@ function CatalogSection() {
             <span className="text-xs text-slate-400" dir="ltr">
               {quest.xpReward} XP · {t(`rarity.${quest.tier}`)}
             </span>
+            <button
+              type="button"
+              onClick={() => setEditing(quest)}
+              aria-label={t('admin.questForm.edit', { title: quest.title[language] })}
+              className="rounded px-2 py-1 text-xs font-semibold text-arcane-300 hover:bg-abyss-light hover:text-white"
+            >
+              ✎
+            </button>
           </li>
         ))}
       </ul>

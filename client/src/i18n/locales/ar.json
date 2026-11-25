@@ -276,7 +276,8 @@
     "TIER_INVALID": "فئة غير صالحة",
     "TITLE_NOT_FOUND": "هذا اللقب غير موجود",
     "REASON_TOO_SHORT": "5 أحرف على الأقل",
-    "FORBIDDEN": "غير مسموح لك بذلك"
+    "FORBIDDEN": "غير مسموح لك بذلك",
+    "LEGENDARY_QUEST_HAS_CLAIMS": "طالب لاعبون بهذه المهمة بالفعل: عطّلها بدلًا من حذفها."
   },
   "nav": {
     "dashboard": "لوحة التحكم",
@@ -500,7 +501,19 @@
     "rejectReason": "سبب الرفض",
     "reject": "رفض",
     "catalog": "الكتالوج",
-    "activeToggle": "مفعّلة: {{title}}"
+    "activeToggle": "مفعّلة: {{title}}",
+    "questForm": {
+      "new": "+ مهمة جديدة",
+      "edit": "تعديل {{title}}",
+      "titleIn": "العنوان ({{language}})",
+      "category": "الفئة",
+      "xpReward": "مكافأة الخبرة",
+      "rewardTitle": "اللقب الممنوح",
+      "active": "ظاهرة للاعبين",
+      "save": "حفظ",
+      "delete": "حذف",
+      "confirmDelete": "حذف نهائيًا؟"
+    }
   },
   "progress": {
     "title": "التقدّم",

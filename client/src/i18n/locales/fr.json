@@ -276,7 +276,8 @@
     "TIER_INVALID": "Niveau invalide",
     "TITLE_NOT_FOUND": "Ce titre n'existe pas",
     "REASON_TOO_SHORT": "Au moins 5 caractères",
-    "FORBIDDEN": "Tu n'as pas le droit de faire ça"
+    "FORBIDDEN": "Tu n'as pas le droit de faire ça",
+    "LEGENDARY_QUEST_HAS_CLAIMS": "Des joueurs ont déjà réclamé cette quête : désactive-la plutôt."
   },
   "nav": {
     "dashboard": "Tableau de bord",
@@ -500,7 +501,19 @@
     "rejectReason": "Raison du refus",
     "reject": "Refuser",
     "catalog": "Catalogue",
-    "activeToggle": "Active : {{title}}"
+    "activeToggle": "Active : {{title}}",
+    "questForm": {
+      "new": "+ Nouvelle quête",
+      "edit": "Modifier {{title}}",
+      "titleIn": "Titre ({{language}})",
+      "category": "Catégorie",
+      "xpReward": "Récompense en XP",
+      "rewardTitle": "Titre accordé",
+      "active": "Visible par les joueurs",
+      "save": "Enregistrer",
+      "delete": "Supprimer",
+      "confirmDelete": "Supprimer définitivement ?"
+    }
   },
   "progress": {
     "title": "Progression",

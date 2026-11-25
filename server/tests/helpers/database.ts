@@ -20,6 +20,8 @@ export async function resetDatabase(): Promise<void> {
 
   const list = toEmpty.map((t) => `"public"."${t}"`).join(', ');
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${list} RESTART IDENTITY CASCADE`);
+  // Quests and titles an admin created are not reference data
+  await prisma.legendaryQuest.deleteMany({ where: { key: { startsWith: 'custom_' } } });
   // Titles an admin created while approving a claim are not reference data
   await prisma.title.deleteMany({ where: { key: { startsWith: 'custom_' } } });
 }

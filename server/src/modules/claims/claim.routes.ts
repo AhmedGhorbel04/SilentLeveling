@@ -5,7 +5,13 @@ import { requireAdmin } from '../../middleware/requireAdmin.js';
 import { validateBody } from '../../middleware/validate.js';
 import { AppError } from '../../utils/AppError.js';
 import * as claimService from './claim.service.js';
-import { approveClaimSchema, rejectClaimSchema, submitClaimSchema } from './claim.schemas.js';
+import {
+  approveClaimSchema,
+  legendaryQuestSchema,
+  rejectClaimSchema,
+  submitClaimSchema,
+  updateLegendaryQuestSchema,
+} from './claim.schemas.js';
 
 // GET  /api/legendary-quests                     catalog, with my claim status for each
 // GET  /api/claims/mine                          my claims
@@ -14,7 +20,9 @@ import { approveClaimSchema, rejectClaimSchema, submitClaimSchema } from './clai
 // POST /api/admin/claims/:id/approve             (admin) { xp, tier, titleId? | newTitle?, note? }
 // POST /api/admin/claims/:id/reject              (admin) { reason }
 // GET  /api/admin/legendary-quests               (admin) whole catalog
-// PATCH /api/admin/legendary-quests/:id          (admin) { active }
+// POST /api/admin/legendary-quests              (admin) create a quest
+// PATCH /api/admin/legendary-quests/:id          (admin) edit any field, or { active }
+// DELETE /api/admin/legendary-quests/:id         (admin) only if nobody claimed it
 // GET  /api/admin/titles                         (admin) titles that can be awarded
 
 function idFrom(req: Request, notFoundCode: string): string {
@@ -67,17 +75,23 @@ adminRouter.get('/legendary-quests', async (_req, res) => {
   res.json({ quests: await claimService.listCatalogForAdmin() });
 });
 
+adminRouter.post('/legendary-quests', validateBody(legendaryQuestSchema), async (req, res) => {
+  res.status(201).json({ quest: await claimService.createLegendaryQuest(req.body) });
+});
+
 adminRouter.patch(
   '/legendary-quests/:id',
-  validateBody(z.object({ active: z.boolean({ error: 'REQUIRED' }) })),
+  validateBody(updateLegendaryQuestSchema),
   async (req, res) => {
-    await claimService.setLegendaryQuestActive(
-      idFrom(req, 'LEGENDARY_QUEST_NOT_FOUND'),
-      req.body.active,
-    );
+    await claimService.updateLegendaryQuest(idFrom(req, 'LEGENDARY_QUEST_NOT_FOUND'), req.body);
     res.status(204).end();
   },
 );
+
+adminRouter.delete('/legendary-quests/:id', async (req, res) => {
+  await claimService.deleteLegendaryQuest(idFrom(req, 'LEGENDARY_QUEST_NOT_FOUND'));
+  res.status(204).end();
+});
 
 adminRouter.get('/titles', async (_req, res) => {
   res.json({ titles: await claimService.listTitlesForAdmin() });

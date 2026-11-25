@@ -16,7 +16,9 @@ import { activeTitleSchema } from '../modules/achievements/achievement.routes.js
 import { bioSchema, sendRequestSchema } from '../modules/friends/friend.routes.js';
 import {
   approveClaimSchema,
+  legendaryQuestSchema,
   rejectClaimSchema,
+  updateLegendaryQuestSchema,
   submitClaimSchema,
 } from '../modules/claims/claim.schemas.js';
 
@@ -146,9 +148,18 @@ export const routes: Route[] = [
   r('get', '/admin/legendary-quests', 'Admin', 'Catalog including inactive quests', {
     access: 'admin',
   }),
-  r('patch', '/admin/legendary-quests/{id}', 'Admin', 'Activate or deactivate a quest', {
+  r('post', '/admin/legendary-quests', 'Admin', 'Create a legendary quest', {
     access: 'admin',
-    body: z.object({ active: z.boolean() }),
+    body: legendaryQuestSchema,
+    status: 201,
+  }),
+  r('patch', '/admin/legendary-quests/{id}', 'Admin', 'Edit a quest, or switch it on or off', {
+    access: 'admin',
+    body: updateLegendaryQuestSchema,
+    status: 204,
+  }),
+  r('delete', '/admin/legendary-quests/{id}', 'Admin', 'Delete a quest nobody claimed', {
+    access: 'admin',
     status: 204,
   }),
   r('get', '/admin/titles', 'Admin', 'All titles, to grant one on approval', { access: 'admin' }),
