@@ -24,7 +24,12 @@ const envSchema = z.object({
   MAIL_FROM: z.string().default('SilentLeveling <onboarding@resend.dev>'),
 });
 
-const parsed = envSchema.safeParse(process.env);
+// Hosting dashboards often save an optional field left blank as "": treat it as unset
+const definedEnv = Object.fromEntries(
+  Object.entries(process.env).filter(([, value]) => value !== ''),
+);
+
+const parsed = envSchema.safeParse(definedEnv);
 
 if (!parsed.success) {
   console.error('Invalid environment variables:', z.flattenError(parsed.error).fieldErrors);
