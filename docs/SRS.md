@@ -347,16 +347,16 @@ Priority: **M** = must have for v1, **S** = should have for v1, **C** = could ha
 
 ### 4.7 Legendary quests and claims
 
-| ID    | Requirement                                                                                                                                          | Priority |
-| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| FR-60 | Players can browse the catalog of legendary quests (title, description, tier, XP, title reward).                                                     | M        |
-| FR-61 | A player can submit a claim for a legendary quest, or a free-form claim for an extraordinary achievement, with a description and a proof link (URL). | M        |
-| FR-62 | A player can have at most 3 pending claims at once.                                                                                                  | M        |
-| FR-63 | The admin receives an email for each new claim.                                                                                                      | S        |
-| FR-64 | The admin can list pending claims and approve (setting XP, tier and title) or reject (with a reason) each one.                                       | M        |
-| FR-65 | On approval, the player receives XP, the title, a notification, and their rank is recalculated.                                                      | M        |
-| FR-66 | The admin can create, edit and deactivate legendary quests and titles.                                                                               | M        |
-| FR-67 | The admin can manage quest templates.                                                                                                                | C        |
+| ID    | Requirement                                                                                                                                                                                                            | Priority |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| FR-60 | Players can browse the catalog of legendary quests (title, description, tier, XP, title reward).                                                                                                                       | M        |
+| FR-61 | A player can submit a claim for a legendary quest, or a free-form claim for an extraordinary achievement, with a description and a proof link (URL).                                                                   | M        |
+| FR-62 | A player can have at most 3 pending claims at once.                                                                                                                                                                    | M        |
+| FR-63 | The admin receives an email for each new claim.                                                                                                                                                                        | S        |
+| FR-64 | The admin can list pending claims and approve (setting XP, tier and title) or reject (with a reason) each one.                                                                                                         | M        |
+| FR-65 | On approval, the player receives XP, the title, a notification, and their rank is recalculated.                                                                                                                        | M        |
+| FR-66 | The admin can create, edit, deactivate and delete legendary quests (delete only if nobody claimed it), and create titles when approving a claim. The seed only adds missing quests, so admin edits survive a redeploy. | M        |
+| FR-67 | The admin can manage quest templates.                                                                                                                                                                                  | C        |
 
 ### 4.8 Notifications
 

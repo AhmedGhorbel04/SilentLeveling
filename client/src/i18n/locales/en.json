@@ -276,7 +276,8 @@
     "TIER_INVALID": "Invalid tier",
     "TITLE_NOT_FOUND": "This title does not exist",
     "REASON_TOO_SHORT": "At least 5 characters",
-    "FORBIDDEN": "You are not allowed to do this"
+    "FORBIDDEN": "You are not allowed to do this",
+    "LEGENDARY_QUEST_HAS_CLAIMS": "Players already claimed this quest: deactivate it instead."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -500,7 +501,19 @@
     "rejectReason": "Reason for rejecting",
     "reject": "Reject",
     "catalog": "Catalog",
-    "activeToggle": "Active: {{title}}"
+    "activeToggle": "Active: {{title}}",
+    "questForm": {
+      "new": "+ New quest",
+      "edit": "Edit {{title}}",
+      "titleIn": "Title ({{language}})",
+      "category": "Category",
+      "xpReward": "XP reward",
+      "rewardTitle": "Title granted",
+      "active": "Visible to players",
+      "save": "Save",
+      "delete": "Delete",
+      "confirmDelete": "Delete for good?"
+    }
   },
   "progress": {
     "title": "Progress",

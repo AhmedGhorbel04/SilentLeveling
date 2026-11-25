@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
 type ModalProps = {
@@ -34,7 +35,9 @@ export function Modal({ title, onClose, children }: ModalProps) {
     };
   }, [onClose]);
 
-  return (
+  // Rendered at the end of <body>: a parent with a blur or transform (like our panels)
+  // would otherwise trap the fixed overlay inside its own box
+  return createPortal(
     <div
       className="fixed inset-0 z-40 grid place-items-center overflow-y-auto bg-void/80 p-4 backdrop-blur-sm"
       onClick={onClose}
@@ -62,6 +65,7 @@ export function Modal({ title, onClose, children }: ModalProps) {
         </div>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

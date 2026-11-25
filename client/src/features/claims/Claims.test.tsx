@@ -150,6 +150,36 @@ describe('AdminPage', () => {
     });
   });
 
+  it('edits a catalog quest and sends every field', async () => {
+    const fetchMock = mockApi({
+      ...routes,
+      '/api/admin/legendary-quests': {
+        quests: [{ ...marathon, active: true, titleId: null }],
+      },
+    });
+    renderWithProviders(<AdminPage />);
+
+    await userEvent.click(await screen.findByRole('button', { name: 'Edit Run a marathon' }));
+    const dialog = screen.getByRole('dialog', { name: 'Run a marathon' });
+    const xp = within(dialog).getByLabelText('XP reward');
+    await userEvent.clear(xp);
+    await userEvent.type(xp, '4500');
+    await userEvent.selectOptions(within(dialog).getByLabelText('Tier'), 'MYTHIC');
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Save' }));
+
+    const call = fetchMock.mock.calls.find(
+      ([u, init]) => String(u) === '/api/admin/legendary-quests/q1' && init?.method === 'PATCH',
+    )!;
+    expect(JSON.parse(call[1]!.body as string)).toEqual({
+      title: marathon.title,
+      category: 'FITNESS',
+      tier: 'MYTHIC',
+      xpReward: 4500,
+      titleId: null,
+      active: true,
+    });
+  });
+
   it('rejects with a reason', async () => {
     const fetchMock = mockApi(routes);
     renderWithProviders(<AdminPage />);
