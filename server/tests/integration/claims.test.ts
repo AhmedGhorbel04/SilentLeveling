@@ -11,6 +11,7 @@ import {
 import { listNotifications } from '../../src/modules/notifications/notification.service.js';
 import { resetDatabase } from '../helpers/database.js';
 import { createTestUser } from '../helpers/users.js';
+import { seed } from '../../prisma/seed.js';
 
 const proof = {
   description: 'Finished the Paris marathon in 4h12, here is my official result.',
@@ -198,12 +199,102 @@ describe('admin routes', () => {
 
   it('can switch a legendary quest off, which hides it from players', async () => {
     const player = await createTestUser();
-    const { setLegendaryQuestActive } = await import('../../src/modules/claims/claim.service.js');
+    const { updateLegendaryQuest } = await import('../../src/modules/claims/claim.service.js');
 
-    await setLegendaryQuestActive(await marathonId(), false);
+    await updateLegendaryQuest(await marathonId(), { active: false });
 
     const catalog = await listLegendaryQuests(player.id);
     expect(catalog.map((q) => q.key)).not.toContain('marathon');
-    await setLegendaryQuestActive(await marathonId(), true); // shared reference data
+    await updateLegendaryQuest(await marathonId(), { active: true }); // shared reference data
+  });
+});
+
+describe('editing the legendary catalog', () => {
+  const quest = {
+    title: { en: 'Climb Kilimanjaro', fr: 'Gravir le Kilimandjaro', ar: 'تسلق كليمنجارو' },
+    category: 'FITNESS',
+    tier: 'LEGENDARY',
+    xpReward: 2500,
+  };
+
+  it('creates, edits and deletes a quest, which players then see', async () => {
+    const { createLegendaryQuest, updateLegendaryQuest, deleteLegendaryQuest } =
+      await import('../../src/modules/claims/claim.service.js');
+    const player = await createTestUser();
+
+    const created = await createLegendaryQuest({ ...quest, titleId: null, active: true } as never);
+    expect(created.key).toMatch(/^custom_/);
+    expect((await listLegendaryQuests(player.id)).map((q) => q.id)).toContain(created.id);
+
+    await updateLegendaryQuest(created.id, { xpReward: 4000, tier: 'MYTHIC' });
+    const edited = await prisma.legendaryQuest.findUniqueOrThrow({ where: { id: created.id } });
+    expect(edited).toMatchObject({ xpReward: 4000, tier: 'MYTHIC', title: quest.title });
+
+    await deleteLegendaryQuest(created.id);
+    expect(await prisma.legendaryQuest.findUnique({ where: { id: created.id } })).toBeNull();
+  });
+
+  it('refuses to delete a quest that was claimed, so claim history stays intact', async () => {
+    const { createLegendaryQuest, deleteLegendaryQuest } =
+      await import('../../src/modules/claims/claim.service.js');
+    const created = await createLegendaryQuest({ ...quest, titleId: null, active: true } as never);
+    await submitClaim((await createTestUser()).id, { legendaryQuestId: created.id, ...proof });
+
+    await expect(deleteLegendaryQuest(created.id)).rejects.toMatchObject({
+      status: 409,
+      code: 'LEGENDARY_QUEST_HAS_CLAIMS',
+    });
+  });
+
+  it('keeps admin edits when the seed runs again (every deploy)', async () => {
+    const { updateLegendaryQuest } = await import('../../src/modules/claims/claim.service.js');
+    const id = await marathonId();
+    const before = await prisma.legendaryQuest.findUniqueOrThrow({ where: { id } });
+    try {
+      await updateLegendaryQuest(id, { xpReward: 3333 });
+      await seed(prisma);
+      expect((await prisma.legendaryQuest.findUniqueOrThrow({ where: { id } })).xpReward).toBe(
+        3333,
+      );
+    } finally {
+      // Shared reference data: put it back for the other tests
+      await prisma.legendaryQuest.update({ where: { id }, data: { xpReward: before.xpReward } });
+    }
+  });
+
+  it('validates the input and checks the reward title over HTTP', async () => {
+    const app = createApp();
+    const owner = await admin();
+    const { signAuthToken } = await import('../../src/utils/authToken.js');
+    const cookie = `sl_token=${signAuthToken(owner.id)}`;
+
+    const invalid = await request(app)
+      .post('/api/admin/legendary-quests')
+      .set('Cookie', cookie)
+      .send({ ...quest, xpReward: 0, title: { en: 'Ok title', fr: 'Ok', ar: 'تسلق' } });
+    expect(invalid.status).toBe(400);
+    expect(invalid.body.error.details).toMatchObject({
+      xpReward: 'XP_INVALID',
+      'title.fr': 'TITLE_TOO_SHORT',
+    });
+
+    const unknownTitle = await request(app)
+      .post('/api/admin/legendary-quests')
+      .set('Cookie', cookie)
+      .send({ ...quest, titleId: '00000000-0000-4000-8000-000000000000' });
+    expect(unknownTitle.status).toBe(404);
+
+    const created = await request(app)
+      .post('/api/admin/legendary-quests')
+      .set('Cookie', cookie)
+      .send(quest);
+    expect(created.status).toBe(201);
+
+    const player = await createTestUser();
+    const forbidden = await request(app)
+      .patch(`/api/admin/legendary-quests/${created.body.quest.id}`)
+      .set('Cookie', `sl_token=${signAuthToken(player.id)}`)
+      .send({ xpReward: 9000 });
+    expect(forbidden.status).toBe(403);
   });
 });

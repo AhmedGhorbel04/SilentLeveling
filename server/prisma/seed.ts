@@ -41,13 +41,15 @@ export async function seed(prisma: PrismaClient): Promise<void> {
     });
   }
 
+  // Legendary quests are only created, never overwritten: admins can edit them in
+  // the app, and a redeploy (which runs the seed) must not undo their changes
   for (const { key, titleKey, ...quest } of LEGENDARY_QUESTS) {
     const titleId = titleIds.get(titleKey);
     if (!titleId) throw new Error(`Unknown title "${titleKey}" for legendary quest ${key}`);
     await prisma.legendaryQuest.upsert({
       where: { key },
       create: { key, titleId, ...quest },
-      update: { titleId, ...quest },
+      update: {},
     });
   }
 }

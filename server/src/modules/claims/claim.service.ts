@@ -6,7 +6,12 @@ import { emailAdmin } from '../../utils/mailer.js';
 import { awardXp } from '../progression/progression.service.js';
 import { checkAchievements } from '../achievements/achievement.service.js';
 import { notify } from '../notifications/notification.service.js';
-import type { ApproveClaimInput, SubmitClaimInput } from './claim.schemas.js';
+import type {
+  ApproveClaimInput,
+  LegendaryQuestInput,
+  SubmitClaimInput,
+  UpdateLegendaryQuestInput,
+} from './claim.schemas.js';
 
 type Translations = { en: string; fr: string; ar: string };
 
@@ -219,13 +224,41 @@ export async function listCatalogForAdmin() {
   });
 }
 
-export async function setLegendaryQuestActive(questId: string, active: boolean) {
-  const { count } = await prisma.legendaryQuest.updateMany({
-    where: { id: questId },
-    data: { active },
+async function assertTitleExists(titleId: string | null | undefined) {
+  if (titleId && !(await prisma.title.findUnique({ where: { id: titleId } }))) {
+    throw new AppError(404, 'TITLE_NOT_FOUND', 'Title not found');
+  }
+}
+
+// Quests made by an admin get a generated key; the seed never touches them
+export async function createLegendaryQuest(input: LegendaryQuestInput) {
+  await assertTitleExists(input.titleId);
+  return prisma.legendaryQuest.create({
+    data: { ...input, key: `custom_${randomUUID().slice(0, 8)}` },
   });
+}
+
+export async function updateLegendaryQuest(questId: string, input: UpdateLegendaryQuestInput) {
+  await assertTitleExists(input.titleId);
+  const { count } = await prisma.legendaryQuest.updateMany({ where: { id: questId }, data: input });
   if (count === 0)
     throw new AppError(404, 'LEGENDARY_QUEST_NOT_FOUND', 'Legendary quest not found');
+}
+
+// A quest that players already claimed is part of their history: it can only be
+// deactivated, not deleted
+export async function deleteLegendaryQuest(questId: string) {
+  return prisma.$transaction(async (tx) => {
+    const quest = await tx.legendaryQuest.findUnique({
+      where: { id: questId },
+      include: { _count: { select: { claims: true } } },
+    });
+    if (!quest) throw new AppError(404, 'LEGENDARY_QUEST_NOT_FOUND', 'Legendary quest not found');
+    if (quest._count.claims > 0) {
+      throw new AppError(409, 'LEGENDARY_QUEST_HAS_CLAIMS', 'Deactivate it instead');
+    }
+    await tx.legendaryQuest.delete({ where: { id: questId } });
+  });
 }
 
 export async function listTitlesForAdmin() {

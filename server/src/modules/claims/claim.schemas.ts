@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { CATEGORIES } from '../../game/config.js';
 
 // Proof must be an https link (certificate, article, LinkedIn post, photo...)
 const proofUrl = z
@@ -44,5 +45,30 @@ export const rejectClaimSchema = z.object({
   reason: z.string({ error: 'REQUIRED' }).trim().min(5, 'REASON_TOO_SHORT').max(500),
 });
 
+const questTitle = z.string().trim().min(3, 'TITLE_TOO_SHORT').max(120, 'TITLE_TOO_LONG');
+
+// A legendary quest of the catalog, created or edited by an admin
+export const legendaryQuestSchema = z.object({
+  title: z.object({ en: questTitle, fr: questTitle, ar: questTitle }, { error: 'REQUIRED' }),
+  category: z.enum(CATEGORIES, { error: 'CATEGORY_INVALID' }),
+  tier: z.enum(['LEGENDARY', 'MYTHIC'], { error: 'TIER_INVALID' }),
+  xpReward: z
+    .number({ error: 'XP_INVALID' })
+    .int('XP_INVALID')
+    .min(1, 'XP_INVALID')
+    .max(20000, 'XP_INVALID'),
+  // Title granted by default on approval; null = none
+  titleId: z.uuid('TITLE_NOT_FOUND').nullable().default(null),
+  active: z.boolean().default(true),
+});
+
+// Partial edit; also used by the on/off switch ({ active } only)
+export const updateLegendaryQuestSchema = legendaryQuestSchema
+  .partial()
+  .extend({ titleId: z.uuid('TITLE_NOT_FOUND').nullable().optional() })
+  .refine((data) => Object.values(data).some((value) => value !== undefined), 'NOTHING_TO_UPDATE');
+
+export type LegendaryQuestInput = z.infer<typeof legendaryQuestSchema>;
+export type UpdateLegendaryQuestInput = z.infer<typeof updateLegendaryQuestSchema>;
 export type SubmitClaimInput = z.infer<typeof submitClaimSchema>;
 export type ApproveClaimInput = z.infer<typeof approveClaimSchema>;
