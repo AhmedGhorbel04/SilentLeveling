@@ -1,0 +1,33 @@
+# Render blueprint for the API (free plan). Create it from the Render dashboard:
+# New > Blueprint > this repository. Secrets marked `sync: false` are asked for there.
+services:
+  - type: web
+    name: silentleveling-api
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    buildCommand: npm ci --include=dev && npm run build -w server
+    # The free plan has no pre-deploy step: migrations and the reference data
+    # (ranks, titles, achievements...) are applied at start. Both are idempotent.
+    startCommand: npm run db:deploy -w server && npm run db:seed -w server && npm start -w server
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: '22'
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_ORIGIN
+        sync: false
+      # Requests go browser -> Vercel -> Render's proxy -> API: two proxies to trust
+      - key: TRUST_PROXY_HOPS
+        value: '2'
+      - key: RESEND_API_KEY
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false

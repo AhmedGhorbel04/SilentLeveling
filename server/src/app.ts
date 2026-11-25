@@ -29,9 +29,9 @@ export function createApp(options: AppOptions = {}) {
   const app = express();
 
   app.disable('x-powered-by');
-  // In production the app runs behind the hosting provider's proxy: trust it so
-  // req.ip is the real client IP (needed for rate limiting).
-  if (isProduction) app.set('trust proxy', 1);
+  // In production the app runs behind proxies (Vercel's rewrite, then Render's):
+  // trust exactly that many so req.ip is the real client IP (needed for rate limiting).
+  if (isProduction) app.set('trust proxy', env.TRUST_PROXY_HOPS);
 
   app.use(helmet()); // security-related HTTP headers
   app.use(cors({ origin: env.CLIENT_ORIGIN, credentials: true })); // only our frontend
